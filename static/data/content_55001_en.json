@@ -1,0 +1,366 @@
+{
+    "titulo": "",
+    
+    "navbar":{
+        "usuario": "",
+        "lista_verificacion": ""
+    },
+    
+    "plan_auditoria":{
+        "objetivos": "Objectives",
+        "alcance": "Alcance",
+        "criterios": "Creiterios",
+        "Revision": "Revisión"
+    },
+    "informe":{
+    },
+    "lista_verificacion":{
+    },
+    "configuracion":{
+    },
+
+
+    "clausula":{
+        "4.1":"Understanding the organization and its context",
+        "4.2":"Understanding the needs and expectations of stakeholders",
+        "4.3":"Determining the scope of the asset management system",
+        "4.4":"Asset management system",
+        "4.5.1":"Asset management decision-making - Framework",
+        "4.5.2":"Asset management decision-making - Criteria",
+        "4.5.3":"Asset management decision-making - Methods, processes and tools",
+        "5.1":"Leadership and commitment",
+        "5.2":"Asset management policy",
+        "5.3":"Roles, responsibilities and authorities",
+        "6.1.1":"Planning - Actions to address risks and opportunities - General",
+        "6.1.2":"Planning - Actions to address risks and opportunities - Actions to address risk",
+        "6.1.3":"Planning - Actions to address risks and opportunities - Actions to address opportunities",
+        "6.2.1":"Asset management objectives and planning to achieve them - Strategic asset management plan (SAMP)",
+        "6.2.2":"Asset management objectives and planning to achieve them - Asset management objectives",
+        "6.2.3":"Asset management objectives and planning to achieve them - Planning to achieve asset management objectives",
+        "6.3":"Planning of change",
+        "7.1":"Support - Resources",
+        "7.2":"Support - Competence",
+        "7.3":"Support - Awareness",
+        "7.4":"Support - Communication",
+        "7.5.1":"Documented information - General",
+        "7.5.2":"Documented information - Creating and updating documented information",
+        "7.5.3":"Documented information - Control of documented information",
+        "7.6":"Data and information",
+        "7.7":"Knowledge",
+        "8.1":"Operation - Operational planning and control including life cycle management",
+        "8.2":"Operation - Control of change",
+        "8.3":"Operation - Externally provided processes, products, technologies and services",
+        "9.1":"Performance evaluation - Monitoring, measurement, analysis and evaluation",
+        "9.2.1":"Internal audit - General",
+        "9.2.2":"Internal audit - Internal audit programme",
+        "9.3.1":"Management review - General",
+        "9.3.2":"Management review - Management review inputs",
+        "9.3.3":"Management review - Management review results",
+        "10.1":"Improvement - Continual improvement",
+        "10.2":"Improvement - Nonconformity and corrective action",
+        "10.3":"Predictive action"
+    },
+
+    "subpreguntas":{
+        "4.1":{
+            "1":"How does the organization determine external issues relevant to its purpose and that affect its ability to achieve the intended result(s) of its asset management system?",
+            "2":"How does the organization determine internal issues relevant to its purpose and that affect its ability to achieve the intended result(s) of its asset management system?",
+            "3":"How does the organization determine wether the climate change is a relevant issue?"
+        },
+        "4.2":{
+            "1":"Which are the stakeholders that are relevant to the asset management system?",
+            "2":"Which are the relevant requirements of these stakeholders?",
+            "3":"Which of these rquirements will be addressed through the asset management system?",
+            "4":"Which are the impacts of assets and asset management activities on stakeholders? And which is their significance to the organizational objectives?"
+        },
+        "4.3":{
+            "1":"Which are the boundaries and applicability of the asset management system?",
+            "2":"When the scope was determined, how the organization considered the external and internal issues referred to in 4.1?",
+            "3":"When the scope was determined, how the organization considered the requirements referred to in 4.2?",
+            "4":"When the scope was determined, how the organization considered  the interaction with other management systems?",
+            "5":"How does the organization asset portfolio is covered by the scope of the asset management system?",
+            "6":"How does the organization scope is available as documented information? How does the scope include details of the asset portfolio covered?"
+        },
+        "4.4":{
+            "1":"What has the organization done to establish, implement, maintain and continually improve an asset management system?",
+            "2":"How does the asset management system, includes the processes needed and their interactions, in accordance with the requirements of the ISO 55001?"
+        },
+        "4.5.1":{
+            "1":"Which is the framework for asset management decision-making that is appropriate to the type, size and complexity of the organization?",
+            "2":"How does the decision-making framework define and determine the value that the organization aims to derive from its assets by applying the asset management system?",
+            "3":"How does the decision-making framework define the criteria to be used for asset management decision-making to achieve the determined value?",
+            "4":"When establishing and applying the framework, How the organization took into account the organization's context, organizational objectives and external and internal issues?",
+            "5":"When establishing and applying the framework, how the organization took into account stakeholder's requirements?",
+            "6":"When establishing and applying the framework, how the organization took into account the scope of the asset management system that determines the range of decisions to be made about assets, asset management and the asset management system?",
+            "7":"When establishing and applying the framework, how the organization took into account risks and opportunities?"
+        },
+        "4.5.2":{
+            "1":"When defining the criteria to be used for asset management decision-making, how the organization took into account the potential impacts of the decisions, including the time period over which such impacts can occur?",
+            "2":"When defining the criteria to be used for asset management decision-making, how the organization took into account the complexity of the decisions?",
+            "3":"When defining the criteria to be used for asset management decision-making, how the organization took into account the urgency or time available for making the decisions?",
+            "4":"When defining the criteria to be used for asset management decision-making, how the organization took into account capabilities appropriate to the above?"
+        },
+        "4.5.3":{
+            "1":"How does the framework used for making asset management decisions is being used by the organization to determine and select appropriate methods, processes and tools, considering the necessity to deal with options to deliver the greatest value over the asset life cycle or other relevant horizons?",
+            "2":"how does the framework used for making asset management decisions is being used by the organization to determine and select appropriate methods, processes and tools, considering the necessity to deal with risks and opportunities and how these can change with time?",
+            "3":"How does the framework used for making asset management decisions is being used by the organization to determine and select appropriate methods, processes and tools, considering the necessity to have confidence in information?",
+            "4":"How does the framework used for making asset management decisions is being used by the organization to determine and select appropriate methods, processes and tools, considering the necessity to support governance for appropriate, timely decision-making?"
+        },
+        "5.1":{
+            "1":"How does top management demonstrate leadership and commitment with respect to the asset management system by ensuring that the asset management policy, asset management system scope, strategic asset management plan (SAMP) and asset management objectives are established and are compatible with the strategic direction of the organization and its organizational objectives?",
+            "2":"how does top management demonstrate leadership and commitment with respect to the asset management system by ensuring the integration of the asset management system requirements into the organization’s business processes?",
+            "3":"How does top management demonstrate leadership and commitment with respect to the asset management system by ensuring that the resources needed for the asset management system are available?",
+            "4":"How does top management demonstrate leadership and commitment with respect to the asset management system by communicating the importance of effective asset management and of conforming to the asset management system requirements?",
+            "5":"Top management shall demonstrate leadership and commitment with respect to the asset management system by ensuring that the asset management system achieves its intended result(s)?",
+            "6":"How does top management demonstrate leadership and commitment with respect to the asset management system by directing, raising awareness of and supporting persons to contribute to the effectiveness of the asset management system?",
+            "7":"How does top management demonstrate leadership and commitment with respect to the asset management system by promoting continual improvement?",
+            "8":"How does top management s demonstrate leadership and commitment with respect to the asset management system by supporting other relevant roles to demonstrate their leadership as it applies to their areas of responsibility?",
+            "9":"How does top management demonstrate leadership and commitment with respect to the asset management system by ensuring the asset management decision-making criteria are established and used and are aligned with the organizational objectives?",
+            "10":"How does top management demonstrate leadership and commitment with respect to the asset management system by  approving the asset management policy, asset management system scope and the SAMP?"
+        },
+        "5.2":{
+            "1":"How does top management establish an asset management policy that is appropriate to the purpose of the organization?",
+            "2":"How does top management establish an asset management policy that provides a framework for setting asset management objectives?",
+            "3":"How does top management establish an asset management policy that includes a commitment to meet applicable requirements?",
+            "4":"How does top management establish an asset management policy that includes a commitment to continual improvement of the asset management system?",
+            "5":"How does top management shall establish an asset management policy that is consistent with other relevant organizational policies?",
+            "6":"How is the asset management policy available as documented information?",
+            "7":"How the asset management policy is communicated within the organization?",
+            "8":"How the asset management policy shall is available to stakeholders, as appropriate?"
+        },
+        "5.3":{
+            "1":"How the top management ensure that the responsibilities and authorities for relevant roles are assigned and communicated within the organization?",
+            "2":"Who is assigned by the top management with the the responsibility and authority to ensure that the asset management system conforms to the requirements of ISO 55001?",
+            "3":"Who is assigned by the top management with the the responsibility and authority to report on the performance of the assets, asset management and the asset management system to top management and relevant stakeholders?"
+        },
+        "6.1.1":{
+            "1":"How does the organization planned the asset management system to consider the issues referred to in 4.1 and the requirements referred to in 4.2 and determine the risks and opportunities that need to be addressed to?",
+            "2":"How does the organization ensure that assets, asset management and the asset management system can achieve their intended result(s)?",
+            "3":"How does the organization prevent, or reduce, undesired effects?",
+            "4":"How does the organizaiton achieve continual improvement related to risks and opportunities?"
+        },
+        "6.1.2":{
+            "1":"Which processes has the organization stablished for the assessment of risks related to assets, asset management and the asset management system?",
+            "2":"How the organization stablished processes for the assessment of risks related to assets, asset management and the asset management system for the identification of risks?",
+            "3":"How the organization stablished processes for the assessment of risks related to assets, asset management and the asset management system for the analysis of risks and how they change over time?",
+            "4":"How the organization stablished processes for the assessment of risks related to assets, asset management and the asset management system for the evaluation of risks?",
+            "5":"How the organization stablished processes for the assessment of risks related to assets, asset management and the asset management system for determining the criticality of assets in achieving asset management objectives?",
+            "6":"How the organization stablished processes for the assessment of risks related to assets, asset management and the asset management system for considering alternatives and deciding on preferred options to treat risks?",
+            "7":"How does the organization ensure that its risks related to assets, asset management and the asset management system are considered in the organization’s risk management approach including contingency planning?",
+            "8":"How does the organization plan actions to address, treat, monitor and communicate risks related to assets, asset management and the asset management system, taking into account how these risks can change with time?",
+            "9":"How does the organization plan how to integrate and implement the actions into its asset management system processes?",
+            "10":"How does the organization plan how to evaluate the effectiveness of these actions?",
+            "11":"Which documented information is available on these planned actions and their implementation and evaluation?"
+        },
+        "6.1.3":{
+            "1":"Which processes  the organization established to identify, gather, collect or capture opportunities?",
+            "2":"Which processes the organization established  to decide on the opportunities to be addressed to improve performance of the assets, asset management and the asset management system?",
+            "3":"How does the organization plan actions to address the opportunities that have been decided on, taking into account how these opportunities can change with time?",
+            "4":"How does the organization plan to integrate and implement the actions into its asset management system processes?",
+            "5":"How does the organization plan to evaluate the effectiveness of these actions?",
+            "6":"Which documented information is available on these planned actions and their implementation and evaluation?"
+        },
+        "6.2.1":{
+            "1":"How is described a SAMP that contains the strategies and approaches for decision-making and the implementation and alignment of asset management activities?",
+            "2":"How the SAMP is being consistent with the asset management policy?",
+            "3":"How the SAMP includes the asset management decision-making framework and require application of the defined and determined value to be achieved?",
+            "4":"How the SAMP determines the asset management objectives as well as the approach to be used to achieve them?",
+            "5":"How the SAMP determines the process to identify capabilities needed to achieve the asset management objectives?",
+            "6":"How the SAMP details time frames relevant to the achievement of the SAMP?",
+            "7":"How the SAMP details contingencies for the achievement of the SAMP and approaches to address them?",
+            "8":"How the SAMP determines approaches for improving the asset management system, asset management and assets?",
+            "9":"How the organizations ensure that the SAMP is aligned with its financial and other resource plans and outlines how that is achieved?",
+            "10":"How is the SAMP being available as documented information and being periodically reviewed and updated?"
+        },
+        "6.2.2":{
+            "1":"How the organization established asset management objectives at relevant functions and levels?",
+            "2":"When establishing its asset management objectives, how the organization considered its current and future internal and external context?",
+            "3":"When establishing its asset management objectives, how the organization considered risks and opportunities?",
+            "4":"When establishing its asset management objectives, how the organization considered the condition, performance and capabilities of its assets?",
+            "5":"How the asset management objectives are consistent and aligned with the organizational objectives?",
+            "6":"How The asset management objectives are determined to realize value?",
+            "7":"How the asset management objectives are consistent with the asset management policy?",
+            "8":"How the asset management objectives are measurable (if practicable)?",
+            "9":"How the asset management objectives are taken into account applicable requirements (see 4.2)?",
+            "10":"How the asset management objectives are being monitored?",
+            "11":"How the asset management objectives are communicated to relevant stakeholders?",
+            "12":"How the asset management objectives shall: h) be reviewed and updated as appropriate",
+            "13":"How the asset management objectives are available as documented information?"
+        },
+        "6.2.3":{
+            "1":"How the organization established and maintain (an) asset management plan(s) to achieve the asset management objectives?",
+            "2":"How the asset management plans are aligned with the asset management policy and the SAMP?",
+            "3":"How the asset management plans are aligned with the asset management policy and the SAMP?",
+            "4":"How the plan(s) are developed using the decision-making framework?",
+            "5":"How the plan(s) are made available as documented information?",
+            "6":"When planning how to achieve its asset management objectives, how the organization determines what will be done?",
+            "7":"When planning how to achieve its asset management objectives, how the organization determines what resources will be required?",
+            "8":"When planning how to achieve its asset management objectives, how the organization determines who will be responsible?",
+            "9":"When planning how to achieve its asset management objectives, how the organization determines when it will be completed, considering appropriate time horizons?",
+            "10":"When planning how to achieve its asset management objectives, how the organization determines how the results will be evaluated?",
+            "11":"When planning how to achieve its asset management objectives, how the organization determines requirements for documented information?",
+            "12":"When planning how to achieve its asset management objectives, how the organization determines the processes and methods to be employed in managing its assets over their life cycles?",
+            "13":"When planning how to achieve its asset management objectives, how the organization determines the financial and non-financial implications of the asset management plan(s)?",
+            "14":"When planning how to achieve its asset management objectives, how the organization determines the review period for the asset management plan(s)?"
+        },
+        "6.3":{
+            "1":"When the organization determines the need for changes to the assets, asset management, or asset management system, How the changes are carried out in a planned manner?",
+            "2":"How the organization assess the risks associated with any planned temporary or permanent changes that can have an impact on achieving the asset management objectives, before the change is implemented?"
+        },
+        "7.1":{
+            "1":"What the organization determined and provided related to the resources needed for the establishment, implementation, maintenance and continual improvement of the asset management system?",
+            "2":"What the organization provided related to the resources required for meeting the asset management objectives and for implementing the activities specified in the asset management plan(s)?"
+        },
+        "7.2":{
+            "1":"How the organization determines the necessary competence of person(s) doing work under its control that affects its asset performance, asset management performance and asset management system performance?",
+            "2":"How the organization ensures that these persons are competent on the basis of appropriate education, training, or experience?",
+            "3":"Where applicable, How the organization take actions to acquire the necessary competence, and evaluate the effectiveness of the actions taken?",
+            "4":"How the organization undertakes a competence assessment, at appropriate frequency, to validate that the current required competencies are still appropriate and available?",
+            "5":"How the organization periodically review the need to update competency requirements?",
+            "6":"What appropriate documented information is available as evidence of competence?"
+        },
+        "7.3":{
+            "1":"How persons doing work under the organization's control, who can have an impact on the achievement of the asset management objectives, are aware of the asset management policy?",
+            "2":"How persons doing work under the organization's control, who can have an impact on the achievement of the asset management objectives, are aware of their contribution and responsibility to the effectiveness of the asset management system, including the benefits of improved asset management performance?",
+            "3":"How persons doing work under the organization's control, who can have an impact on the achievement of the asset management objectives, are aware of the implications of not conforming to the asset management system requirements?",
+            "4":"How persons doing work under the organization's control, who can have an impact on the achievement of the asset management objectives, are aware of their work activities, the associated risks and opportunities and how they relate to each other?",
+            "5":"How the organization evaluates the effectiveness of the activities used to ensure awareness of asset management?"
+        },
+        "7.4":{
+            "1":"How does the organization determine the need for internal and external communications and engagement relevant to assets, asset management and the asset management system?",
+            "2":"how does the organization determine the need for internal and external communications and engagement relevant to assets, asset management and the asset management system including what it will communicate?",
+            "3":"How does the organization determine the need for internal and external communications and engagement relevant to assets, asset management and the asset management system including when to communicate?",
+            "4":"How does the organization determine the need for internal and external communications and engagement relevant to assets, asset management and the asset management system including whom to communicate?",
+            "5":"How does the organization determine the need for internal and external communications and engagement relevant to assets, asset management and the asset management system including how to communicate?",
+            "6":"How does the organization consult internal and external stakeholders when determining its need for communications, and when evaluating their effectiveness?",
+            "7":"Does the organization have appropriate documented information vailable as evidence of the communications needed and on their effectiveness?"
+        },
+        "7.5.1":{
+            "1":"How does the organization's asset management system include documented information as required by ISO 55001?",
+            "2":"Which documented information is determined by the organization as being necessary for the effectiveness of the asset management system?",
+            "3":"How does the organization’s asset management system include documented information for applicable legal and regulatory requirements?"
+        },
+        "7.5.2":{
+            "1":"When creating and updating documented information, how does the organization ensure appropriate identification and description (e.g. a title, date, author, or reference number)?",
+            "2":"When creating and updating documented information, how does the organization ensure appropriate format (e.g. language, software version, graphics) and media (e.g. paper, electronic)?",
+            "3":"When creating and updating documented information, how does the organization ensure appropriate review and approval for suitability and adequacy?"
+        },
+        "7.5.3":{
+            "1":"How does documented information required by the asset management system and by ISO 55001 are controlled to ensure it is available and suitable for use, where and when it is needed?",
+            "2":"How does documented information required by the asset management system and by ISO 55001 are controlled to ensure it is adequately protected (e.g. from loss of confidentiality, improper use, or loss of integrity)?",
+            "3":"For the control of documented information, how does the organization address distribution, access, retrieval and use?",
+            "4":"For the control of documented information, how does the organization address the storage and preservation, including preservation of legibility?",
+            "5":"For the control of documented information, how does the organization address the control of changes (e.g. version control)?",
+            "6":"For the control of documented information, how does the organization address the retention and disposition?",
+            "7":"How documented information of external origin is determined by the organization to be necessary for the planning and operation of the asset management system shall be identified, as appropriate, and controlled?"
+        },
+        "7.6":{
+            "1":"Which is the data and information needed to support asset management?",
+            "2":"Which are the established data and information specifications that include attributes, units of measurement, quality, and source?",
+            "3":"Which is the developed plan for the collection, integration, quality improvement, and sharing of data and information?",
+            "4":"Which are the implemented requirements for processes for data and information management?",
+            "5":"Which are the implemented the requirements for sharing information with stakeholders?",
+            "6":"Which are the implemented requirements for alignment, consistency and traceability of information and terminology between the financial and non financial functions within the organization?",
+            "7":"How does the organization determine and implement the requirements for alignment, consistency and traceability of information and terminology between the financial and non financial function?",
+            "8":"Which documented information are available as and communicated?"
+        },
+        "7.7":{
+            "1":"Which are the knowledge needed to operate the asset management system determined by the organization?",
+            "2":"Which processes the organization have in place for utilizing available knowledge?",
+            "3":"Which processes the organization have in place for ensuring that knowledge is readily accessible at the time of decision-making?",
+            "4":"Which processes the organization have in place for retaining existing knowledge?",
+            "5":"Which processes the organization have in place for acquiring new knowledge?",
+            "6":"Which processes the organization have in place for handling outdated knowledge?",
+            "7":"When addressing changing requirements and trends, how does the organization consider its current knowledge and determine how to update, develop, acquire, or access any necessary additional knowledge?"
+        },
+        "8.1":{
+            "1":"Which citeria have the organization stablished to plan, implment and control the processes including life cycle processes?",
+            "2":"How does the organization implement the control of the processes including life cycle processes, in accordance with the criteria?",
+            "3":"How does the organization monitor and treat risks using the approach specified in 6.1.2 to control the processes including life cycle processes?",
+            "4":"How does the organization monitor and implement opportunities using the approach specified in 6.1.3 to control the processes including life cycle processes?",
+            "5":"How does the organization ensure that the opportunities, risks, costs, and performance are managed to realize value across the asset life cycle within the organization’s period of responsibility?",
+            "6":"Which documented information is available to the extent necessary to have confidence that the processes have been carried out as planned?"
+        },
+        "8.2":{
+            "1":"As necessary, how does the organization control planned changes and review the unintended consequences of changes, taking action to mitigate any adverse effects?"
+        },
+        "8.3":{
+            "1":"How does the organization ensure that externally provided processes, technologies, products, services or activities, that are relevant to the asset management system are controlled?",
+            "2":"Which are  the processes, technologies, products, services or activities that are externally provided, including the scope and boundaries of these, as well as their interfaces with the organization’s own processes, technologies, products, services or activities that are integrated into the organization's asset management system?",
+            "3":"Which are the responsibilities and authorities within the organization for managing the externally provided processes, technologies, products, services or activities?",
+            "4":"Which are the processes and scope for the sharing of knowledge and information between the organization and its external provider(s)?",
+            "5":"How does the organization ensure that externally provided processes, technologies, products, services or activities meet the relevant requirements of Clauses 7 and 8?",
+            "6":"How does the organization ensure that externally provided processes, technologies, products, services or activities are monitored in accordance with 9.1?",
+            "7":"How does the organization ensure that externally provided processes, technologies, products, services or activities are aligned with the SAMP and the asset management plans in 6.2?"
+        },
+        "9.1":{
+            "1":"What needs to be monitored and measured related to meeting stakeholder requirements and the performance of the assets, asset management and the asset management system?",
+            "2":"Which are the methods for monitoring, measurement, analysis and evaluation, as applicable, to ensure valid results?",
+            "3":"When monitoring and measuring shall be performed?",
+            "4":"When the results from monitoring and measurement shall be analysed and evaluated?",
+            "5":"How does documented information is available as evidence of the results of monitoring, measurement, analysis and evaluation?",
+            "6":"How does the organization evaluate the performance of the assets and asset management, and the effectiveness of the asset management system and their contributions to achievement of organizational objectives?",
+            "7":"How does the organization report the performance of the assets and asset management, and the effectiveness of the asset management system and their contributions to achievement of organizational objectives to relevant stakeholders?",
+            "8":"How does the organization evaluate and report on the effectiveness of the processes for managing risks and opportunities?"
+        },
+        "9.2.1":{
+            "1":"Which are the planned intervals to conduct internal audits to provide information to assist in the determination on whether the asset management system conforms to he organization's own requirements for its asset management system and the requirements of ISO 55001?",
+            "2":"Which internal audits the organization conducted to provide information to assist in the determination on whether the asset management system is effectively implemented and maintained?"
+        },
+        "9.2.2":{
+            "1":"How does the organization plan, establish, implement and maintain (an) audit programme(s), including the frequency, methods, responsibilities, planning requirements and reporting?",
+            "2":"When establishing the internal audit programme(s), how the organization considered the importance of the processes concerned and the results of previous audits?",
+            "3":"How are the audit criteria and scope  defined for each audit?",
+            "4":"How does organization select auditors and conduct audits to ensure objectivity and the impartiality of the audit process?",
+            "5":"How does the organization ensure that the results of the audits are reported to relevant management?",
+            "6":"How does the organization ensure that the findings of audits are implemented as appropriate?",
+            "7":"How documented information is available as evidence of the results of the implementation of the audit programme and the audit results?"
+        },
+        "9.3.1":{
+            "1":"At which planned intervals does top management review the organization's asset management system to ensure its continuing suitability, adequacy, and effectiveness?"
+        },
+        "9.3.2":{
+            "1":"How does the management review include the status of actions from previous management reviews?",
+            "2":"How does the management review changes in external and internal issues that are relevant to the asset management system?",
+            "3":"How does the management review include changes in stakeholders and in needs and expectations of stakeholders that are relevant to the asset management system?",
+            "4":"How does he management review include information on the asset management performance, including trends in: nonconformities and corrective actions, monitoring and measurement results, and audit results?",
+            "5":"How does the management review include changes in the profile of risks and opportunities?",
+            "6":"How does the management review include evaluation of the effectiveness of the decision-making framework in enabling the achievement of the asset management objectives?",
+            "7":"How does the management review include opportunities for continual improvement, and changes in the potential of improvement opportunities?"
+        },
+        "9.3.3":{
+            "1":"How does the results of the management review include decisions related to continual improvement opportunities, the adequacy of resources and any need for changes to the assets, asset management and asset management system?",
+            "2":"How documented information is available as evidence of the results of management reviews?"
+        },
+        "10.1":{
+            "1":"How does the organization continually improve the suitability, adequacy and effectiveness of the assets, asset management and asset management system in providing value to the organization?"
+        },
+        "10.2":{
+            "1":"When a nonconformity or incident occurs in its assets, asset management or asset management system, how does the organization react to the nonconformity or incident, and as applicable, take action to control and correct it, and deal with the consequences?",
+            "2":"When a nonconformity or incident occurs in its assets, asset management or asset management system, how does the organization evaluate the need for action and available options to eliminate the cause(s) of the nonconformity or incident, in order that it does not recur or occur elsewhere, by: reviewing the nonconformity or incident, determining the causes of nonconformity or incident, determining if similar nonconformities exist, or can potentially occur?",
+            "3":"When a nonconformity or incident occurs in its assets, asset management or asset management system, how does the organization implement any action needed?",
+            "4":"When a nonconformity or incident occurs in its assets, asset management or asset management system, how does the organization review the effectiveness of any corrective or preventive action taken?",
+            "5":"When a nonconformity or incident occurs in its assets, asset management or asset management system, how does the organization make changes to the assets, asset management and asset management system, if necessary?",
+            "6":"Which corrective or preventive actions are appropriate to the effects of the (potential) nonconformities or incidents encountered?",
+            "7":"How documented information is available as evidence of the nature of the nonconformities or incidents and any subsequent actions taken, and the results of any corrective action or prevention action?"
+        },
+        "10.3":{
+            "1":"Which processes exist to predict the need for decisions relating to assets, asset management and the asset management system?",
+            "2":"In establishing these processes, how does the organization consider the need to determine the occurrences and impacts of both non-conformities in, and opportunities for improvement of assets, asset management and the asset management system?",
+            "3":"In establishing these processes, how does the organization consider the need to determine the optimal intervention points, e.g. for maintenance, renewal, replacement and disposal of assets?",
+            "4":"In establishing these processes, how does the organization consider the need to identify the inputs needed to determine the relationship of asset condition to performance, opportunity, risk and cost, and asset depreciation and financial value?",
+            "5":"When a potential nonconformity or opportunity is determined, how does the organization apply the requirements in 10.2 and integrate these actions in its asset management planning?",
+            "6":"How does the organization report to relevant stakeholders on the long-term effect from decisions made based on predictive actions on assets and asset management performance?"
+        }
+    },
+
+    "hallazgo":{
+        "fortaleza":"",
+        "conformidad":"",
+        "recomendación":"",
+        "riesgo":"",
+        "no_conformidad":""
+    }
+
+
+}

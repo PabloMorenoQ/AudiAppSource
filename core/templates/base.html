@@ -37,7 +37,7 @@
         <div class="container-fluid">
             <!-- Logo con enlace corregido -->
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                <img src="{% static 'img/company_logo.jpg' %}" alt="Logo" class="logo-navbar me-2">
+                <img src="{% static 'image/company_logo.jpg' %}" alt="Logo" class="logo-navbar me-2">
                 <span>AudiApp</span>
             </a>    
     
@@ -50,9 +50,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'configurations' %}">Configuración</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'lists' %}">Listas de Verificación</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'auditPlan' %}">Plan de Auditoría</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="{% url 'checklists' %}">Listas de Verificación</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'audit_plan' %}">Plan de Auditoría</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'reports' %}">Informe</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Perfil</a></li>
     
@@ -62,8 +62,7 @@
                             🌐 Idioma
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'change_language' 'es' %}">Español</a></li>
-                            <li><a class="dropdown-item" href="{% url 'change_language' 'en' %}">English</a></li>
+                            
                         </ul>
                     </li>
                 </ul>

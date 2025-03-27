@@ -1,0 +1,364 @@
+{
+    "titulo": "",
+    
+    "navbar":{
+        "usuario": "",
+        "lista_verificacion": ""
+    },
+    
+    "plan_auditoria":{
+        "objetivos": "Objetivos"
+    },
+    "informe":{
+    },
+    "lista_verificacion":{
+    },
+    "configuracion":{
+    },
+
+
+    "clausula":{
+        "4.1":"La comprensión de la organización y su contexto",
+        "4.2":"La comprensión de las necesidades y expectativas de las partes interesadas",
+        "4.3":"Determinación del alcance del sistema de gestión de activos",
+        "4.4":"Sistema de Gestión de Activos",
+        "4.5.1":"Toma de decisiones en el sistema de gestión de activos - Marco de referencia",
+        "4.5.2":"Toma de decisiones en el sistema de gestión de activos - Criterios",
+        "4.5.3":"Toma de decisiones en el sistema de gestión de activos - Métodos, procesos y herramientas",
+        "5.1":"Liderazgo y compromiso",
+        "5.2":"Políticas de gestión de activos",
+        "5.3":"Roles, responsabilidades y autoridad en la organización",
+        "6.1.1":"Acciones para abordar riesgos y oportunidades - Generalidades",
+        "6.1.2":"Acciones para abordar riesgos y oportunidades - Acciones para abordar el riesgo",
+        "6.1.3":"Acciones para abordar riesgos y oportunidades - Acciones para abordar oportunidades",
+        "6.2.1":"Objetivos de gestión de activos y planeación para lograrlos - Plan estratégico de gestión de activos PEGA",
+        "6.2.2":"Objetivos de gestión de activos y planeación para lograrlos - Objetivos de la gestión de activos",
+        "6.2.3":"Objetivos de gestión de activos y planeación para lograrlos -  Planificación para alcanzar los objetivos de la gestión de activos",
+        "6.3":"Gestión del cambio",
+        "7.1":"Soporte - Recursos",
+        "7.2":"Soporte - Competencia",
+        "7.3":"Soporte - Toma de conciencia",
+        "7.4":"Soporte - Comunicación",
+        "7.5.1":"Información documentada - generalidades",
+        "7.5.2":"Información documentada - Creación y actualización de la información documentada",
+        "7.5.3":"Información documentada - Control de la información documentada",
+        "7.6":"Datos e información",
+        "7.7":"Conocimiento",
+        "8.1":"Operación - Planificación y control operacional, incluida la gestión del ciclo de vida",
+        "8.2":"Operación - Control del cambio",
+        "8.3":"Operación - Procesos, productos, tecnologías y servicios suministrados externamente",
+        "9.1":"Evaluación del desempeño - Seguimiento, medición, análisis y evaluación",
+        "9.2.1":"Auditoría interna - Generalidades",
+        "9.2.2":"Auditoría interna - Programa de auditoría interna",
+        "9.3.1":"Revisión por la dirección - generalidades",
+        "9.3.2":"Revisión por la dirección - Entradas de la revisión por la dirección",
+        "9.3.3":"Revisión por la dirección - Resultados de la revisión por la dirección",
+        "10.1":"Mejoramiento - Mejora continua",
+        "10.2":"Mejoramiento - No conformidades y acciones correctivas",
+        "10.3":"Acción predictiva"
+    },
+
+    "subpreguntas":{
+        "4.1":{
+            "1":"¿Cómo determina la organización cuestiones externas pertinentes para su propósito y que tienen impacto en su capacidad para lograr los resultados esperados de su sistema de gestión de  activos?",
+            "2":"¿Cómo determina la organización cuestiones internas pertinentes para su propósito y que tienen impacto en su capacidad para lograr los resultados esperados de su sistema de gestión de  activos?",
+            "3":"¿Cómo determina la Organización si el cambio climático es una cuestión pertinente?"
+        },
+        "4.2":{
+            "1":"¿Cuáles son las partes interesadas que la Organización ha determinado para el sistema de gestión de activos?",
+            "2":"¿Cuáles son los requisitos pertinentes que la Organización ha determinado de estas Partes interesadas?",
+            "3":"¿Cuáles de éstos requisitos pertinentes que la Organización ha determinado como pertinentes se abordan en el sistema de gestión de activos?",
+            "4":"¿Cuáles son los  impactos de los activos y de las actividades de gestión de activos determinados para las partes interesadas  que han sido considerados para los objetivos de la Organización?"
+        },
+        "4.3":{
+            "1":"¿Cuáles son los límites y la aplicabilidad del sistema de gestión de  activos?",
+            "2":"¿Cuándo se determinó el alcance la Organización consideró las cuestiones externas e internas?",
+            "3":"¿Cuándo se determinó el alcance la Organización consideró los requisitos pertinentes de las partes interesadas?",
+            "4":"¿Cuándo se determinó el alcance la Organización consideró los impactos de los activos y de las actividades de gestión de activos pertinentes de las partes interesadas?",
+            "5":"¿El alcance está disponible como información documentada?",
+            "6":"¿El alcance incluye detalles del portafolio de activos?"
+        },
+        "4.4":{
+            "1":"¿Qué ha realizado la organización para establecer, implementar, mantener y mejorar continuamente el sistema de gestión de activos?",
+            "2":"¿El sistema de gestión de activos incluye procesos y sus interacciones de acuerdo con los requisitos de ISO 55001?"
+        },
+        "4.5.1":{
+            "1":"¿Cuál es el marco de referencia para tomar decisiones en la gestión de activos?",
+            "2":"¿El marco de referencia para tomar decisiones en la gestión de activos es apropiado para el tipo, tamaño y complejidad de la Organización?",
+            "3":"¿Cómo el marco de referencia para la toma de decisiones define y determina el valor que la organización pretende obtener de sus activos?",
+            "4":"¿Cómo el marco de referencia para la toma de decisiones define los criterios utilizados para la toma de decisiones en la gestión de activos con el fin de alcanzar el valor determinado?",
+            "5":"1. ¿cómo la Organización ha tenido en cuenta su contexto y los objetivos organizaciones para establecer y aplicar el marco de referencia para la toma de decisiones?",
+            "6":"2. ¿Cómo la Organización ha tenido en cuenta los requisitos de las partes interesadas para establecer y aplicar el marco de referencia para la toma de decisiones?",
+            "7":"3. ¿Cómo la Organización ha tenido en cuenta el alcance del sistema de gestión de activos que determina la gama de decisiones que deben tomarse sobre los activos, el sistema de gestión de activos y la gestión de activos  para establecer y aplicar el marco de referencia para la toma de decisiones?",
+            "8":"4. ¿Cómo la Organización ha tenido en cuenta los riesgos y las oportunidades para establecer y aplicar el marco de referencia para la toma de decisiones?"
+        },
+        "4.5.2":{
+            "1":"¿Cómo al definir los criterios que se utilizan para la toma de decisiones sobre la gestión de activos, la organización tiene en cuenta los impactos potenciales de las decisiones, incluido el periodo de tiempo durante el cual pueden producirse dichos impactos?",
+            "2":"¿Cómo al definir los criterios que se utilizan para la toma de decisiones sobre la gestión de activos, la organización tiene en cuenta la complejidad de las decisiones?",
+            "3":"¿Cómo al definir los criterios que se utilizan para la toma de decisiones sobre la gestión de activos, la organización tiene en cuenta la urgencia o el tiempo disponible para tomar decisiones?",
+            "4":"¿Cómo al definir los criterios que se utilizan para la toma de decisiones sobre la gestión de activos, la organización tiene en cuenta las capacidades adecuadas a la proporción de las decisiones?"
+        },
+        "4.5.3":{
+            "1":"¿Cómo utiliza la organización el marco de referencia usado para la toma de decisiones sobre la gestión de activos para  determinar y seleccionar métodos, procesos y herramientas apropiados para tratar las opciones que aporten mayor valor a lo largo del ciclo de vida del activo u otros horizontes pertinentes.?",
+            "2":"¿Cómo utiliza la organización el marco de referencia usado para la toma de decisiones sobre la gestión de activos para  determinar y seleccionar métodos, procesos y herramientas apropiados para tratar los riesgos y las oportunidades y la forma como estos pueden cambiar con el tiempo?",
+            "3":"¿Cómo utiliza la organización el marco de referencia usado para la toma de decisiones sobre la gestión de activos para  determinar y seleccionar métodos, procesos y herramientas apropiados para tener confianza sobre la información?",
+            "4":"¿Cómo utiliza la organización el marco de referencia usado para la toma de decisiones sobre la gestión de activos para  determinar y seleccionar métodos, procesos y herramientas apropiados para apoyar la gobernanza para la toma de decisiones adecuada y oportuna?"
+        },
+        "5.1":{
+            "1":"¿Cómo demuestra la alta dirección su liderazgo sobre la compatibilidad de la dirección estratégica y los objetivos organizacionales con la política de gestión de activos, el alcance del sistema de gestión de activos, el PEGA y los objetivos de gestión de activos?",
+            "2":"¿Cómo demuestra la alta dirección su liderazgo de  integrar los requisitos del sistema de gestión de activos en los procesos de negocio de la Organización?",
+            "3":"¿Cómo demuestra la alta dirección su liderazgo asegurando que los recursos necesarios para el sistema de gestión de activos estén disponibles?",
+            "4":"¿Cómo demuestra la alta dirección su liderazgo de comunicar la importancia de una gestión eficaz de los activos y conforme con los requisitos del sistema de gestión de activos?",
+            "5":"¿Cómo demuestra la alta dirección su liderazgo para asegurar que el sistema de gestión de activos logre los resultados previstos?",
+            "6":"¿Cómo demuestra la alta dirección su liderazgo para dirigir, sensibilizar y apoyar a las personas para que contribuyan a la eficacia del sistema de gestión de activos?",
+            "7":"¿Cómo demuestra la alta dirección su liderazgo para promover la mejora continua?",
+            "8":"¿Cómo demuestra la alta dirección su liderazgo de apoyar otros roles pertinentes dentro de sus áreas de responsabilidad?",
+            "9":"¿Cómo demuestra la alta dirección su liderazgo para asegurar que los criterios de toma de decisiones se establezcan y utilicen y estén alineados con los objetivos de la Organización?",
+            "10":"¿Cómo demuestra la alta dirección su liderazgo de aprobación de la política de gestión de activos, el alcance del sistema de gestión de activos y el PEGA?"
+        },
+        "5.2":{
+            "1":"¿Cómo asegura la alta dirección que la política de gestión de activos es apropiada al propósito de la Organización?",
+            "2":"¿Cómo se demuestra que los objetivos de gestión de activos han sido establecidos en el marco de la política de gestión de activos?",
+            "3":"¿Cómo incluye la política de gestión de activos el compromiso de cumplir los requisitos aplicables?",
+            "4":"¿Cómo incluye la política de gestión de activos el compromiso de mejora continua del sistema de gestión de activos?",
+            "5":"¿Cómo demuestra la política de gestión de activos ser coherente con otras políticas organizacionales pertinentes?",
+            "6":"¿Qué soporte documental dispone la  política de gestión de activos?",
+            "7":"¿Cómo se comunica la política de gestión de activos dentro de la Organización?",
+            "8":"¿Qué mecanismos utiliza la Organización para poner a disposición de las partes interesadas pertinentes la política de gestión de  activos?"
+        },
+        "5.3":{
+            "1":"¿Cómo asegura alta dirección que las responsabilidades y las autoridades para los roles pertinentes se asignen y se comuniquen dentro de la Organización?",
+            "2":"¿Quién fue asignado por la alta dirección con la responsabilidad y autoridad para  que el sistema de gestión de activos sea conforme a los requisitos de esta Norma internacional?",
+            "3":"¿Quién fue asignado por la alta dirección con la responsabilidad y autoridad para informar sobre el desempeño de los activos, la gestión de activos y el sistema de gestión de activos a la alta dirección y a las partes interesadas?"
+        },
+        "6.1.1":{
+            "1":"¿Cómo ha considerado la Organización las cuestiones del contexto y de las partes interesadas para determinar los riesgos y las oportunidades?",
+            "2":"¿Cómo asegura la Organización que los activos, la gestión de activos y el sistema de gestión de activos pueden alcanzar sus resultados previstos?",
+            "3":"¿Cómo asegura la Organización que previene o reduce los efectos no deseables?",
+            "4":"¿Cómo asegura la Organización que logra la mejora continua relacionada con riesgos y oportunidades?"
+        },
+        "6.1.2":{
+            "1":"¿Qué procesos ha establecido la Organización para la evaluación de los riesgos relacionados con los activos, el sistema de gestión de activos y la gestión de activos?",
+            "2":"¿Cómo se identifican los riesgos?",
+            "3":"¿Cómo se realiza el análisis de riesgos y cómo cambian a los del tiempo?",
+            "4":"¿Cómo se evalúan los riesgos?",
+            "5":"¿Cómo se determina la criticidad de los activos para alcanzar los objetivos de la gestión de activos?",
+            "6":"¿Qué consideraciones se han establecido para definir  alternativas y decidir sobre la opciones preferidas para abordar los riesgos?",
+            "7":"¿Cómo asegura la Organización que los riesgos relacionados con los activos, la gestión de activos y el sistema de gestión de activos se consideraron en el enfoque de gestión de riesgos de la Organización?",
+            "8":"¿Cómo asegura la Organización que los riesgos relacionados con los activos, la gestión de activos y el sistema de gestión de activos se incluyen en la planificación de contingencias?",
+            "9":"¿Cómo planifica la Organización las acciones para abordar, tratar, realizar seguimiento y comunicar los riesgos relacionados con los activos, la gestión de activos y el sistema de gestión de activos, teniendo en cuenta como estos riesgos cambian con el tiempo?",
+            "10":"¿Cómo planifica la Organización la forma de integrar e implementar las acciones para abordar los riesgos en los procesos de su sistema de gestión de activos?",
+            "11":"¿Cómo planifica la Organización la evaluación de la eficacia de las acciones para abordar el riesgo?",
+            "12":"¿Qué información documentada dispone la Organización sobre las acciones planificadas de los riesgos y su implementación y evaluación?"
+        },
+        "6.1.3":{
+            "1":"¿Qué procesos ha establecido la Organización para identificar, reunir, recolectar o captar oportunidades?",
+            "2":"¿Qué procesos ha establecido la Organización para decidir las oportunidades que deben abordarse para mejorar el desempeño de los activos, la gestión de activos y el sistema de gestión de activos?",
+            "3":"¿Cómo planificar la Organización las acciones para abordar las oportunidades que se han decidido, teniendo en cuenta cómo estas oportunidades pueden cambiar con el tiempo?",
+            "4":"¿Cómo planifica la Organización integrar e implementar las acciones para abordar oportunidades en los procesos de su sistema de gestión de activos?",
+            "5":"¿Cómo planificar la Organización la evaluación de la eficacia de las oportunidades?",
+            "6":"¿Qué información documentada dispone la Organización sobre las acciones planificadas de las oportunidades y sobre su implementación y evaluación?"
+        },
+        "6.2.1":{
+            "1":"¿Dónde describe el PEGA las estrategias y enfoques para la toma de decisiones la implementación y alineación de las actividades de gestión de activos?",
+            "2":"¿Cómo demuestra el PEGA su coherencia con la política de gestión de activos?",
+            "3":"¿Dónde describe el PEGA el marco de referencia para la toma de decisiones de gestión de activos y exigir la aplicación del valor definido y determinados que se ha de alcanzar?",
+            "4":"¿Dónde describe el PEGA los objetivos de gestión de activos, así como el enfoque que se debe utilizar para alcanzarlos?",
+            "5":"¿Dónde describe el PEGA el proceso para identificar las capacidades necesarias para alcanzar los  objetivos de gestión de activos?",
+            "6":"¿Dónde detalla el PEGA los plazos pertinentes para su consecución?",
+            "7":"¿Dónde detalla el PEGA las contingencias para su logro y los enfoques para abordarlas?",
+            "8":"¿Dónde describe el PEGA los enfoques para mejorar el sistema de gestión de activos, la gestión de activos y los activos?",
+            "9":"¿Dónde describe el PEGA su alineación o con los planes financieros y otros planes de recursos y describe como se logra su alineación?",
+            "10":"¿Qué soporte documental dispone el PEGA  de su revisión y actualización periódica?"
+        },
+        "6.2.2":{
+            "1":"¿Cuáles son las funciones y niveles pertinentes en los que se han establecido los objetivos de la gestión de activos?",
+            "2":"¿Cómo evidencia la Organización que en el establecimiento de sus objetivos de gestión de activos se tuvo en cuenta su contexto interno, externo y futuro?",
+            "3":"¿Cómo evidencia la Organización que en el establecimiento de sus objetivos de gestión de activos se tuvo en cuenta riesgos y oportunidades?",
+            "4":"¿Cómo evidencia la Organización que en el establecimiento de sus objetivos de gestión de activos se tuvo en cuenta el estado, el desempeño y las capacidades de los activos?",
+            "5":"¿Cómo se demuestra que los objetivos de la gestión de activos son coherentes y están alineados con los objetivos de la Organización?",
+            "6":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos generan valor?",
+            "7":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos son coherentes con la política de gestión de activos?",
+            "8":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos son medibles si es posible?",
+            "9":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos tuvieron en cuenta los requisitos aplicables del 4.2?",
+            "10":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos son objeto de seguimiento?",
+            "11":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos son comunicados a las partes interesadas pertinentes?",
+            "12":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos son revisados y actualizados según corresponda?",
+            "13":"¿Cómo se demuestra la Organización que los objetivos de la gestión de activos están disponibles como información documentada?"
+        },
+        "6.2.3":{
+            "1":"¿Cómo se demuestra la Organización que se dispone y mantiene un plan de gestión activos para alcanzar los objetivos de la gestión de activos?",
+            "2":"¿Cómo se demuestra la Organización que el plan o los planes de gestión de activos están alineados a la política de gestión de activos y al PEGA?",
+            "3":"¿Cómo se demuestra la Organización que el plan o los planes de gestión de activos están alineados e integrados con otras actividades de planificación de la organización, incluidas las funciones financieras, de recursos humanos y otras funciones de apoyo?",
+            "4":"¿Cómo se demuestra la Organización que el plan o los planes de gestión de activos son desarrollados utilizando el marco de referencia para la toma de decisiones?",
+            "5":"¿Cómo se demuestra la Organización que el plan o los planes de gestión de activos están disponibles como información documentada?",
+            "6":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina que se va a hacer?",
+            "7":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina que recursos se requerirán?",
+            "8":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina quién será responsable?",
+            "9":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina cuando finalizará, considerando horizontes temporales adecuados?",
+            "10":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina cómo evaluar los resultados?",
+            "11":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina requisitos de información documentada?",
+            "12":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina los procesos y métodos que deben emplearse en la gestión de sus activos a lo largo de su ciclo de vida?",
+            "13":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina las implicaciones financieras y no financieras de los planes de gestión de activos?",
+            "14":"¿Cuándo se planifica como lograr los objetivos de la gestión de activos, la Organización determina el periodo de revisión de los planes de gestión de activos?"
+        },
+        "6.3":{
+            "1":"¿Qué planes existen cuando  se identifica la necesidad de cambios en los activos, la gestión de activos o el sistema de gestión de activos?",
+            "2":"¿Cómo se evalúan los riesgos asociados antes de implementar cambios temporales o permanentes planificados que  puedan tener impacto en el logro de los objetivos de la gestión de activos?"
+        },
+        "7.1":{
+            "1":"¿Qué recursos ha determinado y proporcionado la Organización para el establecimiento, implementación, mantenimiento y mejora continua del sistema de gestión de activos?",
+            "2":"¿Qué recursos ha determinado y proporcionado la Organización para cumplir con los objetivos de la gestión de activos y para implementar las actividades especificadas en los planes de gestión de activos?"
+        },
+        "7.2":{
+            "1":"¿Cómo demuestra la Organización ha determinado la competencia de las personas que realizan bajo su control un trabajo que afecta el desempeño de sus activos, de la gestión de activos y del sistema de gestión de activos?",
+            "2":"¿Cómo asegura la Organización que la competencia de estas personas se basa en educación, formación o experiencia apropiada?",
+            "3":"¿Cómo la Organización toma acciones para adquirir la competencia necesaria y evalúa la eficacia de las acciones tomadas?",
+            "4":"¿Cómo la Organización lleva a cabo una evaluación de competencias, con la frecuencia apropiada, para validar que las competencias requeridas actualmente siguen siendo apropiadas y están disponibles?",
+            "5":"¿Cómo la Organización revisa y con que periodicidad la necesidad de actualizar los requisitos de competencia?",
+            "6":"¿Cómo dispone la Organización la información documentada apropiada como evidencia de la competencia?"
+        },
+        "7.3":{
+            "1":"¿Qué acciones implementa la Organización para lograr la consciencia sobre la política de gestión de activos en las personas que realizan trabajos bajo el control de la organización y que pueden tener un impacto en el logro de los objetivos de gestión de activos?",
+            "2":"¿Qué acciones implementa la Organización para lograr la consciencia sobre su contribución y responsabilidad a la eficacia del sistema de gestión de activos, incluidos los beneficios de una mejora del desempeño de la gestión de activos?",
+            "3":"¿Qué acciones implementa la Organización para lograr la consciencia sobre las implicaciones del incumplimiento de los requisitos del sistema de gestión de activos?",
+            "4":"¿Qué acciones implementa la Organización para lograr la consciencia sobre sus actividades laborales, los riesgos y las oportunidades asociados y la forma en que se relacionan entre si?",
+            "5":"¿Cómo evalúa la Organización la eficacia de las actividades utilizadas para asegurar la toma de conciencia de la gestión de activos?"
+        },
+        "7.4":{
+            "1":"¿Cómo ha determinado la Organización la necesidad de comunicaciones y compromisos internos y externos pertinentes para los activos, la gestión de activos y el sistema de gestión de activos?",
+            "2":"¿Cómo describe la Organización el qué comunicar en Las comunicaciones y compromisos internos y externos para los activos, la gestión de activos y el sistema de gestión de activos?",
+            "3":"¿Cómo describe la Organización el cuándo comunicar en Las comunicaciones y compromisos internos y externos para los activos, la gestión de activos y el sistema de gestión de activos?",
+            "4":"¿Cómo describe la Organización a quién comunicar en Las comunicaciones y compromisos internos y externos para los activos, la gestión de activos y el sistema de gestión de activos?",
+            "5":"¿Cómo describe la Organización el cómo comunicar en Las comunicaciones y compromisos internos y externos para los activos, la gestión de activos y el sistema de gestión de activos?",
+            "6":"¿Cómo consulta la organización a  las partes interesadas internas y externas cuando determina su necesidad de comunicar y cuando evalúe su eficacia?",
+            "7":"¿La Organización dispones de información documentada apropiada que demuestre las comunicaciones necesarias y su eficacia?"
+        },
+        "7.5.1":{
+            "1":"¿Cómo asegura la Organización que la documentación del sistema de gestión de activos cumple la documentación requerida por la norma internacional ISO 55001?",
+            "2":"¿Qué información documentada ha determinado necesaria la Organización para el sistema de gestión de activos?",
+            "3":"¿Qué información documentada ha determinado necesaria la Organización sobre los requisitos legales y reglamentarios aplicables?"
+        },
+        "7.5.2":{
+            "1":"¿Cómo asegura la Organización la adecuada identificación y descripción de la creación y actualización de la información documentada?",
+            "2":"¿Cómo asegura la Organización la adecuación del idioma, versión de software y de gráficos, así como los medios de soporte de la información documentada?",
+            "3":"¿Cómo asegura la Organización la adecuada revisión y aprobación de la conveniencia y adecuación de la información documentada?"
+        },
+        "7.5.3":{
+            "1":"¿Cómo asegura la Organización que la información documentada requerida por el sistema de gestión de activos y por la norma internacional ISO 55001 se controla para estar disponible y sea idónea para uso, dónde y cuando se necesite?",
+            "2":"¿Cómo asegura la Organización que la información documentada requerida por el sistema de gestión de activos y por la norma internacional ISO 55001 está protegida adecuadamente? (por ejemplo, contra la pérdida de la confidencialidad, el uso inadecuado o la pérdida de integridad)",
+            "3":"¿Cómo controla la Organización la distribución, accesos y uso de la información documentada del sistema de gestión de activos?",
+            "4":"¿Cómo controla la Organización el almacenamiento y conservación, incluida la preservación de la legibilidad de la información documentada del sistema de gestión de activos?",
+            "5":"¿Cómo controla la Organización los cambios (por ejemplo el control de versiones) de la información documentada del sistema de gestión de activos?",
+            "6":"¿Cómo controla la Organización la conservación y disposición de la información documentada del sistema de gestión de activos?",
+            "7":"¿Cómo identifica y controla la información documentada de origen externo que se identifica como necesaria para la planificación y operación del sistema de gestión de activos?"
+        },
+        "7.6":{
+            "1":"¿Cuáles son los datos y la información con los la Organización respalda la gestión de activos?",
+            "2":"¿Qué especificaciones se han establecido para los datos e información y cuales son sus atributos, unidades de medida, calidad y fuente?",
+            "3":"¿Cuál es el plan para la recopilación, integración, mejora de la calidad y puesta en común de datos e información con las que se respalda la gestión de activos?",
+            "4":"¿Qué requisitos ha identificado e implementado la Organización para los procesos de gestión de datos e información de la gestión de activos?",
+            "5":"¿Qué requisitos ha identificado e implementado la Organización para compartir información con las partes interesadas?",
+            "6":"¿Qué requisitos ha identificado e implementado la Organización para alinear, lograr la coherencia y trazabilidad de la información y terminología entre las funciones financieras y no financieras de la organización?",
+            "7":"¿Cómo determina  e implementa la Organización  los requisitos para: - alinear, ser coherente y trazar la información y terminología entre las funciones financieras y no financieras?",
+            "8":"¿Qué información documentada dispone y comunica la Organización cuando existen diferencias de la información y la terminología  entre las funciones financieras y no financieras?"
+        },
+        "7.7":{
+            "1":"¿Cuáles son los conocimientos que la organización ha identificado para operar el sistema de gestión de activos?",
+            "2":"¿Qué procesos implementa la organización para utilizar los conocimientos disponibles?",
+            "3":"¿Qué procesos implementa la organización para asegurar que el conocimiento sea fácilmente accesible en el momento de la toma de decisiones?",
+            "4":"¿Qué procesos implementa la organización para  conservar los conocimiento existentes?",
+            "5":"¿Qué procesos implementa la organización para adquirir nuevos conocimientos?",
+            "6":"¿Qué procesos implementa la organización para manejar conocimientos obsoletos?",
+            "7":"¿Cómo determina la Organización la manera de actualizar, desarrollar, adquirir o acceder a conocimientos adicionales cuando se abordan los requisitos y las tendencias cambiantes?"
+        },
+        "8.1":{
+            "1":"¿Qué criterios ha establecido la Organización para planificar, implementar y controlar los procesos, incluidos los procesos del ciclo de vida?",
+            "2":"¿Cómo evidencia la Organización la implementación de los criterios para el control de los procesos incluidos los procesos del ciclo de vida?",
+            "3":"¿Cómo evidencia la Organización el seguimiento y tratamiento de los riesgos utilizando el enfoque especificado en 6.1.2  para el control de los procesos incluidos los procesos del ciclo de vida?",
+            "4":"¿Cómo evidencia la Organización el seguimiento e implementación de oportunidades utilizando el enfoque establecido en 6.1.3  para el control de los procesos incluidos los procesos del ciclo de vida?",
+            "5":"¿Cómo asegura la Organización que las oportunidades, los riesgos, los costos y el desempeño se gestionen para generar valor a lo largo del ciclo de vida de los activos dentro del período de responsabilidad de la organización?",
+            "6":"¿Qué información documentada dispone la Organización para tener la confianza de que los procesos se han llevado a cabo según lo previsto?"
+        },
+        "8.2":{
+            "1":"¿Cómo controla los cambios planificados, revisa sus consecuencia no deseadas y toma las medidas para mitigar los efectos adversos?"
+        },
+        "8.3":{
+            "1":"¿Cómo asegura la Organización el control y la integración al sistema de gestión de activos de los procesos, tecnologías, productos, servicios o actividades proporcionadas externamente?",
+            "2":"¿Qué procesos, tecnologías, productos, servicios o actividades que se proporcionan externamente, incluyendo el alcance de los límites de estos, así como sus interfases ha identificado la Organización pertinentes para el sistema de gestión de activos?",
+            "3":"¿Cuáles son las responsabilidades y autoridades dentro de la organización para gestionar los procesos, tecnologías, productos, servicios o actividades proporcionados externamente?",
+            "4":"¿Qué procesos y alcance dispone la Organización para el intercambio de conocimientos e información entre la organización y sus proveedores externos?",
+            "5":"¿Cómo asegura la Organización que los requisitos pertinentes a los numerales 7 y 8 se cumplen en los procesos, tecnologías, productos, servicios o actividades proporcionados externamente?",
+            "6":"¿Cómo asegura la Organización que se realiza seguimiento según el numeral 9.1 a los procesos, tecnologías, productos, servicios o actividades proporcionados externamente?",
+            "7":"¿Cómo asegura la Organización que los procesos, tecnologías, productos, servicios o actividades proporcionados externamente están alineados con el PEGA y los planes de gestión de activos establecidos en el numeral 6.2?"
+        },
+        "9.1":{
+            "1":"¿Qué seguimientos y medición a determinado la Organización para el cumplimiento de las necesidades de las partes interesadas y el desempeño de los activos, la gestión de activos y el sistema de gestión de activos?",
+            "2":"¿Qué métodos de seguimiento, medición, análisis y evaluación, son aplicables para asegurar resultados válidos?",
+            "3":"¿Cuándo se debe llevar a cabo el seguimiento y la medición?",
+            "4":"¿Cuándo se analizan y evalúan los resultados del seguimiento y la medición?",
+            "5":"¿Qué información documentada es evidencia de los resultados del seguimiento, la medición, el análisis y la evaluación?",
+            "6":"¿Cómo evalúa la Organización el desempeño de los activos y la gestión de activos, así como la eficacia del sistema de gestión de activos y sus contribuciones al logro de los objetivos de la organización?",
+            "7":"¿Cómo informa la Organización a las partes interesadas pertinentes el desempeño de los activos y la gestión de activos, así como la eficacia del sistema de gestión de activos y sus contribuciones al logro de los objetivos de la organización?",
+            "8":"¿Cómo evalúa e informa la Organización a las partes interesadas pertinentes la eficacia de los procesos de gestión de riesgos y las oportunidades?"
+        },
+        "9.2.1":{
+            "1":"¿Cuál es el intervalo definido por la Organización para realizar auditorías internas?",
+            "2":"¿Qué auditorías internas a implementado la Organización?"
+        },
+        "9.2.2":{
+            "1":"¿Cómo describen los programas de auditoría la frecuencia, los métodos, las responsabilidades los requisitos de planificación y la presentación de informes?",
+            "2":"¿Cuándo se establecen los programas de auditoría interna, la organización considerara la importancia de los procesos en cuestión y los resultados de las auditorías anteriores?",
+            "3":"¿Qué criterios y alcance se han determinado para cada auditoría?",
+            "4":"¿Qué controles ha determinado la organización para seleccionar auditores y llevar a cabo auditorías que aseguren la objetividad y la imparcialidad del proceso de auditoría?",
+            "5":"¿Cómo se  informa los resultados de las auditorías a la dirección pertinente?",
+            "6":"¿Cómo asegura la Organización que las conclusiones de las auditorías se implementan según sea apropiado?",
+            "7":"¿Qué información documentada evidencia los resultados de la implementación del programa de auditoría y de los resultados de la auditoría?"
+        },
+        "9.3.1":{
+            "1":"¿Cuál es el intervalo definido por la Organización para  revisar el sistema de gestión de activos?"
+        },
+        "9.3.2":{
+            "1":"¿Cómo describe la revisión por la dirección el estado de las acciones de las revisiones por la dirección previas?",
+            "2":"¿Cómo describe la revisión por la dirección los cambios en cuestiones externas e internas que sean pertinentes para el sistema de gestión de activos?",
+            "3":"¿Cómo describela revisión por la dirección los cambios en las partes interesadas y en las necesidades y expectativas de las partes interesadas que son pertinentes para el sistema de gestión de activos?",
+            "4":"¿Cómo describe la revisión por la dirección la información sobre el desempeño de la gestión de activos, incluidas las tendencias en: no conformidades y acciones correctivas, los resultados de seguimiento y medición y los resultados de la auditoría?",
+            "5":"¿Cómo describe la revisión por la dirección los cambios en el perfil de riesgos y oportunidades?",
+            "6":"¿Cómo describe la revisión por la dirección la evaluación de la eficacia del marco de referencia para la toma de decisiones para permitir el logro de los objetivos de gestión de activos?",
+            "7":"¿Cómo describe la revisión por la dirección las oportunidades de mejora continua, y cambios con el potencial de oportunidades de mejora?"
+        },
+        "9.3.3":{
+            "1":"¿Cómo describen los resultados de la revisión por la dirección las decisiones relacionadas con las oportunidades de mejora continua, la adecuación de los recursos y cualquier necesidad de cambios en los activos, la gestión de activos y el sistema de gestión de activos?",
+            "2":"¿Qué información documentada dispone la Organización como evidencia de los resultados de las revisiones por la dirección?"
+        },
+        "10.1":{
+            "1":"¿Cómo mejora continuamente la Organización la conveniencia, adecuación y eficacia de los activos, la gestión de activos y el sistema de gestión de activos para proporcionar valor?"
+        },
+        "10.2":{
+            "1":"¿Cuándo ocurre una no conformidad o incidente en sus activos, gestión de activos o sistema de gestión de activos, cómo reacciona la Organización y, cuando sea aplicable toma acciones para controlar la contingencia, hacer frente a las consecuencias?",
+            "2":"¿Cuándo ocurre una no conformidad o incidente en sus activos, gestión de activos o sistema de gestión de activos, cómo evalúa la Organización la necesidad de acciones y las opciones disponibles para eliminar las causas, con el fin de que no vuelva a ocurrir en otro lugar, mediante la revisión de la no conformidad o incidentes, la determinación de las causas, la determinación de si existen no conformidades similares o pueden ocurrir potencialmente?",
+            "3":"¿Cuándo ocurre una no conformidad o incidente en sus activos, gestión de activos o sistema de gestión de activos, que acciones implementa la Organización?",
+            "4":"Cuándo ocurra una no conformidad o incidente en sus activos, gestión de activos o sistema de gestión de activos, cómo revisa la organización la eficacia de cualquier acción correctiva o preventiva tomada?",
+            "5":"¿Cuándo ocurra una no conformidad o incidente en sus activos, gestión de activos o sistema de gestión de activos, cómo se realizan los cambios en los activos, la gestión de activos y en el sistema de gestión de activos, si es necesario?",
+            "6":"¿Cómo asegura la Organización que las acciones correctivas o preventivas sean apropiadas a los efectos de las no conformidades (potenciales) o incidentes encontrados?",
+            "7":"¿Existe información documentada que evidencie la naturaleza de las no conformidades o incidentes  y las acciones posteriores tomadas y los resultados de cualquier acción correctiva o preventiva?"
+        },
+        "10.3":{
+            "1":"¿Qué procesos dispone la Organización para predecir la necesidad de tomar acciones relacionadas con los activos , la gestión de activos y el sistema de gestión de activos?",
+            "2":"¿Los procesos predictivos consideran la necesidad de determinar las ocurrencias y los impactos de las no conformidades y las oportunidades de mejora de los activos, la gestión de activos y el sistema de gestión de activos?",
+            "3":"¿Cómo consideran los procesos predictivos la necesidad de determinar los puntos de intervención óptimos, por ejemplo, para el mantenimiento, la renovación, la sustitución y la eliminación de activos?",
+            "4":"¿Cómo consideran los procesos predictivos la necesidad de identificar los insumos necesarios para determinar la relación entre la condición de los activos y el desempeño, la oportunidad, el riesgo y el costo y determinar la depreciación de los activos y el valor financiero?",
+            "5":"¿Cuándo se determina una potencial no conformidad, la organización aplica los requisitos dados en el numeral 10.2 e integra estas acciones en su planificación de la gestión de activos?",
+            "6":"¿Cómo informa la Organización a las partes interesadas pertinentes sobre el efecto a largo plazo de las decisiones tomadas sobre la base de acciones predictivas sobre los activos y el desempeño de la gestión de activos?"
+        }
+    },
+
+    "hallazgo":{
+        "fortaleza":"",
+        "conformidad":"",
+        "recomendación":"",
+        "riesgo":"",
+        "no_conformidad":""
+    }
+}
+
