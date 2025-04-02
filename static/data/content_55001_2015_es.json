@@ -1,0 +1,89 @@
+{
+    
+    "clausula": {
+        "4.1":"La comprensión de la organización y su contexto",
+		"4.2":"La comprensión de las necesidades y expectativas de las partes interesadas",
+		"4.3":"Determinar el alcance del sistema de gestión de activos",
+		"4.4":"Sistema de Gestión de Activos",
+		"5.1":"Liderazgo y compromiso",
+		"5.2":"Política",
+		"5.3":"Roles, responsabilidades y autoridad en la organización",
+		"6.1":"Acciones para hacer frente a riesgos y oportunidades para el sistema de gestión de activos",
+		"6.2.1":"Objetivos de gestión de activos",
+		"6.2.2":"Planificación para lograr los objetivos de gestión de activos",
+		"7.1":"Recursos",
+		"7.2":"Competencia",
+		"7.3":"Conciencia", 
+		"7.4":"Comunicación", 
+		"7.5":"Requisitos de información", 
+		"7.6.1":"Información documentada general", 
+		"7.6.2":"Creación y actualización de la información documentada", 
+		"7.6.3":"Control de la información documentada", 
+		"8.1":"Planificación y control operativo", 
+		"8.2":"La gestión del cambio", 
+		"8.3":"Contrato a terceros",
+		"9.1":"Seguimiento, medición, análisis y evaluación", 
+		"9.2":"Auditoría interna", 
+		"9.3":"Revisión por la dirección", 
+		"10.1":"No conformidad y acciones correctivas", 
+		"10.2":"Acción preventiva",
+		"10.3":"Mejora continua"
+    },
+
+    "subpreguntas":{
+        "4.1":{
+            "1":"¿Cómo determina la organización cuestiones externas e internas relevantes para su propósito y que tienen impacto en su capacidad para lograr los resultados esperados de su sistema de gestión de  activos?",
+            "2":"¿Cómo se asegura la Organización que los objetivos de gestión de  activos están alineados con los objetivos de la Organización?"
+        },
+        "4.2":{
+            "1":"¿Cómo identifica y determina la Organización las necesidades y expectativas de las Partes interesadas?",
+            "2":"¿Cómo se determinan los requisitos de las Partes interesadas para registrar la información financiera y no financiera relevante para la gestión de  activos y darla a conocer interna y externamente?",
+            "3":"¿Cómo determina la Organización los criterios para la toma de decisiones en la gestión de  activos?"
+        },
+        "4.3":{
+            "1":"¿Cómo ha determinado la Organización los límites y la aplicabilidad del sistema de gestión de  activos para establecer y documentar su alcance?",
+            "2":"¿Se ha alineado el alcance con el PEGA (Plan Estratégico de Gestión de Activos) y la política de gestión de activos, y se ha considerado su interacción con otros sistemas de gestión?",
+            "3":"¿El alcance tiene en cuenta las cuestiones externas e internas consideradas en la pregunta 1, y las necesidades y expectativas de las partes interesadas que se consideran en la pregunta 3?",
+            "4":"¿Se ha considerado la interacción del alcance del sistema de gestión de activos con otros sistemas de gestión?",
+            "5":"¿El alcance define la cartera de activos cubierta por el sistemas de gestión de activos?"
+        },
+        "4.4":{
+            "1":"¿Qué ha hecho la organización para establecer, implementar, mantener y mejorar continuamente el sistema de gestión de  activos?",
+            "2":"¿Puede la organización demostrar que tiene un enfoque estructurado para determinar cuándo necesita documentar procesos, incluidos los vínculos entre estos procesos y otros procesos organizacionales relevantes?",
+            "3":"¿Cómo desarrolla, actualiza y documenta la organización el PEGA (Plan Estratégico de Gestión de  activos)?"
+        },
+        "5.1":{
+            "1":"¿Cómo ha demostrado la alta dirección el liderazgo y el compromiso en relación con el sistema de gestión de  activos?",
+            "2":"¿Cómo se ha asegurado la alta dirección que la política de gestión de activos, el PEGA (Plan Estratégico de Gestión de Activos) y los objetivos de gestión de activos se establezcan y sean compatibles con los objetivos de la organización?",
+            "3":"¿Cómo se ha asegurado la alta dirección que los requisitos del sistema de gestión de activos estén integrados en los procesos del negocio de la organización?",
+            "4":"¿Cómo se ha asegurado la alta dirección que los recursos para el sistema de gestión de activos están disponibles?",
+            "5":"¿Cómo ha comunicado la alta dirección la importancia de una gestión de activos efectiva y de cumplir con los requisitos del sistema de gestión de activos?",
+            "6":"¿Cómo se ha asegurado la alta dirección que el sistema de gestión de activos logra su(s) resultado(s) previsto(s)?",
+            "7":"¿Cómo ha dirigido y apoyado la alta dirección a las personas para contribuir a la efectividad del sistema de gestión de activos?",
+            "8":"Cómo la alta dirección ha promovido la colaboración multifuncional dentro de la organización?",
+            "9":"¿Cómo ha promocionado la alta dirección la mejora continua?",
+            "10":"¿Cómo ha apoyado la alta dirección otras funciones de gestión pertinentes para demostrar cómo se aplica su liderazgo en sus respectivas áreas de responsabilidad?",
+            "11":"¿Cómo ha asegurado la alta dirección la alineación entre el enfoque utilizado para gestionar el riesgo en la gestión de activos y el enfoque para gestionar el riesgo de la organización?"
+        },
+        "5.2":{
+            "1":"¿Qué ha hecho la alta dirección para establecer, comunicar, implementar, revisar periódicamente y, si es necesario, actualizar la política de gestión de  activos?",
+            "2":"¿Cómo ha desarrollado la alta dirección una política de gestión de activos adecuada al propósito, necesidades, escala y naturaleza de la organización y sus activos, proporciona un marco para el establecimiento de objetivos de gestión de activos, incluye un compromiso para cumplir los requisitos pertinentes para la mejora continua?",
+            "3":"¿Cómo ha desarrollado la alta dirección una política de gestión de activos que proporcione un marco para el establecimiento de objetivos de gestión de activos?",
+            "4":"¿Cómo ha desarrollado la alta dirección una política de gestión de activos que incluya un compromiso para cumplir los requisitos pertinentes y para la mejora continua?",
+            "5":"¿Cómo se ha puesto a disposición la política de gestión de  activos como Información documentada?",
+            "6":"¿Cómo se ha comunicado la política de gestión de activos dentro de la Organización y a las Partes interesadas, según corresponda?",
+            "7":"¿Cómo se ha desarrollado la política de gestión de activos para garantizar que sea coherente con el plan de la organización y otras políticas organizacionales?"
+        },
+        "5.3":{
+            "1":"¿Cómo se ha asegurado la alta dirección que las responsabilidades y las autoridades para los roles relevantes se asignan y se comunican dentro de la Organización?",
+            "2":"¿Con qué objetivo la alta dirección asigna responsabilidades y autoridades?",
+            "3":"¿Cómo se asigna la responsabilidad y autoridad para asegurar que el sistema de gestión de activos apoye la ejecución del PEGA?",
+            "4":"¿Cómo se asigna la responsabilidad y autoridad para establecer y actualizar el PEGA, incluidos los objetivos de gestión de activos?",
+            "5":"¿Cómo se asigna la responsabilidad y autoridad para asegurar que el sistema de gestión de activos cumpla con los requisitos de esta Norma Internacional?",
+            "6":"¿Cómo se asigna la responsabilidad y autoridad para asegurar la idoneidad, adecuación y eficacia del sistema de gestión de activos?",
+            "7":"¿Cómo se asigna la responsabilidad y autoridad para establecer y actualizar el plan de gestión de activos?",
+            "8":"¿Cómo se asigna la responsabilidad y autoridad para informar sobre el desempeño del sistema de gestión de activos a la alta dirección?"
+        }
+    }
+
+}

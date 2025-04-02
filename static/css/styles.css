@@ -1,0 +1,181 @@
+/* Definir colores */
+:root {
+    --nav-bar: #1C3F60; /* Azul oscuro */
+    --bg-color: #0B1320; /* Fondo oscuro */
+    --text-color: #D9D9D9;
+    --card-bg: #D9D9D9; /* Gris claro */
+    --card-text: #1e3a5f;
+}
+
+body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color); /* Ajusta el color del texto para mejor contraste */
+}
+
+.navbar{
+    background-color: var(--nav-bar) !important;
+}
+
+.card {
+    background-color: var(--card-bg) !important;
+    color: var(--card-text) !important; /* Para cambiar el color del texto si es necesario */
+    border: none; 
+}
+
+footer {
+    background-color: var(--nav-bar) !important;
+    color: var(--text-color);
+}
+
+.logo-navbar {
+    width: 80px; 
+    height: auto;  
+}
+
+/* CSS INFORME */
+.card {
+    background-color: var(--card-bg) !important;
+    color: var(--card-text) !important;
+    border: none;
+    border-radius: 10px;       /* Bordes redondeados */
+    padding: 20px;             /* Espaciado interno */
+    margin: 15px;              /* Espacio entre cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    transition: transform 0.3s, box-shadow 0.3s; /* Suavizado para hover */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Efecto de elevación */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más intensa al hover */
+}
+
+/* Opcional: Estilos para títulos y contenido dentro de las cards */
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-content {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* Navbar mejorado */
+.navbar {
+    background-color: var(--nav-bar);
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .navbar nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s, transform 0.3s;
+  }
+  
+  .navbar nav a:hover {
+    color: #f4f4f4;
+    transform: scale(1.05);
+  }
+  
+  /* Summary Options mejoradas */
+  .summary-options {
+    display: flex;
+    border-radius: 10px;
+    background-color: var(--nav-bar);
+    border: 2px solid var(--nav-bar);
+    padding: 10px;
+    gap: 10px;
+    justify-content: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .summary-options a {
+    color: var(--card-text);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .summary-options a:hover {
+    background-color: var(--nav-bar);
+    color: var(--text-color);
+    transform: scale(1.05);
+  }
+  
+  /* Botones mejorados */
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid var(--nav-bar);
+    background-color: var(--nav-bar);
+    color: var(--text-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  button:hover {
+    background-color: var(--card-bg);
+    color: var(--card-text);
+    transform: translateY(-3px);
+  }  
+
+  /* Contenedor de columnas */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Columna izquierda (contenido principal) */
+.column.left {
+    flex: 2;
+    background-color: var(--bg-color);
+    padding: 20px;
+    /* Opcional: agregar un borde sutil o sombra para delimitar la sección */
+    /* border: 1px solid rgba(217,217,217,0.2); */
+}
+
+/* Columna derecha (contenido secundario o complementario) */
+.column.right {
+    flex: 1;
+    padding: 20px;
+    border: 2px solid var(--nav-bar);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1; /* Hace que el contenido principal ocupe el espacio disponible */
+}
+
+footer {
+  background-color: var(--nav-bar);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+
