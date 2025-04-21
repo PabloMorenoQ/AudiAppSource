@@ -1,1 +1,18 @@
-profile
+{% extends 'base.html' %}
+
+{% block title %}Perfil{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>Bienvenido, {{ user.username }}!</p>
+        <p>Rol: {{ user.role }}</p>
+        <p>Organización: {{ user.organization }}</p>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Cerrar sesión</button> <!-- Botón de logout con estilo rojo -->
+        </form>
+    {% else %}
+        <p>No estás autenticado.</p>
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+    {% endif %}
+{% endblock %}

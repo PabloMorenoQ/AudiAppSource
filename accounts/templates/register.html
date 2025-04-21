@@ -1,1 +1,18 @@
-register
+{% extends 'base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center">Registro de Usuario</h2>
+
+        <div class="container mt-5">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+            </form>
+            <p class="text-center mt-3">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+{% endblock %}
