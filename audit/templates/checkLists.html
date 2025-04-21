@@ -1,128 +1,190 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Formulario{% endblock %}
+{% block title %}Checklist{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2 class="text-center mb-4">Lista de verificación</h2>
 
-    <form id="form_lists">
-        <div class="mb-3">
-            <label for="clausula" class="form-label">Cláusula</label>
-            <select id="clausula" class="form-select">
-                <option value="">Seleccionar...</option>
-                {% for key, value in clausulas.items %}
-                    <option value="{{ key }}" data-value="{{ value }}">{{ key }}</option>
-                {% endfor %}
-            </select>
+    <div class="row">
+        <h2 class="text-center mb-4">Lista de verificación</h2>
+        
+        <div class="container">
+            <form id="form_procesos">
+                <!-- Campo: Proceso -->
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <label for="process_html" class="form-label">Proceso</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" id="process_html" name="proceso">
+                    </div>
+                </div>
+        
+                <!-- Campo: Lugar -->
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <label for="lugar_html" class="form-label">Lugar</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" id="lugar_html" name="lugar">
+                    </div>
+                </div>
+        
+                <!-- Campo: Opciones con radio buttons -->
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <label class="form-label">Tipo de proceso</label>
+                    </div>
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo" id="ciclo_de_vida" value="ciclo de vida">
+                            <label class="form-check-label" for="ciclo_de_vida">Ciclo de vida</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo" id="habilitador" value="habilitador">
+                            <label class="form-check-label" for="habilitador">Habilitador</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    
-        <div class="mb-3">
-            <label for="subsecciones" class="form-label">Descripción</label>
-            <textarea id="subsecciones" class="form-control" rows="3" readonly></textarea>
+        
+            
+
+        <form id="form_lists">
+            <div class="mb-3">
+                <label for="clausula" class="form-label">Cláusula</label>
+                <select id="clausula" class="form-select">
+                    <option value="">Seleccionar...</option>
+                    {% for key, value in clausulas.items %}
+                        <option value="{{ key }}" data-value="{{ value }}">{{ key }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div class="mb-3">
+                <label for="subsecciones" class="form-label">Descripción</label>
+                <textarea id="subsecciones" class="form-control" rows="3" readonly></textarea>
+            </div>
+        </form>
+        
+        <div class="row">
+            <div>
+                <h5 class="text-center mb-4">Preguntas</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Cláusula</th>
+                            <th>Índice</th> <!-- Nueva columna agregada -->
+                            <th>Pregunta</th>
+                            <th>Aplica</th>
+                        </tr>
+                    </thead>
+                    <tbody id="preguntasTableBody">
+                        <!-- Las preguntas se insertarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </form>
-    
-    <div class="col-md-8">
-        <h3>Preguntas</h3>
-        <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;">
-            <table class="table table-bordered">
-                <thead>
+        
+        
+
+        <!-- Tabla resumen -->
+        <div class="container">
+            <h2 class="text-center mb-4">Lista de verificación</h2>
+            <table class="table table-bordered" style="border-radius: 8px; overflow: hidden;">
+                <thead class="table-light">
                     <tr>
+                        <th>#</th>
                         <th>Cláusula</th>
-                        <th>Índice</th> <!-- Nueva columna agregada -->
+                        <th>Índice</th>
                         <th>Pregunta</th>
-                        <th>Aplica</th>
+                        <th>Evidencia</th>
+                        <th>Calificación</th>
+                        <th>Hallazgo</th>
                     </tr>
                 </thead>
-                <tbody id="preguntasTableBody">
-                    <!-- Las preguntas se insertarán aquí dinámicamente -->
+                <tbody id="auditTableBody">
+                    <!-- Las filas se agregarán dinámicamente aquí -->
                 </tbody>
             </table>
         </div>
-    </div>
-    
-    <script>
-        document.getElementById("clausula").addEventListener("change", function() {
-            let selectedOption = this.options[this.selectedIndex];
-            let clave = selectedOption.value;
-            let value = selectedOption.getAttribute("data-value") || "";
-            document.getElementById("subsecciones").value = value;
-    
-            // Petición AJAX para obtener las preguntas asociadas
-            fetch("", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": "{{ csrf_token }}"  // Django requiere CSRF Token para POST
-                },
-                body: "selected_key=" + encodeURIComponent(clave)
-            })
-            .then(response => response.json())
-            .then(data => {
-                let preguntasTableBody = document.getElementById("preguntasTableBody");
-                preguntasTableBody.innerHTML = ""; // Limpiar tabla antes de agregar nuevas preguntas
-    
-                data.preguntas.forEach(item => {
-                    let row = `<tr>
-                        <td>${data.key}</td>
-                        <td>${item.indice}</td> <!-- Nueva columna de índice -->
-                        <td>${item.pregunta}</td>
-                        <td><input type="checkbox" class="select-clausula" value="${item.indice}"></td>
-                    </tr>`;
-                    preguntasTableBody.innerHTML += row;
-                });
-            });
-        });
-    </script>
 
-<!-- Tabla resumen -->
-<div class="container">
-    <h2 class="my-4">Lista de Verificación</h2>
-    <table class="table table-bordered" style="border-radius: 8px; overflow: hidden;">
-        <thead class="table-light">
-            <tr>
-                <th></th>
-                <th>Cláusula</th>
-                <th>Índice</th>
-                <th>Pregunta</th>
-                <th>Evidencia</th>
-                <th>Calificación</th>
-                <th>Hallazgo</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody id="auditTableBody">
-            <!-- Las filas se agregarán dinámicamente aquí -->
-        </tbody>
-    </table>
-</div>
+        <div class="mb-5">
+            <button type="button" class="btn btn-primary" onclick="addSelectedQuestions()">
+                Agregar Preguntas Seleccionadas
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="addEmptyRow()">
+                Agregar Fila Vacía
+            </button>
+            <button class="btn btn-success" onclick="generateJSONFromAuditTable()">
+                Descargar JSON
+            </button>
+            <button class="btn btn-success" onclick="sendChecklistToServer()">
+                Guardar Checklist
+            </button>
+            <button class="btn btn-info" onclick="downloadExcel()">
+                Descargar Excel
+            </button>
 
-<div>
-    <button class="btn btn-primary" onclick="addSelectedQuestions()">Agregar Preguntas Seleccionadas</button>
-    <button class="btn btn-secondary" onclick="addEmptyRow()">Agregar Fila Vacía</button>
-    <button class="btn btn-success" onclick="generateJSON()">Descargar JSON</button>
-</div>
+          </div>
 
-<div id="textModal" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar Texto</h5>
-                <button type="button" class="btn-close" onclick="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                <textarea id="modalText" class="form-control" rows="5"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="saveText()">Guardar</button>
+        <div id="textModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Texto</h5>
+                        <button type="button" class="btn-close" onclick="closeModal()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="modalText" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveText()">Guardar</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script src="{% static 'js/lists.js' %}"></script>
+        <script>
+            document.getElementById("clausula").addEventListener("change", function() {
+                let selectedOption = this.options[this.selectedIndex];
+                let clave = selectedOption.value;
+                let value = selectedOption.getAttribute("data-value") || "";
+                document.getElementById("subsecciones").value = value;
+
+                // Petición AJAX para obtener las preguntas asociadas
+                fetch("", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": "{{ csrf_token }}"  // Django requiere CSRF Token para POST
+                    },
+                    body: "selected_key=" + encodeURIComponent(clave)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let preguntasTableBody = document.getElementById("preguntasTableBody");
+                    preguntasTableBody.innerHTML = ""; // Limpiar tabla antes de agregar nuevas preguntas
+
+                    data.preguntas.forEach(item => {
+                        let row = `<tr>
+                            <td>${data.key}</td>
+                            <td>${item.indice}</td> <!-- Nueva columna de índice -->
+                            <td>${item.pregunta}</td>
+                            <td><input type="checkbox" class="select-clausula" value="${item.indice}"></td>
+                        </tr>`;
+                        preguntasTableBody.innerHTML += row;
+                    });
+                });
+            });
+        </script>
+
+<!-- <script src="{% static 'js/lists.js' %}"></script> --> 
+<script src="{% static 'js/checklists/addSelectedQuestions.js' %}?v={{ now|date:"U" }}"></script>
+<script src="{% static 'js/checklists/addEmptyRow.js' %}"></script>
+<script src="{% static 'js/checklists/downloadChecklist.js' %}"></script>
+<script src="{% static 'js/checklists/sendChecklist.js' %}"></script>
 
 {% endblock %}

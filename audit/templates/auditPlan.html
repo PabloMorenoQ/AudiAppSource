@@ -1,1 +1,458 @@
-auditplan
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Audit Plan{% endblock %}
+
+{% block content %}
+
+<style>
+    .navbar a {
+        padding: 10px;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+    .navbar a.active {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+    }
+    .summary-options a {
+        padding: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        display: inline-block;
+    }
+    .summary-options a.active {
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+    }
+    .editable {
+        border: 1px solid #ddd;
+        padding: 10px;
+        min-height: 50px;
+        background: #f8f9fa;
+        cursor: text;
+    }
+    .editable:focus {
+        background: white;
+        outline: 2px solid #007bff;
+    }
+</style>
+
+
+<body>
+    <header class="navbar">
+        <nav>
+            <a onclick="showSection('alcance', this)" class="active">Alcance - Objetivos</a>
+            <a onclick="showSection('incertidumbre', this)">Incertidumbre</a>
+            <a onclick="showSection('recursos', this)">Recursos</a>
+            <a onclick="showSection('implementacion', this)">Implementacion</a>
+            <a onclick="showSection('planAuditoria', this)">Plan de Auditoria</a>
+        </nav>
+    </header>
+
+    <div class="row">
+    <form 
+        method="post" 
+        action="{% url 'audit_plan' %}" 
+        id="auditPlanForm"
+    >
+        {% csrf_token %}
+
+    <input 
+        type="hidden" 
+        name="plan_content" 
+        id="plan_content_input" 
+    />
+
+        <div class="column left">
+            <!-- ALCANCE -->
+            <div id="alcance" class="content-section">
+                <h2 class="title">Alcance</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Objetivos
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-objetivos">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-objetivos">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-objetivos">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Descripcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Alcance
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-alcance">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-alcance">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-alcance">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripcion</th>
+                                <th>observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Criterios
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-criterios">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-criterios">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-criterios">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripcion</th>
+                                <th>observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+
+                    <div class="card-title">
+                        Revision
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-revision">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-revision">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-revision">
+                        <thead>
+                            <tr>
+                                <th>Rol</th>
+                                <th>Nombre</th>
+                                <th>Asistencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+
+            <!-- INCERTIDUMBRE -->
+            <div id="incertidumbre" class="content-section" style="display: none;">
+                <h2 class="title">Incertidumbre</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Riesgos
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-riesgos">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-riesgos">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-riesgos">
+                        <thead>
+                            <tr>
+                                <th>Riesgos</th>
+                                <th>Descripcion</th>
+                                <th>Controles</th>
+                                <th>Recursos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Metodologia
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-metodologia">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-metodologia">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-metodologia">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripcion</th>
+                                <th>observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Oportunidades
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-oportunidades">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-oportunidades">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-oportunidades">
+                        <thead>
+                            <tr>
+                                <th>Oportunidad</th>
+                                <th>Descripcion</th>
+                                <th>Acciones</th>
+                                <th>Recursos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+
+            <!-- RECURSOS -->
+            <div id="recursos" class="content-section" style="display: none;">
+                <h2 class="title">Recursos</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Recursos
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-recursos">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-recursos">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-recursos">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Equipo auditor
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-equipoAuditor">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-equipoAuditor">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-equipoAuditor">
+                        <thead>
+                            <tr>
+                                <th>Rol</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">Observaciones generales</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Explicación de la pertinencia del proceso.
+                        </div>
+                    
+                </div>
+            </div>
+
+            <!-- IMPLEMENTACION -->
+            <div id="implementacion" class="content-section" style="display: none;">
+                <h2 class="title">Implementacion</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Etapas de auditoria
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-estapasAud">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-estapasAud">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-estapasAud">
+                        <thead>
+                            <tr>
+                                <th>Etapa</th>
+                                <th>Fase</th>
+                                <th>Descripcion</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">Nombre de la auditoria</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Explicación de la pertinencia del proceso.
+                        </div>
+                    
+                    <div class="card-title">Fecha de preparacion</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Explicación de la pertinencia del proceso.
+                        </div>
+
+                    <div class="card-title">Periodo</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Explicación de la pertinencia del proceso.
+                        </div>
+
+                    <div class="card-title">Fecha de actualziacion</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Explicación de la pertinencia del proceso.
+                        </div>
+
+                </div>
+            </div>
+
+            <!-- PLAN DE AUDITORIA -->
+            <div id="planAuditoria" class="content-section" style="display: none;">
+                <h2 class="title">Plan de Auditoria</h2>
+                    <div class="card-title">
+                        Plan de auditoria
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-planAud">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-planAud">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-planAud" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Proceso</th>
+                                <th>Gerencia/Departamento/Área/Dependencia</th>
+                                <th>Lugar/Activo</th>
+                                <th>Método</th>
+                                <th>Cláusula ISO 55001</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Responsable</th>
+                                <th>Auditor</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+            </div>
+
+        </div>
+        
+        <!-- envío -->
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+            Guardar plan de auditoría
+            </button>
+        </div>
+    </form>
+    </div>
+
+    <script>
+        // Control de visualización de secciones
+        function showSection(sectionId, element) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            
+            document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function showSummary(summaryId, element) {
+            document.querySelectorAll('.summary-box').forEach(box => {
+                box.style.display = 'none';
+            });
+            document.getElementById(summaryId).style.display = 'block';
+            
+            document.querySelectorAll('.summary-options a').forEach(a => a.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // elementos de agregar y eliminar filas
+        document.addEventListener("DOMContentLoaded", function () {
+            // Función para agregar una fila
+            function addRow(tableId) {
+                const table = document.getElementById(tableId);
+                const tbody = table.querySelector("tbody");
+                const rowCount = tbody.rows.length + 1;
+                const colCount = table.querySelector("thead tr").children.length;
+
+                const newRow = document.createElement("tr");
+
+                for (let i = 0; i < colCount; i++) {
+                    const cell = document.createElement("td");
+
+                    // if (i === 0) {
+                    //     cell.textContent = rowCount;
+                    // } 
+                    // else {
+                        cell.innerHTML = `<input type="text" class="form-control" placeholder="Dato ${i}">`;
+                    // }
+
+                    newRow.appendChild(cell);
+                }
+
+                tbody.appendChild(newRow);
+            }
+
+            // Función para eliminar la última fila
+            function removeRow(tableId) {
+                const table = document.getElementById(tableId);
+                const tbody = table.querySelector("tbody");
+                if (tbody.rows.length > 0) {
+                    tbody.deleteRow(tbody.rows.length - 1);
+                }
+            }
+
+            // Escuchar clicks en todos los botones
+            document.querySelectorAll(".add-row-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const tableId = this.getAttribute("data-table");
+                    addRow(tableId);
+                });
+            });
+
+            document.querySelectorAll(".remove-row-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const tableId = this.getAttribute("data-table");
+                    removeRow(tableId);
+                });
+            });
+        });
+
+
+        // Enviar datos a db
+        document.getElementById('auditPlanForm').addEventListener('submit', function(e) {
+        // 1) Recolectar datos de cada tabla
+            const tables = [
+                'tabla-objetivos','tabla-alcance','tabla-criterios','tabla-revision',
+                'tabla-riesgos','tabla-metodologia','tabla-oportunidades',
+                'tabla-recursos','tabla-equipoAuditor','tabla-estapasAud','tabla-planAud'
+            ];
+
+            let planData = {};
+
+            tables.forEach(id => {
+                const rows = [];
+                document.querySelectorAll(`#${id} tbody tr`).forEach(tr => {
+                const cells = Array.from(tr.querySelectorAll('td')).map(td => {
+                    const input = td.querySelector('input');
+                    return input ? input.value : td.innerText.trim();
+                });
+                rows.push(cells);
+                });
+                planData[id] = rows;
+            });
+
+            // 2) Recolectar contenido de divs .editable (si los hay)
+            document.querySelectorAll('.editable[contenteditable]').forEach(div => {
+                planData[div.id || div.parentElement.id + '_editable'] = div.innerText.trim();
+            });
+
+            // 3) Inyectar JSON en el input oculto
+            document.getElementById('plan_content_input').value = JSON.stringify(planData);
+            // y el form continua enviándose…
+        });
+    </script>
+</body>
+{% endblock %}
