@@ -1,12 +1,18 @@
-<!-- accounts/templates/accounts/login.html -->
+{% extends 'base.html' %}
 
-<!-- asumiendo que tienes un base.html en tu app 'core' -->
+{% block title %}Iniciar sesión{% endblock %}
 
 {% block content %}
-<h2>Iniciar sesion</h2>
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Ingresar</button>
-</form>
+    <div class="container mt-5">
+    <h2 class="text-center">Inicio de sesión</h2>
+
+    <div class="container mt-5">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+        </form>
+        <p class="text-center mt-3">¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+    </div>
+    </div>
 {% endblock %}

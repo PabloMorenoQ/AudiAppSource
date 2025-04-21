@@ -1,7 +1,7 @@
 # accounts/admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, Organization
 from audit.models import CheckList, AuditPlan, Report
 
 @admin.register(User)
@@ -38,3 +38,7 @@ class ReportAdmin(admin.ModelAdmin):
     list_display = ('id', 'creation_date', 'organization', 'leader_auditor')
     search_fields = ('organization__name', 'leader_auditor__username')
     list_filter = ('creation_date', 'organization')
+
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'status')
