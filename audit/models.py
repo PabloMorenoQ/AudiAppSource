@@ -1,5 +1,7 @@
+import json
 from django.db import models
 from accounts.models import Organization, User
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your models here.
 class CheckList(models.Model): # lista de verificacion 
@@ -44,7 +46,7 @@ class AuditPlan(models.Model):
             "clauses_list":self.clauses_list,
             "plan_content":self.plan_content,
         }   
-    
+
 class Report(models.Model):
     creation_date = models.DateField()
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
@@ -52,19 +54,39 @@ class Report(models.Model):
     clauses_list = models.TextField()
     checklist = models.ManyToManyField(CheckList)
 
+    # Campos para almacenar el contenido de las tablas como JSON en strings
+    resumen_data = models.TextField(default='{}')  # Diccionario JSON como string
+    fortalezas_data = models.TextField(default='[]')  # Lista JSON como string
+    conformidades_data = models.TextField(default='[]')
+    recomendaciones_data = models.TextField(default='[]')
+    riesgos_data = models.TextField(default='[]')
+    no_conformidades_data = models.TextField(default='[]')
+
+    pertinencia_data = models.TextField(default='[]')
+    adecuacion_data = models.TextField(default='[]')
+    eficacia_data = models.TextField(default='[]')
+
     def __str__(self):
         return f"Report - {self.id} - {self.organization.name}"
 
     def total_clauses(self):
         return len(self.clauses_list.split(','))
-    
+
     def export(self):
         return {
             "creation_date": self.creation_date,
             "organization": self.organization.name,
-            "leader_auditor": self.auditor_lider.first_name,
+            "leader_auditor": self.leader_auditor.first_name,
             "total_clausulas": self.total_clauses(),
+            "resumen": json.loads(self.resumen_data),
+            "fortalezas": json.loads(self.fortalezas_data),
+            "conformidades": json.loads(self.conformidades_data),
+            "recomendaciones": json.loads(self.recomendaciones_data),
+            "riesgos": json.loads(self.riesgos_data),
+            "no_conformidades": json.loads(self.no_conformidades_data),
         }
+
+
 
     def import_data(self, data):
         self.fecha_creacion = data.get("fecha_creacion", self.fecha_creacion)

@@ -48,6 +48,7 @@
         <nav>
             <a onclick="showSection('resumen', this)" class="active">Resumen</a>
             <a onclick="showSection('fortalezas', this)">Fortalezas</a>
+            <a onclick="showSection('conformidad', this)">Conformidades</a>
             <a onclick="showSection('riesgos', this)">Riesgos</a>
             <a onclick="showSection('recomendaciones', this)">Recomendaciones</a>
             <a onclick="showSection('no-conformidades', this)">No conformidades</a>
@@ -59,19 +60,21 @@
             <!-- SECCIÓN RESUMEN -->
             <div id="resumen" class="content-section">
                 <h2 class="title">Resumen</h2>
+                <button id="recuentoBtn" class="btn btn-primary">Actualizar</button>
                 <table class="table table-bordered" id="tabla-resumen">
                     <thead>
                         <tr>
-                            <th>Ciclo de Vida</th>
+                            <th>Tipo de proceso</th>
                             <th>Proceso</th>
                             <th>Fortalezas</th>
+                            <th>Conformidades</th>
                             <th>Recomendaciones</th>
                             <th>Riesgos</th>
                             <th>No Conformidades</th>
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="reportTableSummary">
                         <!-- Aquí se añadirán dinámicamente los procesos (si lo deseas) -->
                     </tbody>
                 </table>
@@ -81,6 +84,30 @@
             <div id="fortalezas" class="content-section" style="display: none;">
                 <h2 class="title">Fortalezas</h2>
                 <table class="table table-bordered" id="tabla-fortalezas">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Cláusula</th>
+                            <th>Norma</th>
+                            <th>Hallazgo</th>
+                            <th>Evidencia</th>
+                            <th>Dependencia</th>
+                            <th>Lugar</th>
+                            <th>Proceso</th>
+                            <th>Tipo Proceso</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Filas generadas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SECCION CONFORMIDAD -->
+            <div id="conformidad" class="content-section" style="display: none;">
+                <h2 class="title">Conformidades</h2>
+                <table class="table table-bordered" id="tabla-conformidades">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -209,7 +236,7 @@
                 
                 <!-- Botón para disparar la carga de archivo -->
                 <button id="cargarBtn">Cargar</button>
-                <button>Enviar</button>
+                <button id="sendBtn">Enviar</button>
             </div>
 
             <!-- Área de texto para mostrar el contenido JSON -->
@@ -221,136 +248,11 @@
     </div>
 
     <script>
-        // Control de visualización de secciones
-        function showSection(sectionId, element) {
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            document.getElementById(sectionId).style.display = 'block';
-            
-            document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        function showSummary(summaryId, element) {
-            document.querySelectorAll('.summary-box').forEach(box => {
-                box.style.display = 'none';
-            });
-            document.getElementById(summaryId).style.display = 'block';
-            
-            document.querySelectorAll('.summary-options a').forEach(a => a.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        // Inicializar la lógica de carga de archivos
-        function initFileLoader() {
-            const fileInput = document.getElementById('fileInput');
-            const cargarBtn = document.getElementById('cargarBtn');
-            const jsonContent = document.getElementById('jsonContent');
-
-            cargarBtn.addEventListener('click', () => {
-                fileInput.click();
-            });
-
-            // Al seleccionar un archivo, lo leemos y mostramos su contenido
-            fileInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const content = e.target.result;
-                        jsonContent.value = content; // Mostrar el contenido en el textarea
-
-                        // Intentar parsear el JSON y agregar filas a las tablas
-                        try {
-                            const data = JSON.parse(content);
-                            if (data.lista) {
-                                // Limpiamos las tablas antes de cargar nuevos datos
-                                clearTables();
-
-                                // Recorremos cada cláusula (por ejemplo, '4.1', '4.2')
-                                for (let clausula in data.lista) {
-                                    let subItems = data.lista[clausula];
-
-                                    // Recorremos cada índice dentro de la cláusula
-                                    for (let index in subItems) {
-                                        // El array con la info [pregunta, evidencia, calificacion, hallazgo]
-                                        let itemArray = subItems[index];
-
-                                        let pregunta = itemArray[0] || 'Sin pregunta';
-                                        let evidencia = itemArray[1] || 'Sin evidencia';
-                                        let calificacion = itemArray[2] || 'Sin calificación';
-                                        let hallazgo = itemArray[3] || 'Sin hallazgo';
-
-                                        // Insertar fila en la tabla correspondiente según la calificación
-                                        insertRowInTable({
-                                            no: index,
-                                            clausula: clausula,
-                                            norma: 'ISO 55001', // o lo que corresponda
-                                            hallazgo: hallazgo,
-                                            evidencia: evidencia,
-                                            dependencia: 'N/A', // Ajusta según tus necesidades
-                                            lugar: 'N/A',
-                                            proceso: pregunta,  // o 'N/A', si prefieres
-                                            tipoProceso: 'N/A',
-                                            responsable: 'N/A'
-                                        }, calificacion);
-                                    }
-                                }
-                            }
-                        } catch (err) {
-                            console.error('Error parseando el JSON:', err);
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            });
-        }
-
-        // Insertar fila en la tabla correspondiente
-        function insertRowInTable(rowData, calificacion) {
-            let tableBody = null;
-
-            // Dependiendo del tercer parámetro (calificacion), seleccionamos la tabla
-            switch (calificacion.toLowerCase()) {
-                case 'fortaleza':
-                    tableBody = document.getElementById('tabla-fortalezas').querySelector('tbody');
-                    break;
-                case 'no conformidad':
-                    tableBody = document.getElementById('tabla-no-conformidades').querySelector('tbody');
-                    break;
-                case 'recomendacion':
-                    tableBody = document.getElementById('tabla-recomendaciones').querySelector('tbody');
-                    break;
-                case 'riesgo':
-                    tableBody = document.getElementById('tabla-riesgos').querySelector('tbody');
-                    break;
-                default:
-                    // Si no coincide con ninguna categoría conocida, no hacemos nada
-                    // Podrías crear una tabla adicional o un manejo especial.
-                    return;
-            }
-
-            // Crear la fila
-            let newRow = tableBody.insertRow();
-
-            // Rellenar las celdas (orden de columnas)
-            newRow.insertCell().textContent = rowData.no;
-            newRow.insertCell().textContent = rowData.clausula;
-            newRow.insertCell().textContent = rowData.norma;
-            newRow.insertCell().textContent = rowData.hallazgo;
-            newRow.insertCell().textContent = rowData.evidencia;
-            newRow.insertCell().textContent = rowData.dependencia;
-            newRow.insertCell().textContent = rowData.lugar;
-            newRow.insertCell().textContent = rowData.proceso;
-            newRow.insertCell().textContent = rowData.tipoProceso;
-            newRow.insertCell().textContent = rowData.responsable;
-        }
-
         // Limpiar tablas antes de recargar
         function clearTables() {
             const tables = [
                 'tabla-fortalezas',
+                'tabla-conformidades',
                 'tabla-riesgos',
                 'tabla-recomendaciones',
                 'tabla-no-conformidades'
@@ -368,5 +270,12 @@
             initFileLoader();
         });
     </script>
+    
+    <script src="{% static 'js/reports/fileLoader.js' %}"></script>
+    <script src="{% static 'js/reports/insertRow.js' %}"></script>
+    <script src="{% static 'js/reports/showTables.js' %}"></script>
+    <script src="{% static 'js/reports/summaryReport.js' %}"></script>
+    <script src="{% static 'js/reports/sendReport.js' %}"></script>
+
 </body>
 {% endblock %}

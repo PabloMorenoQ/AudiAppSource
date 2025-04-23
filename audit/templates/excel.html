@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Report{% endblock %}
+
+{% block content %}
+
+<h2 class="title">Descargar archivos</h2>
+            <!-- Botones y carga de JSON -->
+    <div>            
+        <button onclick="downloadAuditPlanExcel()">Plan de auditoria</button>
+    </div>
+    <div>
+        <select id="checklistSelector" class="form-select">
+            <option value="">Selecciona una checklist</option>
+            {% for checklist in checklists %}
+              <option value="{{ checklist.id }}">{{ checklist }}</option>
+            {% endfor %}
+        </select>
+        <button onclick="downloadChecklistExcel()">LVs</button>
+    </div>    
+    <div>
+        <button onclick="downloadReportExcel()">Report</button>
+    </div>
+
+    <script src="{% static 'js/excel/excelCheckList.js' %}"></script>
+
+{% endblock %}

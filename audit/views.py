@@ -6,10 +6,11 @@ from django.shortcuts import render, redirect
 from .templates import *
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from .models import AuditPlan, CheckList
+from .models import AuditPlan, CheckList, Report
 from accounts.models import Organization, User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.utils.dateparse import parse_date
 
 
 @csrf_exempt
@@ -55,9 +56,6 @@ def audit_plan(request):
     
 
 def check_lists(request):
-    """Muestra listas de verificación y permite obtener información específica
-    según la selección del usuario. Retorna un JSON con preguntas asociadas
-    si la solicitud es POST."""
     if request.user.is_authenticated and request.user.role in ['auditUser', 'auditLeaderUser', 'superUser']:
         content = send_content()
         clausulas = content.get("clausula", {})
@@ -111,6 +109,34 @@ def save_checklist(request):
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
+@csrf_exempt
+def save_report(request):
+    if request.method == "POST":        
+        data = json.loads(request.body)
+
+        report = Report.objects.create(
+            creation_date= datetime.date.today(),
+            organization_id =1,
+            # leader_auditor=User.objects.get(id=data['leader_auditor_id']),
+            leader_auditor = User.objects.get(id=1),
+            # clauses_list = data.get('clauses_list'),
+            resumen_data = data.get('resumen'),
+            fortalezas_data = data.get('fortalezas'),
+            conformidades_data = data.get('conformidades'),
+            recomendaciones_data = data.get('recomendaciones'),
+            riesgos_data = data.get('riesgos'),
+            no_conformidades_data = data.get('no_conformidades'),
+
+            pertinencia_data = data.get('pertinencia'),
+            adecuacion_data = data.get('adecuacion'),
+            eficacia_data = data.get('eficacia'),
+        )
+        # report.save()
+
+        return JsonResponse({"status": "ok", "report_id": report.id})
+
+    return JsonResponse({"error": "Metodo no permitido"}, status=405)
+
 def reports(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
         return render(request, "reports.html")
@@ -127,33 +153,58 @@ def send_content():
 
     return content
 
+def excel_landing(request):
+    if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
+        if request.method == "GET":
+            checklists = CheckList.objects.filter(leader_auditor=request.user)  # o .all() si querés todas
+            return render(request, "excel.html", {"checklists": checklists})
+        else:
+            return render(request, "home.html")
+
+@csrf_exempt
 def download_excel(request):
-    if request.method == "POST":
-        try:
-            # Supongamos que recibís el JSON desde el body
-            data = json.loads(request.body).get("audit_data", [])
+    if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
+        # if request.method == "GET":
+        #     return render(request, "excel.html")
+        
+        if request.method == "POST":
+            try:
+                data = json.loads(request.body)
+                checklist_id = data.get("checklist_id")
+                checklist = CheckList.objects.get(id=checklist_id)
 
-            # Si viene como string JSON desde DB
-            if isinstance(data, str):
-                data = json.loads(data)
+                audit_data = checklist.audit_data
+                if isinstance(audit_data, str):
+                    audit_data = json.loads(audit_data)
 
-            # Convertir en DataFrame
-            df = pd.DataFrame(data)
+                df = pd.DataFrame(audit_data)
 
-            # Crear archivo en memoria
-            output = BytesIO()
-            with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                df.to_excel(writer, index=False, sheet_name="Auditoría")
+                output = BytesIO()
+                with pd.ExcelWriter(output, engine="openpyxl") as writer:
+                    df.to_excel(writer, index=False, sheet_name="Auditoría")
 
-            # Preparar respuesta
-            response = HttpResponse(
-                output.getvalue(),
-                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            )
-            response["Content-Disposition"] = 'attachment; filename="auditoria.xlsx"'
-            return response
+                    # Agregar otra hoja con metadatos si se desea
+                    metadata = {
+                        "Proceso": [checklist.process],
+                        "Lugar": [checklist.place],
+                        "Organización": [checklist.organization.name],
+                        "Auditor Líder": [checklist.leader_auditor.first_name],
+                        "Tipo de Proceso": [checklist.process_type],
+                        "Cláusulas": [checklist.clauses_list]
+                    }
+                    meta_df = pd.DataFrame(metadata)
+                    meta_df.to_excel(writer, index=False, sheet_name="Resumen")
 
-        except Exception as e:
-            return HttpResponse(f"Error: {str(e)}", status=400)
+                response = HttpResponse(
+                    output.getvalue(),
+                    content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+                response["Content-Disposition"] = f'attachment; filename=checklist_{checklist.id}.xlsx'
+                return response
 
-    return HttpResponse("Método no permitido", status=405)
+            except CheckList.DoesNotExist:
+                return JsonResponse({"error": "Checklist no encontrada"}, status=404)
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
+
+        return JsonResponse({"error": "Método no permitido"}, status=405)

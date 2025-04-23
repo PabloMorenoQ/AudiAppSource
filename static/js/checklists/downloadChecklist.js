@@ -1,49 +1,12 @@
 function generateJSONFromAuditTable() {
+    console.log("Función generateJSONFromAuditTable ejecutada");
     const rows = document.querySelectorAll('#auditTableBody tr');
     let data = [];
 
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-
-        if (cells.length >= 7) {
-            // Obtener inputs o textareas
-            const getCellValue = (cell) => {
-                const input = cell.querySelector('input, textarea');
-                return input ? input.value.trim() : cell.textContent.trim();
-            };
-
-            // Acceder directamente al <select> y obtener solo la opción seleccionada
-            const select = cells[5].querySelector('select');
-            const selectedValue = select ? select.options[select.selectedIndex].value : "";
-
-            data.push({
-                clausula:     getCellValue(cells[1]),
-                indice:       getCellValue(cells[2]),
-                pregunta:     getCellValue(cells[3]),
-                evidencia:    getCellValue(cells[4]),
-                calificacion: selectedValue,
-                hallazgo:     getCellValue(cells[6])
-            });
-        }
-    });
-
-    // Convertir a JSON
-    const json = JSON.stringify(data, null, 4);
-
-    // Descargar como archivo
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "auditoria.json";
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-function downloadExcel() {
-    const rows = document.querySelectorAll('#auditTableBody tr');
-    let data = [];
+    // Capturar datos del formulario general
+    const process     = document.getElementById("process_html").value.trim();
+    const place       = document.getElementById("lugar_html").value.trim();
+    const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
 
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
@@ -58,34 +21,26 @@ function downloadExcel() {
 
             data.push({
                 clausula:     getCellValue(cells[1]),
-                indice:       getCellValue(cells[2]),
+                indice:       getCellValue(cells[0]),
                 pregunta:     getCellValue(cells[3]),
                 evidencia:    getCellValue(cells[4]),
                 calificacion: selectedValue,
-                hallazgo:     getCellValue(cells[6])
+                hallazgo:     getCellValue(cells[6]),
+                proceso:      process,
+                lugar:        place,
+                tipo_proceso: processType
             });
         }
     });
 
-    fetch("/audit/checkList/download_excel/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": getCookie("csrftoken")
-        },
-        body: JSON.stringify({ audit_data: data })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error("Error generando Excel");
-        return response.blob();
-    })
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "auditoria - checklist.xlsx";
-        a.click();
-        window.URL.revokeObjectURL(url);
-    })
-    .catch(error => alert(error));
+    // Convertir directamente el array a JSON plano
+    const json = JSON.stringify(data, null, 4);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "auditoria.json";
+    a.click();
+    URL.revokeObjectURL(url);
 }
