@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard de Administración{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Panel de Administración</h2>
+
+<!-- Usuarios -->
+<section class="mb-5">
+    <h3>Usuarios de {{ request.user.organization.name }}</h3>
+    <table class="table table-striped">
+        <thead><tr><th>Usuario</th>><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <!-- Formulario de edición -->
+                    <form method="post" action="{% url 'admin_dashboard' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="edit_user">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+
+                        <td><input type="text" name="first_name" value="{{ user.username }}" class="form-control form-control-sm" required></td>
+                        <td><input type="email" name="email" value="{{ user.email }}" class="form-control form-control-sm"></td>
+                        <td>
+                            <select name="role" class="form-select form-select-sm">
+                                <option value="superUser" {% if user.role == 'superUser' %}selected{% endif %}>Super User</option>
+                                <option value="organizationUser" {% if user.role == 'organizationUser' %}selected{% endif %}>Organization Admin</option>
+                                <option value="auditUser" {% if user.role == 'auditUser' %}selected{% endif %}>Audit User</option>
+                                <option value="auditLeaderUser" {% if user.role == 'auditLeaderUser' %}selected{% endif %}>Audit Leader User</option>
+                            </select>
+                        </td>
+                        <td class="d-flex gap-1">
+                            <button type="submit" class="btn btn-primary btn-sm">💾</button>
+                    </form>
+
+                    <!-- Formulario de eliminación -->
+                    <form method="post" action="{% url 'admin_dashboard' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="delete_user">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este usuario?')">🗑️</button>
+                    </form>
+                        </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">No hay usuarios.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<!-- El resto de secciones queda igual -->
+
+
+<!-- Planes de Auditoría -->
+<section class="mb-5">
+    <h3>Planes de Auditoría</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Plan</a>
+    <table class="table table-striped">
+        <thead><tr><th>Fecha</th><th>Líder</th><th>Cláusulas</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for plan in audit_plans %}
+                <tr>
+                    <td>{{ plan.creation_date }}</td>
+                    <td>{{ plan.leader_auditor.get_full_name }}</td>
+                    <td>{{ plan.clauses_list }}</td>
+                    <td>
+                        <a href="{}" class="btn btn-warning btn-sm">✏️</a>
+                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No hay planes de auditoría.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<!-- Checklists -->
+<section class="mb-5">
+    <h3>Listas de Verificación</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Checklist</a>
+    <table class="table table-striped">
+        <thead><tr><th>Proceso</th><th>Lugar</th><th>Auditor</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for checklist in checklists %}
+                <tr>
+                    <td>{{ checklist.process }}</td>
+                    <td>{{ checklist.place }}</td>
+                    <td>{{ checklist.leader_auditor.get_full_name }}</td>
+                    <td>
+                        <a href="{}" class="btn btn-warning btn-sm">✏️</a>
+                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No hay checklists.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<!-- Informes -->
+<section class="mb-5">
+    <h3>Informes</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Informe</a>
+    <table class="table table-striped">
+        <thead><tr><th>Fecha</th><th>Auditor</th><th>Cláusulas</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td>{{ report.creation_date }}</td>
+                    <td>{{ report.leader_auditor.get_full_name }}</td>
+                    <td>{{ report.total_clauses }}</td>
+                    <td>
+                        <a href="{}" class="btn btn-warning btn-sm">✏️</a>
+                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No hay informes.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<!-- Grupos (Opcional, si estás usando grupos de Django) -->
+<section class="mb-5">
+    <h3>Grupos</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Grupo</a>
+    <table class="table table-striped">
+        <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
+        <tbody>
+            {% for group in groups %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>
+                        <a href="{}" class="btn btn-warning btn-sm">✏️</a>
+                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="2">No hay grupos.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}
