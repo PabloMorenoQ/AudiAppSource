@@ -30,6 +30,13 @@ def register_view(request):
                 messages.warning(request, 'Las contraseñas no coinciden.')
     else:
         form = Register()
+
+    form.fields['username'].widget.attrs.update({'class': 'form-control w-100'})
+    form.fields['email'].widget.attrs.update({'class': 'form-control w-100'})
+    form.fields['role'].widget.attrs.update({'class': 'form-control w-100'})
+    form.fields['organization'].widget.attrs.update({'class': 'form-control w-100'})
+    form.fields['password1'].widget.attrs.update({'class': 'form-control w-100'})
+    form.fields['password2'].widget.attrs.update({'class': 'form-control w-100'})
     return render(request, 'register.html', {'form': form})
 
 def login_view(request):

@@ -3,16 +3,40 @@
 {% block title %}Perfil{% endblock %}
 
 {% block content %}
+<style>
+    .card.static:hover {
+    transform: none !important;
+    transition: none !important;
+    box-shadow: none !important; /* si tu .card:hover aplica sombra */
+}
+</style>
+
+<div class="container">
     {% if user.is_authenticated %}
-        <p>Bienvenido, {{ user.username }}!</p>
-        <p>Rol: {{ user.role }}</p>
-        <p>Organización: {{ user.organization }}</p>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">Cerrar sesión</button> <!-- Botón de logout con estilo rojo -->
-        </form>
+        <div class="card static">
+            <h2 class="card-title">Perfil de Usuario</h2>
+                <div class="card-content">
+                    <p><strong>Usuario:</strong> {{ user.username }}</p>
+                    <p><strong>Rol:</strong> {{ user.role }}</p>
+                    <p><strong>Organización:</strong> {{ user.organization }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-content" style="text-align: center;">
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Cerrar sesión</button>
+            </form>
+        </div>
     {% else %}
-        <p>No estás autenticado.</p>
-        <a href="{% url 'login' %}">Iniciar sesión</a>
+        <div class="card" style="text-align: center;">
+            <h2 class="card-title">No estás autenticado</h2>
+            <p class="card-content">Por favor inicia sesión para ver tu perfil.</p>
+            <a href="{% url 'login' %}">
+                <button>Iniciar sesión</button>
+            </a>
+        </div>
     {% endif %}
+</div>
 {% endblock %}
