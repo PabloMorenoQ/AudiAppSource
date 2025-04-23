@@ -1,6 +1,7 @@
 # accounts/models.py
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings  # para usar el AUTH_USER_MODEL
 
 
 class Organization(models.Model):
@@ -30,3 +31,19 @@ class User(AbstractUser):
     
     def __str__(self):
         return f"{self.first_name} - {self.username} ({self.get_role_display()})"
+    
+class RegistroAcceso(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
+    ip = models.GenericIPAddressField()
+    user_agent = models.TextField()
+    ruta = models.CharField(max_length=255)
+    exito = models.BooleanField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        estado = "Éxito" if self.exito else "Fallido"
+        return f"{self.usuario} - {estado} - {self.ruta} - {self.fecha}"    

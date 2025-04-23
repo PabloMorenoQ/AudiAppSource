@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Organization
 from audit.models import CheckList, AuditPlan, Report
+from .models import RegistroAcceso
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
@@ -42,3 +43,9 @@ class ReportAdmin(admin.ModelAdmin):
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'status')
+
+@admin.register(RegistroAcceso)
+class RegistroAccesoAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'ip', 'ruta', 'fecha')
+    list_filter = ('usuario', 'fecha')
+    search_fields = ('usuario__username', 'ip', 'ruta')
