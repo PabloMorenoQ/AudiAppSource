@@ -3,11 +3,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Organization
 from audit.models import CheckList, AuditPlan, Report
+from .models import RegistroAcceso
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     # Agregamos 'role' a la lista que se muestra en el listado
-    list_display = ('username', 'email', 'role', 'is_active', 'is_staff')
+    list_display = ('username', 'email', 'role', 'is_active', 'is_staff', 'organization') 
     
     # Extendemos los fieldsets para incluir el campo 'role'
     fieldsets = UserAdmin.fieldsets + (
@@ -42,3 +43,9 @@ class ReportAdmin(admin.ModelAdmin):
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'status')
+
+@admin.register(RegistroAcceso)
+class RegistroAccesoAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'ip', 'ruta', 'fecha')
+    list_filter = ('usuario', 'fecha')
+    search_fields = ('usuario__username', 'ip', 'ruta')

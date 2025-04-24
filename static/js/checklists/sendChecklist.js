@@ -40,7 +40,7 @@ function sendChecklistToServer() {
         audit_data: JSON.stringify(data)  // ← audit_data incluye también los nuevos campos
     };
 
-    fetch("/audit/checkList/save_checklist/", {
+    fetch("/audit/checkList/save/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
