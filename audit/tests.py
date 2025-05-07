@@ -230,7 +230,7 @@ class RF56_PlanFilterByDateTest(TestCase):
             organization=self.org
         )
         
-        # Crear un plan con fecha de hoy
+        # Crear un plan con fecha 
         self.plan = AuditPlan.objects.create(
             creation_date=datetime.date.today(),
             organization=self.org,
@@ -243,7 +243,6 @@ class RF56_PlanFilterByDateTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get("/ruta/del/filtro", {"fecha": datetime.date.today().isoformat()})
         self.assertEqual(response.status_code, 200)
-        # Otros asserts según el comportamiento esperado
 
 class RF51_SessionExpirationTest(BaseTestSetup):
     def test_session_expires_after_logout(self):
@@ -258,10 +257,8 @@ class RF51_SessionExpirationTest(BaseTestSetup):
 
 class RF52_RestrictedViewsTest(TestCase):
     def test_non_logged_user_redirected(self):
-        url = reverse('audit_plan')  # Asegúrate de que este sea el name correcto
+        url = reverse('audit_plan')  
         response = self.client.get(url)
-
-        # Verifica que el usuario no autenticado sea redirigido a /core/
         self.assertRedirects(response, "/core/")
 
 class RF53_AuditPlanFormValidationTest(TestCase):
@@ -284,7 +281,6 @@ class RF53_AuditPlanFormValidationTest(TestCase):
             'plan_content': ''
         })
         self.assertEqual(response.status_code, 400)
-        # usa .json() para extraer correctamente el contenido
         self.assertIn("plan_content no es JSON válido", response.json().get("error", ""))
 
     def test_audit_plan_creation_accepts_valid_data(self):
@@ -341,7 +337,6 @@ class RF41_LoginAuditLogTest(BaseTestSetup):
         self.assertTrue(login_success)
         login_fail = self.client.login(username="admin", password="wrongpass")
         self.assertFalse(login_fail)
-        # Se asume que la auditoría queda registrada en algún modelo o archivo log externo
 
 class RF42_PasswordPolicyTest(BaseTestSetup):
     def test_password_policy_enforced(self):
@@ -351,7 +346,7 @@ class RF42_PasswordPolicyTest(BaseTestSetup):
         user.set_password(strong_password)
         self.assertTrue(user.check_password("Secure123@"))
         user.set_password(weak_password)
-        self.assertTrue(user.check_password("pass"))  # Esto debería fallar si la política está activa en el formulario
+        self.assertTrue(user.check_password("pass")) 
 
 class RF43_LoginWithEmailAndPasswordTest(BaseTestSetup):
     def test_login_with_email_and_password(self):
@@ -370,10 +365,7 @@ class RF45_RoleBasedAccessTest(TestCase):
 
     def test_role_access_restrictions(self):
         self.client.login(username="user_audit", password="1234")
-
-        # Vista protegida por rol, por ejemplo audit_plan
         response = self.client.get(reverse('audit_plan'), follow=True)
-
         self.assertNotContains(response, 'Crear Plan de Auditoría')
         self.assertEqual(response.status_code, 200)
 
@@ -381,18 +373,17 @@ class RF46_OrganizationAdminUserManagementTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.organization = Organization.objects.create(name="Org1", status="Active")
-
         self.admin_user = User.objects.create_user(
             username="adminorg",
             password="adminpass",
-            role="organizationUser",  # corresponde a "organization_admin"
+            role="organizationUser",  
             organization=self.organization
         )
 
     def test_org_admin_can_manage_users(self):
         self.client.login(username="adminorg", password="adminpass")
         
-        url = reverse("admin_dashboard")  # usamos una URL existente
+        url = reverse("admin_dashboard")  
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
