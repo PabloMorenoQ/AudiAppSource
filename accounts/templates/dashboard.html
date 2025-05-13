@@ -7,8 +7,11 @@
 
 <!-- Usuarios -->
 <section class="mb-5">
+    
     <h3>Usuarios de {{ request.user.organization.name }}</h3>
     <table class="table table-striped">
+        <a href="{% url 'register' %}" class="btn btn-success btn-sm mb-2">➕ Agregar usuario</a>
+        
         <thead><tr><th>Usuario</th>><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead>
         <tbody>
             {% for user in users %}
@@ -40,7 +43,8 @@
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este usuario?')">🗑️</button>
                     </form>
-                        </td>
+                        </td>                    
+                    
                 </tr>
             {% empty %}
                 <tr><td colspan="5">No hay usuarios.</td></tr>
@@ -122,28 +126,6 @@
                 </tr>
             {% empty %}
                 <tr><td colspan="4">No hay informes.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
-
-<!-- Grupos (Opcional, si estás usando grupos de Django) -->
-<section class="mb-5">
-    <h3>Grupos</h3>
-    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Grupo</a>
-    <table class="table table-striped">
-        <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
-        <tbody>
-            {% for group in groups %}
-                <tr>
-                    <td>{{ group.name }}</td>
-                    <td>
-                        <a href="{}" class="btn btn-warning btn-sm">✏️</a>
-                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr><td colspan="2">No hay grupos.</td></tr>
             {% endfor %}
         </tbody>
     </table>
