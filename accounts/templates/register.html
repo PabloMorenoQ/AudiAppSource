@@ -1,64 +1,66 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}{% trans "Registro" %}{% endblock %}
 
 {% load widget_tweaks %}
 
 {% block content %}
 <style>
     .card.static:hover {
-    transform: none !important;
-    transition: none !important;
-    box-shadow: none !important;
-}
+        transform: none !important;
+        transition: none !important;
+        box-shadow: none !important;
+    }
 </style>
 
 <div class="container mt-5">
-    <div class="card mx-auto shadow" style="max-width: 500px;">
+    <h2 class="text-center card-title">{% trans "Registro de Usuario" %}</h2>
+
+    <div class="card static">
         <div class="card-body">
             <h2 class="text-center card-title mb-4">Registro de Usuario</h2>
 
             <form method="post">
                 {% csrf_token %}
 
-                <div class="form-group mb-3">
-                    <label for="username">Nombre de usuario</label>
-                    {{ form.username|add_class:"form-control" }}
+                <div class="form-group">
+                    <label for="username" class="d-block text-left">{% trans "Nombre de usuario" %}</label>
+                    {{ form.username }}
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="email">Correo electrónico</label>
-                    {{ form.email|add_class:"form-control" }}
+                <div class="form-group">
+                    <label for="email" class="d-block text-left">{% trans "Correo electrónico" %}</label>
+                    {{ form.email }}
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="role">Rol</label>
-                    {{ form.role|add_class:"form-control" }}
+                <div class="form-group">
+                    <label for="role" class="d-block text-left">{% trans "Rol" %}</label>
+                    {{ form.role }}
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="organization">Organización</label>
-                    {{ form.organization|add_class:"form-control" }}
+                <div class="form-group">
+                    <label for="organization" class="d-block text-left mt-2">{% trans "Organización" %}</label>
+                    {{ form.organization }}
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="password1">Contraseña</label>
-                    {{ form.password1|add_class:"form-control" }}
+                <div class="form-group">
+                    <label for="password1" class="d-block text-left">{% trans "Contraseña" %}</label>
+                    {{ form.password1 }}
                 </div>
 
-                <div class="form-group mb-4">
-                    <label for="password2">Confirmar contraseña</label>
-                    {{ form.password2|add_class:"form-control" }}
+                <div class="form-group">
+                    <label for="password2" class="d-block text-left">{% trans "Confirmar contraseña" %}</label>
+                    {{ form.password2 }}
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                <button type="submit" class="button w-100 mt-3">{% trans "Registrarse" %}</button>
             </form>
-
-            <p class="text-center mt-3 mb-0">
-                ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-primary">Inicia sesión aquí</a>
+            <p class="text-center mt-3">
+                {% trans "¿Ya tienes cuenta?" %} 
+                <a href="{% url 'login' %}" class="text-link">{% trans "Inicia sesión aquí" %}</a>
             </p>
         </div>
     </div>
 </div>
-
 {% endblock %}

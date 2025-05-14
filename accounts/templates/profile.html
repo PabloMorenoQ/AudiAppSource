@@ -1,40 +1,40 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Perfil{% endblock %}
+{% block title %}{% trans "Perfil" %}{% endblock %}
 
 {% block content %}
 <style>
     .card.static:hover {
-    transform: none !important;
-    transition: none !important;
-    box-shadow: none !important; /* si tu .card:hover aplica sombra */
-}
+        transform: none !important;
+        transition: none !important;
+        box-shadow: none !important;
+    }
 </style>
 
 <div class="container">
     {% if user.is_authenticated %}
         <div class="card static">
-            <h2 class="card-title">Perfil de Usuario</h2>
-                <div class="card-content">
-                    <p><strong>Usuario:</strong> {{ user.username }}</p>
-                    <p><strong>Rol:</strong> {{ user.role }}</p>
-                    <p><strong>Organización:</strong> {{ user.organization }}</p>
-                </div>
+            <h2 class="card-title">{% trans "Perfil de Usuario" %}</h2>
+            <div class="card-content">
+                <p><strong>{% trans "Usuario" %}:</strong> {{ user.username }}</p>
+                <p><strong>{% trans "Rol" %}:</strong> {{ user.role }}</p>
+                <p><strong>{% trans "Organización" %}:</strong> {{ user.organization }}</p>
             </div>
         </div>
 
         <div class="card-content" style="text-align: center;">
             <form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="logout-btn">Cerrar sesión</button>
+                <button type="submit" class="logout-btn">{% trans "Cerrar sesión" %}</button>
             </form>
         </div>
     {% else %}
         <div class="card" style="text-align: center;">
-            <h2 class="card-title">No estás autenticado</h2>
-            <p class="card-content">Por favor inicia sesión para ver tu perfil.</p>
+            <h2 class="card-title">{% trans "No estás autenticado" %}</h2>
+            <p class="card-content">{% trans "Por favor inicia sesión para ver tu perfil." %}</p>
             <a href="{% url 'login' %}">
-                <button>Iniciar sesión</button>
+                <button>{% trans "Iniciar sesión" %}</button>
             </a>
         </div>
     {% endif %}

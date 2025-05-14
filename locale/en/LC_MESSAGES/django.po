@@ -1,0 +1,603 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-13 21:41-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\accounts\templates\dashboard.html:4
+msgid "Dashboard de Administración"
+msgstr "Administration Dashboard"
+
+#: .\accounts\templates\dashboard.html:7
+msgid "Panel de Administración"
+msgstr "Administration Panel"
+
+#: .\accounts\templates\dashboard.html:11
+msgid "Usuarios de"
+msgstr "Users from"
+
+#: .\accounts\templates\dashboard.html:15 .\accounts\templates\profile.html:20
+msgid "Usuario"
+msgstr "User"
+
+#: .\accounts\templates\dashboard.html:16
+msgid "Email"
+msgstr "Email"
+
+#: .\accounts\templates\dashboard.html:17 .\accounts\templates\profile.html:21
+#: .\accounts\templates\register.html:34 .\audit\templates\auditPlan.html:124
+msgid "Rol"
+msgstr "Role"
+
+#: .\accounts\templates\dashboard.html:18
+#: .\accounts\templates\dashboard.html:65
+#: .\accounts\templates\dashboard.html:93
+#: .\accounts\templates\dashboard.html:121
+#: .\accounts\templates\dashboard.html:149
+msgid "Acciones"
+msgstr "Actions"
+
+#: .\accounts\templates\dashboard.html:33
+msgid "Super User"
+msgstr "Super User"
+
+#: .\accounts\templates\dashboard.html:34
+msgid "Organization Admin"
+msgstr "Organization Admin"
+
+#: .\accounts\templates\dashboard.html:35
+msgid "Audit User"
+msgstr "Audit User"
+
+#: .\accounts\templates\dashboard.html:36
+msgid "Audit Leader User"
+msgstr "Audit Leader User"
+
+#: .\accounts\templates\dashboard.html:48
+msgid "¿Eliminar este usuario?"
+msgstr "¿Delete this user?"
+
+#: .\accounts\templates\dashboard.html:53
+msgid "No hay usuarios."
+msgstr "No users found"
+
+#: .\accounts\templates\dashboard.html:61
+msgid "Planes de Auditoría"
+msgstr "Auditory Plans?"
+
+#: .\accounts\templates\dashboard.html:62
+msgid "Crear Plan"
+msgstr "Create Plan"
+
+#: .\accounts\templates\dashboard.html:65
+#: .\accounts\templates\dashboard.html:93
+#: .\accounts\templates\dashboard.html:121
+msgid "id"
+msgstr "ID"
+
+#: .\accounts\templates\dashboard.html:65
+#: .\accounts\templates\dashboard.html:121
+msgid "Fecha"
+msgstr "Date"
+
+#: .\accounts\templates\dashboard.html:65
+msgid "Líder"
+msgstr "Leader"
+
+#: .\accounts\templates\dashboard.html:65
+#: .\accounts\templates\dashboard.html:121
+msgid "Cláusulas"
+msgstr "Clause"
+
+#: .\accounts\templates\dashboard.html:81
+msgid "No hay planes de auditoría."
+msgstr "No auditory plans found"
+
+#: .\accounts\templates\dashboard.html:89 .\core\templates\base.html:52
+msgid "Listas de Verificación"
+msgstr "Verification Lists"
+
+#: .\accounts\templates\dashboard.html:90
+msgid "Crear Checklist"
+msgstr "Create Checklist"
+
+#: .\accounts\templates\dashboard.html:93 .\audit\templates\checkLists.html:17
+#: .\audit\templates\reports.html:69 .\audit\templates\reports.html:102
+msgid "Proceso"
+msgstr "Process"
+
+#: .\accounts\templates\dashboard.html:93 .\audit\templates\checkLists.html:26
+#: .\audit\templates\reports.html:101
+msgid "Lugar"
+msgstr "Place"
+
+#: .\accounts\templates\dashboard.html:93
+#: .\accounts\templates\dashboard.html:121
+msgid "Auditor"
+msgstr "Auditor"
+
+#: .\accounts\templates\dashboard.html:109
+msgid "No hay checklists."
+msgstr "No checklists found"
+
+#: .\accounts\templates\dashboard.html:117 .\core\templates\home.html:20
+msgid "Informes"
+msgstr "Reports"
+
+#: .\accounts\templates\dashboard.html:118
+msgid "Crear Informe"
+msgstr "Create report"
+
+#: .\accounts\templates\dashboard.html:137
+msgid "No hay informes."
+msgstr "No reports founded"
+
+#: .\accounts\templates\dashboard.html:145
+msgid "Grupos"
+msgstr "Groups"
+
+#: .\accounts\templates\dashboard.html:146
+msgid "Crear Grupo"
+msgstr "Create group"
+
+#: .\accounts\templates\dashboard.html:149 .\audit\templates\auditPlan.html:125
+msgid "Nombre"
+msgstr "Name"
+
+#: .\accounts\templates\dashboard.html:161
+msgid "No hay grupos."
+msgstr "No groups found"
+
+#: .\accounts\templates\login.html:4 .\accounts\templates\login.html:32
+#: .\accounts\templates\profile.html:37
+msgid "Iniciar sesión"
+msgstr "Login"
+
+#: .\accounts\templates\login.html:16
+msgid "Inicio de sesión"
+msgstr "Login"
+
+#: .\accounts\templates\login.html:23 .\accounts\templates\register.html:24
+msgid "Nombre de usuario"
+msgstr "Username"
+
+#: .\accounts\templates\login.html:28 .\accounts\templates\register.html:44
+msgid "Contraseña"
+msgstr "Password"
+
+#: .\accounts\templates\login.html:35
+msgid "¿No tienes cuenta?"
+msgstr "¿Dont have an account?"
+
+#: .\accounts\templates\login.html:36
+msgid "Regístrate aquí"
+msgstr "Register here"
+
+#: .\accounts\templates\profile.html:4 .\core\templates\base.html:55
+msgid "Perfil"
+msgstr "Profile"
+
+#: .\accounts\templates\profile.html:18
+msgid "Perfil de Usuario"
+msgstr "User Profile"
+
+#: .\accounts\templates\profile.html:22 .\accounts\templates\register.html:39
+msgid "Organización"
+msgstr "Organization"
+
+#: .\accounts\templates\profile.html:29
+msgid "Cerrar sesión"
+msgstr "Logout"
+
+#: .\accounts\templates\profile.html:34
+msgid "No estás autenticado"
+msgstr "You're not authenticated"
+
+#: .\accounts\templates\profile.html:35
+msgid "Por favor inicia sesión para ver tu perfil."
+msgstr "Please login to see your profile"
+
+#: .\accounts\templates\register.html:4
+msgid "Registro"
+msgstr "Register"
+
+#: .\accounts\templates\register.html:16
+msgid "Registro de Usuario"
+msgstr "Register new user"
+
+#: .\accounts\templates\register.html:29
+msgid "Correo electrónico"
+msgstr "Email"
+
+#: .\accounts\templates\register.html:49
+msgid "Confirmar contraseña"
+msgstr "Confirm Password"
+
+#: .\accounts\templates\register.html:53
+msgid "Registrarse"
+msgstr "Register"
+
+#: .\accounts\templates\register.html:56
+msgid "¿Ya tienes cuenta?"
+msgstr "¿Dont have an account?"
+
+#: .\accounts\templates\register.html:57
+msgid "Inicia sesión aquí"
+msgstr "Login"
+
+#: .\accounts\views.py:25
+msgid "Registro correcto"
+msgstr "Succesfull register"
+
+#: .\accounts\views.py:30
+msgid "El nombre de usuario ya está en uso."
+msgstr "The username is already in use"
+
+#: .\accounts\views.py:34
+msgid "El correo electrónico ya está registrado."
+msgstr "The email is already in use"
+
+#: .\accounts\views.py:39
+msgid "Las contraseñas no coinciden."
+msgstr "Passwords don't match"
+
+#: .\accounts\views.py:53
+msgid "Inicio de sesión correcto"
+msgstr "Succesfull login"
+
+#: .\accounts\views.py:57
+msgid "Los datos son incorrectos"
+msgstr "The values are incorrect"
+
+#: .\accounts\views.py:67
+msgid "Inicia sesión primero"
+msgstr "Login first"
+
+#: .\accounts\views.py:74
+msgid "Cierre de sesión correcto"
+msgstr "Succesfull Logout"
+
+#: .\accounts\views.py:81
+msgid "Debes iniciar sesión para ver el dashboard."
+msgstr "Please login to see the dashboard"
+
+#: .\accounts\views.py:98
+#, python-format
+msgid "Usuario %(username)s actualizado."
+msgstr "User %(username)s updated."
+
+#: .\accounts\views.py:105
+msgid "Usuario eliminado."
+msgstr "User deleted"
+
+#: .\audit\templates\auditPlan.html:5
+msgid "Audit Plan"
+msgstr "Audit Plan"
+
+#: .\audit\templates\auditPlan.html:49
+msgid "Alcance - Objetivos"
+msgstr "Scope - Objectives"
+
+#: .\audit\templates\auditPlan.html:50
+msgid "Incertidumbre"
+msgstr "Uncertainty"
+
+#: .\audit\templates\auditPlan.html:51
+msgid "Recursos"
+msgstr "Resources"
+
+#: .\audit\templates\auditPlan.html:52
+msgid "Implementación"
+msgstr "Implementation"
+
+#: .\audit\templates\auditPlan.html:53 .\core\templates\base.html:53
+msgid "Plan de Auditoría"
+msgstr "Auditory Plan?"
+
+#: .\audit\templates\auditPlan.html:65 .\audit\templates\auditPlan.html:85
+msgid "Alcance"
+msgstr "Scope"
+
+#: .\audit\templates\auditPlan.html:68
+msgid "Objetivos"
+msgstr "Objectives"
+
+#: .\audit\templates\auditPlan.html:77
+msgid "Item"
+msgstr "Item"
+
+#: .\audit\templates\auditPlan.html:78 .\audit\templates\auditPlan.html:93
+#: .\audit\templates\auditPlan.html:109 .\audit\templates\checkLists.html:63
+msgid "Descripción"
+msgstr "Description"
+
+#: .\audit\templates\auditPlan.html:92 .\audit\templates\auditPlan.html:108
+msgid "Tipo"
+msgstr "Type"
+
+#: .\audit\templates\auditPlan.html:94 .\audit\templates\auditPlan.html:110
+msgid "Observaciones"
+msgstr "Observations"
+
+#: .\audit\templates\auditPlan.html:101
+msgid "Criterios"
+msgstr "Critirea"
+
+#: .\audit\templates\auditPlan.html:117
+msgid "Revisión"
+msgstr "Review"
+
+#: .\audit\templates\auditPlan.html:126
+msgid "Asistencia"
+msgstr "Asistance"
+
+#: .\audit\templates\auditPlan.html:141
+msgid "Observaciones generales"
+msgstr "General obserbations"
+
+#: .\audit\templates\auditPlan.html:143
+msgid "Escribe observaciones aquí"
+msgstr "Write your obserbations here"
+
+#: .\audit\templates\auditPlan.html:149
+#, fuzzy
+#| msgid "Plan de auditoría"
+msgid "Guardar plan de auditoría"
+msgstr "Auditory Plan?"
+
+#: .\audit\templates\checkLists.html:5
+msgid "Checklist"
+msgstr "Create Checklist"
+
+#: .\audit\templates\checkLists.html:10 .\audit\templates\checkLists.html:86
+msgid "Lista de verificación"
+msgstr "Verification Lists"
+
+#: .\audit\templates\checkLists.html:20
+msgid "Ingresa el proceso"
+msgstr "Enter the process"
+
+#: .\audit\templates\checkLists.html:29
+msgid "Ingresa el lugar"
+msgstr "Enter the place"
+
+#: .\audit\templates\checkLists.html:35 .\audit\templates\reports.html:68
+msgid "Tipo de proceso"
+msgstr "Type of process"
+
+#: .\audit\templates\checkLists.html:40
+msgid "Ciclo de vida"
+msgstr "Lifespan"
+
+#: .\audit\templates\checkLists.html:44
+msgid "Habilitador"
+msgstr "Enabler"
+
+#: .\audit\templates\checkLists.html:53 .\audit\templates\checkLists.html:74
+#: .\audit\templates\checkLists.html:91 .\audit\templates\reports.html:96
+msgid "Cláusula"
+msgstr "Clause"
+
+#: .\audit\templates\checkLists.html:55
+msgid "Seleccionar..."
+msgstr "Select"
+
+#: .\audit\templates\checkLists.html:70
+msgid "Preguntas"
+msgstr "Questions"
+
+#: .\audit\templates\checkLists.html:75 .\audit\templates\checkLists.html:92
+msgid "Índice"
+msgstr "Index"
+
+#: .\audit\templates\checkLists.html:76 .\audit\templates\checkLists.html:93
+msgid "Pregunta"
+msgstr "Question"
+
+#: .\audit\templates\checkLists.html:77
+msgid "Aplica"
+msgstr "Applies"
+
+#: .\audit\templates\checkLists.html:94 .\audit\templates\reports.html:99
+msgid "Evidencia"
+msgstr "Evidence"
+
+#: .\audit\templates\checkLists.html:95
+msgid "Calificación"
+msgstr "Calification"
+
+#: .\audit\templates\checkLists.html:96 .\audit\templates\reports.html:98
+msgid "Hallazgo"
+msgstr "Finding"
+
+#: .\audit\templates\checkLists.html:104
+msgid "Agregar Preguntas Seleccionadas"
+msgstr "Add selected questions"
+
+#: .\audit\templates\checkLists.html:105
+msgid "Agregar Fila Vacía"
+msgstr "Add empty row"
+
+#: .\audit\templates\checkLists.html:106
+msgid "Descargar JSON"
+msgstr "Download JSON"
+
+#: .\audit\templates\checkLists.html:107
+msgid "Guardar Checklist"
+msgstr "Save Checklist"
+
+#: .\audit\templates\checkLists.html:108
+msgid "Descargar Excel"
+msgstr "Download Excel"
+
+#: .\audit\templates\checkLists.html:115
+msgid "Editar Texto"
+msgstr "Edit text"
+
+#: .\audit\templates\checkLists.html:122 .\core\templates\base.html:86
+msgid "Cerrar"
+msgstr "Close"
+
+#: .\audit\templates\checkLists.html:123
+msgid "Guardar"
+msgstr "Save"
+
+#: .\audit\templates\excel.html:5 .\audit\templates\excel.html:27
+#: .\audit\templates\reports.html:5
+msgid "Report"
+msgstr "Report"
+
+#: .\audit\templates\excel.html:9
+msgid "Descargar archivos"
+msgstr "Download files"
+
+#: .\audit\templates\excel.html:13 .\core\templates\home.html:28
+msgid "Plan de auditoría"
+msgstr "Auditory Plan?"
+
+#: .\audit\templates\excel.html:18
+msgid "Selecciona una checklist"
+msgstr "Select a checklist"
+
+#: .\audit\templates\excel.html:23
+msgid "LVs"
+msgstr "LVs"
+
+#: .\audit\templates\reports.html:50 .\audit\templates\reports.html:63
+msgid "Resumen"
+msgstr "Summary"
+
+#: .\audit\templates\reports.html:51 .\audit\templates\reports.html:70
+msgid "Fortalezas"
+msgstr "Strengths"
+
+#: .\audit\templates\reports.html:52 .\audit\templates\reports.html:71
+msgid "Conformidades"
+msgstr "Conformities"
+
+#: .\audit\templates\reports.html:53 .\audit\templates\reports.html:73
+msgid "Riesgos"
+msgstr "Risks"
+
+#: .\audit\templates\reports.html:54 .\audit\templates\reports.html:72
+msgid "Recomendaciones"
+msgstr "Recomendations"
+
+#: .\audit\templates\reports.html:55
+msgid "No conformidades"
+msgstr "Non-conformities"
+
+#: .\audit\templates\reports.html:64
+msgid "Actualizar"
+msgstr "Update"
+
+#: .\audit\templates\reports.html:74
+msgid "No Conformidades"
+msgstr "Non-conformities"
+
+#: .\audit\templates\reports.html:75
+msgid "Total"
+msgstr "Total"
+
+#: .\audit\templates\reports.html:95
+msgid "No"
+msgstr "No"
+
+#: .\audit\templates\reports.html:97
+msgid "Norma"
+msgstr "Rule"
+
+#: .\audit\templates\reports.html:100
+msgid "Dependencia"
+msgstr "Dependency"
+
+#: .\audit\templates\reports.html:103
+msgid "Tipo Proceso"
+msgstr "Type of process"
+
+#: .\audit\templates\reports.html:104
+msgid "Responsable"
+msgstr "Responsable"
+
+#: .\audit\templates\reports.html:114
+msgid "Pertinencia"
+msgstr "Relevance"
+
+#: .\audit\templates\reports.html:115
+msgid "Adecuación"
+msgstr "Adjustment"
+
+#: .\audit\templates\reports.html:116
+msgid "Eficacia"
+msgstr "Effectiveness"
+
+#: .\audit\templates\reports.html:135
+msgid "Listas cargadas"
+msgstr "Loaded lists"
+
+#: .\audit\templates\reports.html:138
+msgid "Cargar"
+msgstr "Load"
+
+#: .\audit\templates\reports.html:139
+msgid "Enviar"
+msgstr "Send"
+
+#: .\audit\templates\reports.html:142
+msgid "Contenido del archivo JSON:"
+msgstr "Content of the JSON file"
+
+#: .\audit\views.py:56 .\audit\views.py:89 .\audit\views.py:146
+msgid "No tienes acceso"
+msgstr "You don't have access"
+
+#: .\core\templates\base.html:8 .\core\templates\base.html:42
+#: .\core\templates\base.html:96
+msgid "AudiApp"
+msgstr "AudiApp"
+
+#: .\core\templates\base.html:51
+msgid "Inicio"
+msgstr "Home"
+
+#: .\core\templates\base.html:54
+msgid "Informe"
+msgstr "Report"
+
+#: .\core\templates\base.html:57
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: .\core\templates\base.html:63
+msgid "Idioma"
+msgstr "Language"
+
+#: .\core\templates\home.html:5
+msgid "AudiApp - Dashboard"
+msgstr "AudiApp - Dashboard"
+
+#: .\core\templates\home.html:9
+msgid "¿Cómo podemos ayudarte?"
+msgstr "¿How can we help you?"
+
+#: .\core\templates\home.html:12
+msgid "Buscar..."
+msgstr "Search"
+
+#: .\core\templates\home.html:39
+msgid "Listas de verificación"
+msgstr "Verification Lists"

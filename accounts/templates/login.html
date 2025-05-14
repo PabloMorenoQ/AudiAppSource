@@ -1,37 +1,39 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Iniciar sesión{% endblock %}
+{% block title %}{% trans "Iniciar sesión" %}{% endblock %}
 
 {% block content %}
 <style>
     .card.static:hover {
-    transform: none !important;
-    transition: none !important;
-    box-shadow: none !important;
-}
+        transform: none !important;
+        transition: none !important;
+        box-shadow: none !important;
+    }
 </style>
 
 <div class="container mt-5">
-    <h2 class="text-center card-title">Inicio de sesión</h2>
+    <h2 class="text-center card-title">{% trans "Inicio de sesión" %}</h2>
     <div class="card static">
         <div class="card-body">
             <form method="post" class="text-center">
                 {% csrf_token %}
                     
                 <div class="form-group">
-                    <label for="username" class="d-block text-left">Nombre de usuario</label>
+                    <label for="username" class="d-block text-left">{% trans "Nombre de usuario" %}</label>
                     <input type="text" name="username" id="username" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="password" class="d-block text-left">Contraseña</label>
+                    <label for="password" class="d-block text-left">{% trans "Contraseña" %}</label>
                     <input type="password" name="password" id="password" class="form-control" required>
                 </div>
 
-                <button type="submit" class="button mt-3 w-100">Iniciar sesión</button>
+                <button type="submit" class="button mt-3 w-100">{% trans "Iniciar sesión" %}</button>
             </form>
             <p class="text-center mt-3">
-                ¿No tienes cuenta? <a href="{% url 'register' %}" class="text-link">Regístrate aquí</a>
+                {% trans "¿No tienes cuenta?" %}
+                <a href="{% url 'register' %}" class="text-link">{% trans "Regístrate aquí" %}</a>
             </p>
         </div>
     </div>
