@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}AudiApp - Dashboard{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "AudiApp - Dashboard" %}{% endblock %}
 
 {% block content %}
 <div class="container text-center">
-    <h2 class="my-4">¿Cómo podemos ayudarte?</h2>
+    <h2 class="my-4">{% trans "¿Cómo podemos ayudarte?" %}</h2>
     
     <div class="mb-4">
-        <input type="text" class="form-control w-50 mx-auto" placeholder="Buscar...">
+        <input type="text" class="form-control w-50 mx-auto" placeholder="{% trans "Buscar..." %}">
     </div>
     
     <div class="row justify-content-center">
         <div class="col-md-3 mb-3">
             <a href="{% url 'reports' %}" class="text-decoration-none">
                 <div class="card p-4 shadow-sm text-center">
-                    <i class="fa-solid fa-pen fa-2x"></i> <!-- Logo de informes -->
-                    <h5 class="mt-2">Informes</h5>
+                    <i class="fa-solid fa-pen fa-2x"></i>
+                    <h5 class="mt-2">{% trans "Informes" %}</h5>
                 </div>
             </a>
         </div>
         <div class="col-md-3 mb-3">
             <a href="{% url 'audit_plan' %}" class="text-decoration-none">
                 <div class="card p-4 shadow-sm text-center">
-                    <i class="fa-solid fa-folder fa-2x"></i> <!-- Logo de plan de auditoría -->
-                    <h5 class="mt-2">Plan de auditoría</h5>
+                    <i class="fa-solid fa-folder fa-2x"></i>
+                    <h5 class="mt-2">{% trans "Plan de auditoría" %}</h5>
                 </div>
             </a>
         </div>
@@ -33,13 +35,13 @@
         <div class="col-md-3 mb-3">
             <a href="{% url 'checklists' %}" class="text-decoration-none">
                 <div class="card p-4 shadow-sm text-center">
-                    <i class="fa-solid fa-bars fa-2x"></i> <!-- Logo de listas de verificación -->
-                    <h5 class="mt-2">Listas de verificación</h5>
+                    <i class="fa-solid fa-bars fa-2x"></i>
+                    <h5 class="mt-2">{% trans "Listas de verificación" %}</h5>
                 </div>
             </a>
         </div>
         <div class="col-md-3 mb-3">
-        
+            <!-- Puedes añadir más tarjetas aquí -->
         </div>
     </div>
 </div>

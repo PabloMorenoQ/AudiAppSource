@@ -1,19 +1,26 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block title %}Dashboard de Administración{% endblock %}
+{% load static i18n %}
+
+{% block title %}{% trans "Dashboard de Administración" %}{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Panel de Administración</h2>
+<h2 class="mb-4">{% trans "Panel de Administración" %}</h2>
 
 <!-- Usuarios -->
 <section class="mb-5">
-    <h3>Usuarios de {{ request.user.organization.name }}</h3>
+    <h3>{% trans "Usuarios de" %} {{ request.user.organization.name }}</h3>
     <table class="table table-striped">
-        <thead><tr><th>Usuario</th>><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead>
+        <thead>
+            <tr>
+                <th>{% trans "Usuario" %}</th>
+                <th>{% trans "Email" %}</th>
+                <th>{% trans "Rol" %}</th>
+                <th>{% trans "Acciones" %}</th>
+            </tr>
+        </thead>
         <tbody>
             {% for user in users %}
                 <tr>
-                    <!-- Formulario de edición -->
                     <form method="post" action="{% url 'admin_dashboard' %}">
                         {% csrf_token %}
                         <input type="hidden" name="form_type" value="edit_user">
@@ -23,10 +30,10 @@
                         <td><input type="email" name="email" value="{{ user.email }}" class="form-control form-control-sm"></td>
                         <td>
                             <select name="role" class="form-select form-select-sm">
-                                <option value="superUser" {% if user.role == 'superUser' %}selected{% endif %}>Super User</option>
-                                <option value="organizationUser" {% if user.role == 'organizationUser' %}selected{% endif %}>Organization Admin</option>
-                                <option value="auditUser" {% if user.role == 'auditUser' %}selected{% endif %}>Audit User</option>
-                                <option value="auditLeaderUser" {% if user.role == 'auditLeaderUser' %}selected{% endif %}>Audit Leader User</option>
+                                <option value="superUser" {% if user.role == 'superUser' %}selected{% endif %}>{% trans "Super User" %}</option>
+                                <option value="organizationUser" {% if user.role == 'organizationUser' %}selected{% endif %}>{% trans "Organization Admin" %}</option>
+                                <option value="auditUser" {% if user.role == 'auditUser' %}selected{% endif %}>{% trans "Audit User" %}</option>
+                                <option value="auditLeaderUser" {% if user.role == 'auditLeaderUser' %}selected{% endif %}>{% trans "Audit Leader User" %}</option>
                             </select>
                         </td>
                         <td class="d-flex gap-1">
@@ -38,12 +45,12 @@
                         {% csrf_token %}
                         <input type="hidden" name="form_type" value="delete_user">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este usuario?')">🗑️</button>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick=return confirm({% trans '¿Eliminar este usuario?' %})>🗑️</button>
                     </form>
                         </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="5">No hay usuarios.</td></tr>
+                <tr><td colspan="5">{% trans "No hay usuarios." %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
@@ -51,10 +58,12 @@
 
 <!-- Planes de Auditoría -->
 <section class="mb-5">
-    <h3>Planes de Auditoría</h3>
-    <a href="audit/auditPlan/" class="btn btn-success btn-sm mb-2">➕ Crear Plan</a>
+    <h3>{% trans "Planes de Auditoría" %}</h3>
+    <a href="audit/auditPlan/" class="btn btn-success btn-sm mb-2">➕ {% trans "Crear Plan" %}</a>
     <table class="table table-striped">
-        <thead><tr><th>id</th><th>Fecha</th><th>Líder</th><th>Cláusulas</th><th>Acciones</th></tr></thead>
+        <thead>
+            <tr><th>{% trans "id" %}</th><th>{% trans "Fecha" %}</th><th>{% trans "Líder" %}</th><th>{% trans "Cláusulas" %}</th><th>{% trans "Acciones" %}</th></tr>
+        </thead>
         <tbody>
             {% for plan in audit_plans %}
                 <tr>
@@ -69,7 +78,7 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="4">No hay planes de auditoría.</td></tr>
+                <tr><td colspan="4">{% trans "No hay planes de auditoría." %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
@@ -77,10 +86,12 @@
 
 <!-- Checklists -->
 <section class="mb-5">
-    <h3>Listas de Verificación</h3>
-    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Checklist</a>
+    <h3>{% trans "Listas de Verificación" %}</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ {% trans "Crear Checklist" %}</a>
     <table class="table table-striped">
-        <thead><tr><th>id</th><th>Proceso</th><th>Lugar</th><th>Auditor</th><th>Acciones</th></tr></thead>
+        <thead>
+            <tr><th>{% trans "id" %}</th><th>{% trans "Proceso" %}</th><th>{% trans "Lugar" %}</th><th>{% trans "Auditor" %}</th><th>{% trans "Acciones" %}</th></tr>
+        </thead>
         <tbody>
             {% for checklist in checklists %}
                 <tr>
@@ -95,7 +106,7 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="4">No hay checklists.</td></tr>
+                <tr><td colspan="4">{% trans "No hay checklists." %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
@@ -103,10 +114,12 @@
 
 <!-- Informes -->
 <section class="mb-5">
-    <h3>Informes</h3>
-    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Informe</a>
+    <h3>{% trans "Informes" %}</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ {% trans "Crear Informe" %}</a>
     <table class="table table-striped">
-        <thead><tr><th>id</th><th>Fecha</th><th>Auditor</th><th>Cláusulas</th><th>Acciones</th></tr></thead>
+        <thead>
+            <tr><th>{% trans "id" %}</th><th>{% trans "Fecha" %}</th><th>{% trans "Auditor" %}</th><th>{% trans "Cláusulas" %}</th><th>{% trans "Acciones" %}</th></tr>
+        </thead>
         <tbody>
             {% for report in reports %}
                 <tr>
@@ -121,18 +134,20 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="4">No hay informes.</td></tr>
+                <tr><td colspan="4">{% trans "No hay informes." %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
 </section>
 
-<!-- Grupos (Opcional, si estás usando grupos de Django) -->
+<!-- Grupos -->
 <section class="mb-5">
-    <h3>Grupos</h3>
-    <a href="{}" class="btn btn-success btn-sm mb-2">➕ Crear Grupo</a>
+    <h3>{% trans "Grupos" %}</h3>
+    <a href="{}" class="btn btn-success btn-sm mb-2">➕ {% trans "Crear Grupo" %}</a>
     <table class="table table-striped">
-        <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
+        <thead>
+            <tr><th>{% trans "Nombre" %}</th><th>{% trans "Acciones" %}</th></tr>
+        </thead>
         <tbody>
             {% for group in groups %}
                 <tr>
@@ -143,7 +158,7 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr><td colspan="2">No hay grupos.</td></tr>
+                <tr><td colspan="2">{% trans "No hay grupos." %}</td></tr>
             {% endfor %}
         </tbody>
     </table>

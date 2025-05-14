@@ -12,6 +12,8 @@ from .forms import Register
 from .models import User
 from audit.models import AuditPlan, CheckList, Report  # Asegúrate que "audit" sea tu app correcta
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import gettext as _
+
 
 # Vista de registro
 def register_view(request):
@@ -20,21 +22,21 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, 'Registro correcto')
+            messages.success(request, _('Registro correcto'))
             return redirect('home')
         else:
             username = form.cleaned_data.get('username')
             if User.objects.filter(username=username).exists():
-                messages.warning(request, 'El nombre de usuario ya está en uso.')
+                messages.warning(request, _('El nombre de usuario ya está en uso.'))
 
             email = form.cleaned_data.get('email')
             if User.objects.filter(email=email).exists():
-                messages.warning(request, 'El correo electrónico ya está registrado.')
+                messages.warning(request, _('El correo electrónico ya está registrado.'))
 
             password1 = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
             if password1 != password2:
-                messages.warning(request, 'Las contraseñas no coinciden.')
+                messages.warning(request, _('Las contraseñas no coinciden.'))
     else:
         form = Register()
     return render(request, 'register.html', {'form': form})
@@ -48,11 +50,11 @@ def login_view(request):
             contraseña = form.cleaned_data.get('password')
             user = authenticate(request, username=nombre, password=contraseña)
             if user:
-                messages.success(request, "Inicio de sesión correcto")
+                messages.success(request, _("Inicio de sesión correcto"))
                 login(request, user)
                 return redirect('profile')
         else:
-            messages.warning(request, 'Los datos son incorrectos')
+            messages.warning(request, _('Los datos son incorrectos'))
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
@@ -62,21 +64,21 @@ def profile_view(request):
     if request.user.is_authenticated:
         return render(request, "profile.html")
     else:
-        messages.info(request, "Inicia sesión primero")
+        messages.info(request, _("Inicia sesión primero"))
         return redirect('login')
 
 # Vista de logout
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        messages.success(request, "Cierre de sesión correcto")
+        messages.success(request, _("Cierre de sesión correcto"))
         return redirect('register')
     return redirect('register')
 
 # Vista del Dashboard con edición y eliminación inline
 def admin_dashboard(request):
     if not request.user.is_authenticated:
-        messages.warning(request, "Debes iniciar sesión para ver el dashboard.")
+        messages.warning(request, _("Debes iniciar sesión para ver el dashboard."))
         return redirect('login')
 
     org = 1
@@ -93,13 +95,14 @@ def admin_dashboard(request):
             user.email = request.POST.get('email', user.email)
             user.role = request.POST.get('role', user.role)
             user.save()
-            messages.success(request, f"Usuario {user.username} actualizado.")
+            messages.success(request, _("Usuario %(username)s actualizado.") % {"username": user.username})
+
 
         elif form_type == 'delete_user':
             user_id = request.POST.get('user_id')
             user = get_object_or_404(User, id=user_id, organization=org)
             user.delete()
-            messages.success(request, f"Usuario eliminado.")
+            messages.success(request, _(f"Usuario eliminado."))
 
         return redirect('admin_dashboard')
 

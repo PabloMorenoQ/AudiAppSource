@@ -1,28 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}  
 
-{% block title %}Report{% endblock %}
+{% block title %}{% trans "Report" %}{% endblock %}
 
 {% block content %}
 
-<h2 class="title">Descargar archivos</h2>
-            <!-- Botones y carga de JSON -->
-    <div>            
-        <button onclick="downloadAuditPlanExcel()">Plan de auditoria</button>
-    </div>
-    <div>
-        <select id="checklistSelector" class="form-select">
-            <option value="">Selecciona una checklist</option>
-            {% for checklist in checklists %}
-              <option value="{{ checklist.id }}">{{ checklist }}</option>
-            {% endfor %}
-        </select>
-        <button onclick="downloadChecklistExcel()">LVs</button>
-    </div>    
-    <div>
-        <button onclick="downloadReportExcel()">Report</button>
-    </div>
+<h2 class="title">{% trans "Descargar archivos" %}</h2>
 
-    <script src="{% static 'js/excel/excelCheckList.js' %}"></script>
+<!-- Botones y carga de JSON -->
+<div>
+    <button onclick="downloadAuditPlanExcel()">{% trans "Plan de auditoría" %}</button>
+</div>
+
+<div>
+    <select id="checklistSelector" class="form-select">
+        <option value="">{% trans "Selecciona una checklist" %}</option>
+        {% for checklist in checklists %}
+            <option value="{{ checklist.id }}">{{ checklist }}</option>
+        {% endfor %}
+    </select>
+    <button onclick="downloadChecklistExcel()">{% trans "LVs" %}</button>
+</div>
+
+<div>
+    <button onclick="downloadReportExcel()">{% trans "Report" %}</button>
+</div>
+
+<script src="{% static 'js/excel/excelCheckList.js' %}"></script>
 
 {% endblock %}

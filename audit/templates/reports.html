@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Report{% endblock %}
+{% block title %}{% trans "Report" %}{% endblock %}
 
 {% block content %}
 
@@ -44,238 +45,133 @@
 </style>
 
 <body>
-    <header class="navbar">
-        <nav>
-            <a onclick="showSection('resumen', this)" class="active">Resumen</a>
-            <a onclick="showSection('fortalezas', this)">Fortalezas</a>
-            <a onclick="showSection('conformidad', this)">Conformidades</a>
-            <a onclick="showSection('riesgos', this)">Riesgos</a>
-            <a onclick="showSection('recomendaciones', this)">Recomendaciones</a>
-            <a onclick="showSection('no-conformidades', this)">No conformidades</a>
-        </nav>
-    </header>
+<header class="navbar">
+    <nav>
+        <a onclick="showSection('resumen', this)" class="active">{% trans "Resumen" %}</a>
+        <a onclick="showSection('fortalezas', this)">{% trans "Fortalezas" %}</a>
+        <a onclick="showSection('conformidad', this)">{% trans "Conformidades" %}</a>
+        <a onclick="showSection('riesgos', this)">{% trans "Riesgos" %}</a>
+        <a onclick="showSection('recomendaciones', this)">{% trans "Recomendaciones" %}</a>
+        <a onclick="showSection('no-conformidades', this)">{% trans "No conformidades" %}</a>
+    </nav>
+</header>
 
-    <div class="row">
-        <div class="column left">
-            <!-- SECCIÓN RESUMEN -->
-            <div id="resumen" class="content-section">
-                <h2 class="title">Resumen</h2>
-                <button id="recuentoBtn" class="btn btn-primary">Actualizar</button>
-                <table class="table table-bordered" id="tabla-resumen">
-                    <thead>
-                        <tr>
-                            <th>Tipo de proceso</th>
-                            <th>Proceso</th>
-                            <th>Fortalezas</th>
-                            <th>Conformidades</th>
-                            <th>Recomendaciones</th>
-                            <th>Riesgos</th>
-                            <th>No Conformidades</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportTableSummary">
-                        <!-- Aquí se añadirán dinámicamente los procesos (si lo deseas) -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- SECCIÓN FORTALEZAS -->
-            <div id="fortalezas" class="content-section" style="display: none;">
-                <h2 class="title">Fortalezas</h2>
-                <table class="table table-bordered" id="tabla-fortalezas">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Cláusula</th>
-                            <th>Norma</th>
-                            <th>Hallazgo</th>
-                            <th>Evidencia</th>
-                            <th>Dependencia</th>
-                            <th>Lugar</th>
-                            <th>Proceso</th>
-                            <th>Tipo Proceso</th>
-                            <th>Responsable</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Filas generadas dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- SECCION CONFORMIDAD -->
-            <div id="conformidad" class="content-section" style="display: none;">
-                <h2 class="title">Conformidades</h2>
-                <table class="table table-bordered" id="tabla-conformidades">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Cláusula</th>
-                            <th>Norma</th>
-                            <th>Hallazgo</th>
-                            <th>Evidencia</th>
-                            <th>Dependencia</th>
-                            <th>Lugar</th>
-                            <th>Proceso</th>
-                            <th>Tipo Proceso</th>
-                            <th>Responsable</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Filas generadas dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- SECCIÓN RIESGOS -->
-            <div id="riesgos" class="content-section" style="display: none;">
-                <h2 class="title">Riesgos</h2>
-                <table class="table table-bordered" id="tabla-riesgos">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Cláusula</th>
-                            <th>Norma</th>
-                            <th>Hallazgo</th>
-                            <th>Evidencia</th>
-                            <th>Dependencia</th>
-                            <th>Lugar</th>
-                            <th>Proceso</th>
-                            <th>Tipo Proceso</th>
-                            <th>Responsable</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Filas generadas dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- SECCIÓN RECOMENDACIONES -->
-            <div id="recomendaciones" class="content-section" style="display: none;">
-                <h2 class="title">Recomendaciones</h2>
-                <table class="table table-bordered" id="tabla-recomendaciones">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Cláusula</th>
-                            <th>Norma</th>
-                            <th>Hallazgo</th>
-                            <th>Evidencia</th>
-                            <th>Dependencia</th>
-                            <th>Lugar</th>
-                            <th>Proceso</th>
-                            <th>Tipo Proceso</th>
-                            <th>Responsable</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Filas generadas dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- SECCIÓN NO CONFORMIDADES -->
-            <div id="no-conformidades" class="content-section" style="display: none;">
-                <h2 class="title">No Conformidades</h2>
-                <table class="table table-bordered" id="tabla-no-conformidades">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Cláusula</th>
-                            <th>Norma</th>
-                            <th>Hallazgo</th>
-                            <th>Evidencia</th>
-                            <th>Dependencia</th>
-                            <th>Lugar</th>
-                            <th>Proceso</th>
-                            <th>Tipo Proceso</th>
-                            <th>Responsable</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Filas generadas dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="summary-options">
-            <a onclick="showSummary('pertinencia', this)" class="active">Pertinencia</a>
-            <a onclick="showSummary('adecuacion', this)">Adecuación</a>
-            <a onclick="showSummary('eficacia', this)">Eficacia</a>
-        </div>
-        <div class="container">
-            <div id="pertinencia" class="card summary-box">
-                <div class="card-title">Pertinencia</div>
-                <div class="card-content editable" contenteditable="true">
-                    Explicación de la pertinencia del proceso.
-                </div>
-            </div>
-            <div id="adecuacion" class="card summary-box">
-                <div class="card-title">Adecuación</div>
-                <div class="card-content editable" contenteditable="true">
-                    Explicación sobre la adecuación del proceso.
-                </div>
-            </div>
-            <div id="eficacia" class="card summary-box">
-                <div class="card-title">Eficacia</div>
-                <div class="card-content editable" contenteditable="true">
-                    Evaluación de la eficacia del proceso.
-                </div>
-            </div>
+<div class="row">
+    <div class="column left">
+        <!-- SECCIÓN RESUMEN -->
+        <div id="resumen" class="content-section">
+            <h2 class="title">{% trans "Resumen" %}</h2>
+            <button id="recuentoBtn" class="btn btn-primary">{% trans "Actualizar" %}</button>
+            <table class="table table-bordered" id="tabla-resumen">
+                <thead>
+                    <tr>
+                        <th>{% trans "Tipo de proceso" %}</th>
+                        <th>{% trans "Proceso" %}</th>
+                        <th>{% trans "Fortalezas" %}</th>
+                        <th>{% trans "Conformidades" %}</th>
+                        <th>{% trans "Recomendaciones" %}</th>
+                        <th>{% trans "Riesgos" %}</th>
+                        <th>{% trans "No Conformidades" %}</th>
+                        <th>{% trans "Total" %}</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableSummary"></tbody>
+            </table>
         </div>
 
-        <div class="column right-mb-8">
-            <h2 class="title">Listas cargadas</h2>
-            <!-- Botones y carga de JSON -->
-            <div class="buttons">
-                <!-- Input de archivo JSON oculto -->
-                <input type="file" id="fileInput" accept=".json" style="display: none;">
-                
-                <!-- Botón para disparar la carga de archivo -->
-                <button id="cargarBtn">Cargar</button>
-                <button id="sendBtn">Enviar</button>
-            </div>
-
-            <!-- Área de texto para mostrar el contenido JSON -->
-            <div class="mt-3">
-                <label for="jsonContent">Contenido del archivo JSON:</label>
-                <textarea id="jsonContent" rows="10" style="width:100%;" readonly></textarea>
-            </div>
+        <!-- Repite lo mismo para las demás secciones -->
+        {% for section_id, title in [
+            ('fortalezas', 'Fortalezas'),
+            ('conformidad', 'Conformidades'),
+            ('riesgos', 'Riesgos'),
+            ('recomendaciones', 'Recomendaciones'),
+            ('no-conformidades', 'No Conformidades')
+        ] %}
+        <div id="{{ section_id }}" class="content-section" style="display: none;">
+            <h2 class="title">{% trans title %}</h2>
+            <table class="table table-bordered" id="tabla-{{ section_id }}">
+                <thead>
+                    <tr>
+                        <th>{% trans "No" %}</th>
+                        <th>{% trans "Cláusula" %}</th>
+                        <th>{% trans "Norma" %}</th>
+                        <th>{% trans "Hallazgo" %}</th>
+                        <th>{% trans "Evidencia" %}</th>
+                        <th>{% trans "Dependencia" %}</th>
+                        <th>{% trans "Lugar" %}</th>
+                        <th>{% trans "Proceso" %}</th>
+                        <th>{% trans "Tipo Proceso" %}</th>
+                        <th>{% trans "Responsable" %}</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
+        {% endfor %}
     </div>
 
-    <script>
-        // Limpiar tablas antes de recargar
-        function clearTables() {
-            const tables = [
-                'tabla-fortalezas',
-                'tabla-conformidades',
-                'tabla-riesgos',
-                'tabla-recomendaciones',
-                'tabla-no-conformidades'
-            ];
-            tables.forEach(tableId => {
-                let tbody = document.getElementById(tableId).querySelector('tbody');
-                tbody.innerHTML = ''; // Limpiamos su contenido
-            });
-        }
+    <div class="summary-options">
+        <a onclick="showSummary('pertinencia', this)" class="active">{% trans "Pertinencia" %}</a>
+        <a onclick="showSummary('adecuacion', this)">{% trans "Adecuación" %}</a>
+        <a onclick="showSummary('eficacia', this)">{% trans "Eficacia" %}</a>
+    </div>
 
-        // Al cargar el DOM, configuramos secciones y la lógica de carga
-        document.addEventListener('DOMContentLoaded', () => {
-            showSection('resumen', document.querySelector('.navbar a.active'));
-            showSummary('pertinencia', document.querySelector('.summary-options a.active'));
-            initFileLoader();
+    <div class="container">
+        {% for sid, title, description in [
+            ('pertinencia', 'Pertinencia', 'Explicación de la pertinencia del proceso.'),
+            ('adecuacion', 'Adecuación', 'Explicación sobre la adecuación del proceso.'),
+            ('eficacia', 'Eficacia', 'Evaluación de la eficacia del proceso.')
+        ] %}
+        <div id="{{ sid }}" class="card summary-box">
+            <div class="card-title">{% trans title %}</div>
+            <div class="card-content editable" contenteditable="true">
+                {% trans description %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="column right-mb-8">
+        <h2 class="title">{% trans "Listas cargadas" %}</h2>
+        <div class="buttons">
+            <input type="file" id="fileInput" accept=".json" style="display: none;">
+            <button id="cargarBtn">{% trans "Cargar" %}</button>
+            <button id="sendBtn">{% trans "Enviar" %}</button>
+        </div>
+        <div class="mt-3">
+            <label for="jsonContent">{% trans "Contenido del archivo JSON:" %}</label>
+            <textarea id="jsonContent" rows="10" style="width:100%;" readonly></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+    function clearTables() {
+        const tables = [
+            'tabla-fortalezas',
+            'tabla-conformidades',
+            'tabla-riesgos',
+            'tabla-recomendaciones',
+            'tabla-no-conformidades'
+        ];
+        tables.forEach(tableId => {
+            let tbody = document.getElementById(tableId).querySelector('tbody');
+            tbody.innerHTML = '';
         });
-    </script>
-    
-    <script src="{% static 'js/reports/fileLoader.js' %}"></script>
-    <script src="{% static 'js/reports/insertRow.js' %}"></script>
-    <script src="{% static 'js/reports/showTables.js' %}"></script>
-    <script src="{% static 'js/reports/summaryReport.js' %}"></script>
-    <script src="{% static 'js/reports/sendReport.js' %}"></script>
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showSection('resumen', document.querySelector('.navbar a.active'));
+        showSummary('pertinencia', document.querySelector('.summary-options a.active'));
+        initFileLoader();
+    });
+</script>
+
+<script src="{% static 'js/reports/fileLoader.js' %}"></script>
+<script src="{% static 'js/reports/insertRow.js' %}"></script>
+<script src="{% static 'js/reports/showTables.js' %}"></script>
+<script src="{% static 'js/reports/summaryReport.js' %}"></script>
+<script src="{% static 'js/reports/sendReport.js' %}"></script>
 
 </body>
 {% endblock %}

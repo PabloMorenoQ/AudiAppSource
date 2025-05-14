@@ -11,6 +11,8 @@ from accounts.models import Organization, User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.dateparse import parse_date
+from django.utils.translation import gettext as _
+
 
 
 @csrf_exempt
@@ -51,7 +53,7 @@ def audit_plan(request):
         return JsonResponse(plan.export(), safe=False)
         # return render(request, "auditPlan.html")
     else:
-        messages.warning(request, "No tienes acceso")
+        messages.warning(request, _("No tienes acceso"))
         return redirect('home')
     
 
@@ -84,7 +86,7 @@ def check_lists(request):
         )
 
     else:
-        messages.warning(request, "No tienes acceso")
+        messages.warning(request, _("No tienes acceso"))
         return redirect('home')
 
 @csrf_exempt
@@ -141,7 +143,7 @@ def reports(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
         return render(request, "reports.html")
     else:
-        messages.warning(request, "No tienes acceso")
+        messages.warning(request, _("No tienes acceso"))
         return redirect('home')
 
 def send_content():
