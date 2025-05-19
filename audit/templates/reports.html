@@ -80,34 +80,29 @@
         </div>
 
         <!-- Repite lo mismo para las demás secciones -->
-        {% for section_id, title in [
-            ('fortalezas', 'Fortalezas'),
-            ('conformidad', 'Conformidades'),
-            ('riesgos', 'Riesgos'),
-            ('recomendaciones', 'Recomendaciones'),
-            ('no-conformidades', 'No Conformidades')
-        ] %}
-        <div id="{{ section_id }}" class="content-section" style="display: none;">
-            <h2 class="title">{% trans title %}</h2>
-            <table class="table table-bordered" id="tabla-{{ section_id }}">
-                <thead>
-                    <tr>
-                        <th>{% trans "No" %}</th>
-                        <th>{% trans "Cláusula" %}</th>
-                        <th>{% trans "Norma" %}</th>
-                        <th>{% trans "Hallazgo" %}</th>
-                        <th>{% trans "Evidencia" %}</th>
-                        <th>{% trans "Dependencia" %}</th>
-                        <th>{% trans "Lugar" %}</th>
-                        <th>{% trans "Proceso" %}</th>
-                        <th>{% trans "Tipo Proceso" %}</th>
-                        <th>{% trans "Responsable" %}</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        {% endfor %}
+        {% for section_id, title in sections %}
+    <div id="{{ section_id }}" class="content-section" style="display: none;">
+        <h2 class="title">{{ title }}</h2>
+        <table class="table table-bordered" id="tabla-{{ section_id }}">
+            <thead>
+                <tr>
+                    <th>{% trans "No" %}</th>
+                    <th>{% trans "Cláusula" %}</th>
+                    <th>{% trans "Norma" %}</th>
+                    <th>{% trans "Hallazgo" %}</th>
+                    <th>{% trans "Evidencia" %}</th>
+                    <th>{% trans "Dependencia" %}</th>
+                    <th>{% trans "Lugar" %}</th>
+                    <th>{% trans "Proceso" %}</th>
+                    <th>{% trans "Tipo Proceso" %}</th>
+                    <th>{% trans "Responsable" %}</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+{% endfor %}
+
     </div>
 
     <div class="summary-options">
@@ -117,19 +112,16 @@
     </div>
 
     <div class="container">
-        {% for sid, title, description in [
-            ('pertinencia', 'Pertinencia', 'Explicación de la pertinencia del proceso.'),
-            ('adecuacion', 'Adecuación', 'Explicación sobre la adecuación del proceso.'),
-            ('eficacia', 'Eficacia', 'Evaluación de la eficacia del proceso.')
-        ] %}
+    {% for sid, title, description in summary_sections %}
         <div id="{{ sid }}" class="card summary-box">
-            <div class="card-title">{% trans title %}</div>
+            <div class="card-title">{{ title }}</div>
             <div class="card-content editable" contenteditable="true">
-                {% trans description %}
+                {{ description }}
             </div>
         </div>
-        {% endfor %}
+    {% endfor %}
     </div>
+
 
     <div class="column right-mb-8">
         <h2 class="title">{% trans "Listas cargadas" %}</h2>

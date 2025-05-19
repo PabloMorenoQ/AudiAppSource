@@ -5,6 +5,7 @@
 {% block title %}{% trans "Audit Plan" %}{% endblock %}
 
 {% block content %}
+
 <style>
     .navbar a {
         padding: 10px;
@@ -43,119 +44,318 @@
     }
 </style>
 
+
 <body>
-<header class="navbar">
-    <nav>
-        <a onclick="showSection('alcance', this)" class="active">{% trans "Alcance - Objetivos" %}</a>
-        <a onclick="showSection('incertidumbre', this)">{% trans "Incertidumbre" %}</a>
-        <a onclick="showSection('recursos', this)">{% trans "Recursos" %}</a>
-        <a onclick="showSection('implementacion', this)">{% trans "Implementación" %}</a>
-        <a onclick="showSection('planAuditoria', this)">{% trans "Plan de Auditoría" %}</a>
-    </nav>
-</header>
+    <header class="navbar">
+        <nav>
+            <a onclick="showSection('alcance', this)" class="active">{% trans "Alcance - Objetivos" %}</a>
+            <a onclick="showSection('incertidumbre', this)">{% trans "Incertidumbre" %}</a>
+            <a onclick="showSection('recursos', this)">{% trans "Recursos" %}</a>
+            <a onclick="showSection('implementacion', this)">{% trans "Implementación" %}</a>
+            <a onclick="showSection('planAuditoria', this)">{% trans "Plan de Auditoría" %}</a>
+        </nav>
+    </header>
 
-<div class="row">
-<form method="post" action="{% url 'audit_plan' %}" id="auditPlanForm">
-    {% csrf_token %}
-    <input type="hidden" name="plan_content" id="plan_content_input" />
+    <div class="row">
+    <form 
+        method="post" 
+        action="{% url 'audit_plan' %}" 
+        id="auditPlanForm"
+    >
+        {% csrf_token %}
 
-    <div class="column left">
-        <!-- ALCANCE -->
-        <div id="alcance" class="content-section">
-            <h2 class="title">{% trans "Alcance" %}</h2>
-            <div class="container">
-                <div class="card-title">
-                    {% trans "Objetivos" %}
-                    <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-objetivos">+</button>
-                    <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-objetivos">-</button>
+    <input 
+        type="hidden" 
+        name="plan_content" 
+        id="plan_content_input" 
+    />
+
+        <div class="column left">
+            <!-- ALCANCE -->
+            <div id="alcance" class="content-section">
+                <h2 class="title">{% trans "Alcance" %}</h2>
+                <div class="container">
+                    <div class="card-title">
+                         {% trans "Objetivos" %}
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-objetivos">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-objetivos">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-objetivos">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Item" %}</th>
+                                <th>{% trans "Descripción" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        {% trans "Alcance" %}
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-alcance">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-alcance">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-alcance">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Tipo" %}</th>
+                                <th>{% trans "Descripción" %}</th>
+                                <th>{% trans "Observaciones" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        {% trans "Criterios" %}
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-criterios">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-criterios">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-criterios">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Tipo" %}</th>
+                                <th>{% trans "Descripción" %}</th>
+                                <th>{% trans "Observaciones" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+
+                    <div class="card-title">
+                        {% trans "Revisión" %}
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-revision">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-revision">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-revision">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Rol" %}</th>
+                                <th>{% trans "Nombre" %}</th>
+                                <th>{% trans "Asistencia" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
                 </div>
-                <!-- Tablas similares con encabezados traducidos -->
-                <!-- A continuación solo muestro los cambios de encabezados, el resto sigue igual -->
-                <table class="table table-bordered" id="tabla-objetivos">
-                    <thead>
-                        <tr>
-                            <th>{% trans "Item" %}</th>
-                            <th>{% trans "Descripción" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-                <div class="card-title">
-                    {% trans "Alcance" %}
-                    <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-alcance">+</button>
-                    <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-alcance">-</button>
-                </div>
-                <table class="table table-bordered" id="tabla-alcance">
-                    <thead>
-                        <tr>
-                            <th>{% trans "Tipo" %}</th>
-                            <th>{% trans "Descripción" %}</th>
-                            <th>{% trans "Observaciones" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-                <div class="card-title">
-                    {% trans "Criterios" %}
-                    <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-criterios">+</button>
-                    <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-criterios">-</button>
-                </div>
-                <table class="table table-bordered" id="tabla-criterios">
-                    <thead>
-                        <tr>
-                            <th>{% trans "Tipo" %}</th>
-                            <th>{% trans "Descripción" %}</th>
-                            <th>{% trans "Observaciones" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-                <div class="card-title">
-                    {% trans "Revisión" %}
-                    <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-revision">+</button>
-                    <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-revision">-</button>
-                </div>
-                <table class="table table-bordered" id="tabla-revision">
-                    <thead>
-                        <tr>
-                            <th>{% trans "Rol" %}</th>
-                            <th>{% trans "Nombre" %}</th>
-                            <th>{% trans "Asistencia" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
             </div>
+
+            <!-- INCERTIDUMBRE -->
+            <div id="incertidumbre" class="content-section" style="display: none;">
+                <h2 class="title">Incertidumbre</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Riesgos
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-riesgos">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-riesgos">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-riesgos">
+                        <thead>
+                            <tr>
+                                <th>Riesgos</th>
+                                <th>Descripción</th>
+                                <th>Controles</th>
+                                <th>Recursos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Metodología
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-metodologia">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-metodologia">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-metodologia">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Oportunidades
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-oportunidades">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-oportunidades">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-oportunidades">
+                        <thead>
+                            <tr>
+                                <th>Oportunidad</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                                <th>Recursos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+
+            <!-- RECURSOS -->
+            <div id="recursos" class="content-section" style="display: none;">
+                <h2 class="title">Recursos</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Recursos
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-recursos">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-recursos">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-recursos">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">
+                        Equipo auditor
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-equipoAuditor">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-equipoAuditor">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-equipoAuditor">
+                        <thead>
+                            <tr>
+                                <th>Rol</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">{% trans "Observaciones generales" %}</div>
+                        <div class="card-content editable" contenteditable="true">
+                            {% trans "Escribe observaciones aquí" %}
+                        </div>
+                    
+                </div>
+            </div>
+
+            <!-- IMPLEMENTACION -->
+            <div id="implementacion" class="content-section" style="display: none;">
+                <h2 class="title">Implementación</h2>
+                <div class="container">
+                    <div class="card-title">
+                        Etapas de auditoría
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-estapasAud">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-estapasAud">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-estapasAud">
+                        <thead>
+                            <tr>
+                                <th>Etapa</th>
+                                <th>Fase</th>
+                                <th>Descripción</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="card-title">Nombre de la auditoría</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Escribe el nombre de la auditoría aquí
+                        </div>
+                    
+                    <div class="card-title">Fecha de preparación</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Escribe la fecha de preparación aquí
+                        </div>
+
+                    <div class="card-title">Periodo</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Escribe el periodo aquí
+                        </div>
+
+                    <div class="card-title">Fecha de actualziación</div>
+                        <div class="card-content editable" contenteditable="true">
+                            Escribe la fecha de actualziación aquí
+                        </div>
+
+                </div>
+            </div>
+
+            <!-- PLAN DE AUDITORIA -->
+            <div id="planAuditoria" class="content-section" style="display: none;">
+                <h2 class="title">Plan de Auditoria</h2>
+                    <div class="card-title">
+                        Plan de auditoría
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-planAud">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-planAud">-</button>
+                    </div>
+                    <table class="table table-bordered" id="tabla-planAud" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Proceso</th>
+                                <th>Gerencia/Departamento/Área/Dependencia</th>
+                                <th>Lugar/Activo</th>
+                                <th>Método</th>
+                                <th>
+                                    <select name="clausula" class="form-control">
+                                        {% for file in clauses %}
+                                            <option value="{{ file }}">{{ file }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Responsable</th>
+                                <th>Auditor</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- content -->
+                        </tbody>
+                    </table>
+            </div>
+
         </div>
-
-        <!-- El mismo patrón se repite para Incertidumbre, Recursos, Implementación y PlanAuditoria -->
-        <!-- Aquí simplemente debes aplicar {% trans %} igual que arriba en: -->
-        <!-- - Títulos (h2, card-title, botones, textos visibles) -->
-        <!-- - Encabezados de tabla -->
-        <!-- - Contenido editable si es texto predeterminado visible -->
-
-        <!-- Ejemplo contenido editable traducido -->
-        <div class="card-title">{% trans "Observaciones generales" %}</div>
-        <div class="card-content editable" contenteditable="true">
-            {% trans "Escribe observaciones aquí" %}
-        </div>
-
-        <!-- Botón de envío -->
+        
+        <!-- envío -->
         <div class="mt-4">
             <button type="submit" class="btn btn-primary">
                 {% trans "Guardar plan de auditoría" %}
             </button>
         </div>
+    </form>
     </div>
-</form>
-</div>
 
-<script src="{% static 'js/auditPlan/sendAuditPlan.js' %}"></script>
-<script src="{% static 'js/auditPlan/showSections.js' %}"></script>
-<script src="{% static 'js/auditPlan/eventListener.js' %}"></script>
+    <script src="{% static 'js/auditPlan/sendAuditPlan.js' %}"></script>
+    <script src="{% static 'js/auditPlan/showSections.js' %}"></script>
+    <script src="{% static 'js/auditPlan/eventListener.js' %}"></script>
 
 </body>
 {% endblock %}

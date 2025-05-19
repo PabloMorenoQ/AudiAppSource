@@ -7,8 +7,8 @@
 {% block content %}
 
     <div class="row">
-        <h2 class="text-center mb-4">{% trans "Lista de verificación" %}</h2>
-        
+        <h2 class="text-center mb-4">Lista de verificación</h2>
+        <h4>Organización: {{ organizacion }}</h4>
         <div class="container">
             <form id="form_procesos">
                 <!-- Campo: Proceso -->
@@ -17,16 +17,26 @@
                         <label for="process_html" class="form-label">{% trans "Proceso" %}</label>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="process_html" name="proceso" placeholder="{% trans 'Ingresa el proceso' %}">
-                    </div>
+                         <select name="proceso" id="proceso" class="form-control">
+                            {% for proceso in procesos %}
+                                <option value="{{ proceso }}">{{ proceso }}</option>
+                            {% endfor %}
+                         </select>     
+                    </div>           
                 </div>
 
+        
+                <!-- Campo: Lugar -->
                 <div class="row mb-3">
                     <div class="col-auto">
                         <label for="lugar_html" class="form-label">{% trans "Lugar" %}</label>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="lugar_html" name="lugar" placeholder="{% trans 'Ingresa el lugar' %}">
+                        <select name="lugar" id="lugar" class="form-control">
+                            {% for lugar in lugares %}
+                                <option value="{{ lugar }}">{{ lugar }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
 
@@ -50,13 +60,20 @@
 
         <form id="form_lists">
             <div class="mb-3">
-                <label for="clausula" class="form-label">{% trans "Cláusula" %}</label>
+                <label for="clausula" class="form-label">Cláusula</label>
+                <select name="clausula" id="clausula" class="form-control">
+                    {% for clausula in clausulass %}
+                        <option value="{{ clausula }}">{{ clausula }}</option>
+                    {% endfor %}
+                </select>
+                            <!--
                 <select id="clausula" class="form-select">
                     <option value="">{% trans "Seleccionar..." %}</option>
                     {% for key, value in clausulas.items %}
                         <option value="{{ key }}" data-value="{{ value }}">{{ key }}</option>
                     {% endfor %}
                 </select>
+                -->
             </div>
 
             <div class="mb-3">

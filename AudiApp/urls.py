@@ -20,12 +20,6 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    # path('', auth_views.LoginView.as_view(template_name='login.html'), name='login_redirect'),
-    path('', include('core.urls')),
-    path('audit/', include('audit.urls')),
-    path('core/', include('core.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 
@@ -34,5 +28,5 @@ urlpatterns += i18n_patterns(
     path('accounts/', include('accounts.urls')),
     path('audit/', include('audit.urls')),
     path('core/', include('core.urls')),
-    path('', include('core.urls')),  # tu home u otras vistas
+    path('', include('core.urls')),  # Página principal
 )

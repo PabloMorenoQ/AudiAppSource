@@ -1,7 +1,6 @@
 import os, json, datetime
 import pandas as pd
 from io import BytesIO
-
 from django.shortcuts import render, redirect
 from .templates import *
 from django.http import HttpResponse, JsonResponse
@@ -13,13 +12,16 @@ from django.contrib import messages
 from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _
 
+from AudiApp import settings
 
 
 @csrf_exempt
 def audit_plan(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
         if request.method == "GET":
-            return render(request, "auditPlan.html")
+            data_path = os.path.join(settings.BASE_DIR, 'static', 'data')
+            clauses = [f for f in os.listdir(data_path) if f.endswith('.json')]
+            return render(request, "auditPlan.html", {"clauses": clauses})
 
         # POST:
         creation_date = datetime.date.today()
@@ -62,6 +64,21 @@ def check_lists(request):
         content = send_content()
         clausulas = content.get("clausula", {})
         subpreguntas = content.get("subpreguntas", {})
+        planes = AuditPlan.objects.filter(organization_id=request.user.organization)
+        
+        procesos = []
+        lugares =[]
+        clausulass = []
+
+        for plan in planes:
+            contenido = plan.plan_content.get("tabla-planAud", [])
+            for fila in contenido:
+                procesos.append(fila[1])   # Proceso
+                lugares.append(fila[3])    # Lugar/Activo
+                clausulass.append(fila[5])
+
+        separadas = [item.split(', ') for item in clausulass]
+        separadas_plana = [x for sublist in separadas for x in sublist]
 
         if request.method == "POST":
             selected_key = request.POST.get("selected_key")
@@ -82,7 +99,11 @@ def check_lists(request):
             )
 
         return render(
-            request, "checkLists.html", {"clausulas": clausulas, "subpreguntas": subpreguntas}
+            request, "checkLists.html", {"clausulas": clausulas, "subpreguntas": subpreguntas, 
+                                         "organizacion": request.user.organization,
+                                         "procesos": procesos,
+                                         "lugares": lugares,
+                                         'clausulass': separadas_plana}
         )
 
     else:
@@ -139,12 +160,30 @@ def save_report(request):
 
     return JsonResponse({"error": "Metodo no permitido"}, status=405)
 
+from django.utils.translation import gettext as _  # Asegurate de importar esto si usás traducción
+
 def reports(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
-        return render(request, "reports.html")
+        sections = [
+            ('fortalezas', _('Fortalezas')),
+            ('conformidad', _('Conformidades')),
+            ('riesgos', _('Riesgos')),
+            ('recomendaciones', _('Recomendaciones')),
+            ('no-conformidades', _('No Conformidades')),
+        ]
+        summary_sections = [
+            ('pertinencia', _('Pertinencia'), _('Explicación de la pertinencia del proceso.')),
+            ('adecuacion', _('Adecuación'), _('Explicación sobre la adecuación del proceso.')),
+            ('eficacia', _('Eficacia'), _('Evaluación de la eficacia del proceso.')),
+        ]
+        return render(request, "reports.html", {
+            'sections': sections,
+            'summary_sections': summary_sections
+        })
     else:
         messages.warning(request, _("No tienes acceso"))
         return redirect('home')
+
 
 def send_content():
     data_file = f"content_55001_2024_es.json"
@@ -163,50 +202,3 @@ def excel_landing(request):
         else:
             return render(request, "home.html")
 
-@csrf_exempt
-def download_excel(request):
-    if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
-        # if request.method == "GET":
-        #     return render(request, "excel.html")
-        
-        if request.method == "POST":
-            try:
-                data = json.loads(request.body)
-                checklist_id = data.get("checklist_id")
-                checklist = CheckList.objects.get(id=checklist_id)
-
-                audit_data = checklist.audit_data
-                if isinstance(audit_data, str):
-                    audit_data = json.loads(audit_data)
-
-                df = pd.DataFrame(audit_data)
-
-                output = BytesIO()
-                with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                    df.to_excel(writer, index=False, sheet_name="Auditoría")
-
-                    # Agregar otra hoja con metadatos si se desea
-                    metadata = {
-                        "Proceso": [checklist.process],
-                        "Lugar": [checklist.place],
-                        "Organización": [checklist.organization.name],
-                        "Auditor Líder": [checklist.leader_auditor.first_name],
-                        "Tipo de Proceso": [checklist.process_type],
-                        "Cláusulas": [checklist.clauses_list]
-                    }
-                    meta_df = pd.DataFrame(metadata)
-                    meta_df.to_excel(writer, index=False, sheet_name="Resumen")
-
-                response = HttpResponse(
-                    output.getvalue(),
-                    content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-                response["Content-Disposition"] = f'attachment; filename=checklist_{checklist.id}.xlsx'
-                return response
-
-            except CheckList.DoesNotExist:
-                return JsonResponse({"error": "Checklist no encontrada"}, status=404)
-            except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
-
-        return JsonResponse({"error": "Método no permitido"}, status=405)

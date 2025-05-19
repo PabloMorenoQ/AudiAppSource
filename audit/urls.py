@@ -8,5 +8,5 @@ urlpatterns = [
     path('report/', reports, name='reports'),
     path('report/save/', save_report, name='save_report'),
     path('excel/', excel_landing, name='excel_landing'),
-    path('excel/download/', download_excel, name='download_excel'),
+    # path('excel/download/', download_excel, name='download_excel'),
 ]

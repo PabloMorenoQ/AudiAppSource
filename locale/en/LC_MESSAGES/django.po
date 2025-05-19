@@ -77,7 +77,7 @@ msgstr "No users found"
 
 #: .\accounts\templates\dashboard.html:61
 msgid "Planes de Auditoría"
-msgstr "Auditory Plans?"
+msgstr "Audit Plan"
 
 #: .\accounts\templates\dashboard.html:62
 msgid "Crear Plan"
@@ -105,7 +105,7 @@ msgstr "Clause"
 
 #: .\accounts\templates\dashboard.html:81
 msgid "No hay planes de auditoría."
-msgstr "No auditory plans found"
+msgstr "No Audit Plan found"
 
 #: .\accounts\templates\dashboard.html:89 .\core\templates\base.html:52
 msgid "Listas de Verificación"
@@ -306,7 +306,7 @@ msgstr "Implementation"
 
 #: .\audit\templates\auditPlan.html:53 .\core\templates\base.html:53
 msgid "Plan de Auditoría"
-msgstr "Auditory Plan?"
+msgstr "Audit Plan"
 
 #: .\audit\templates\auditPlan.html:65 .\audit\templates\auditPlan.html:85
 msgid "Alcance"
@@ -357,7 +357,7 @@ msgstr "Write your obserbations here"
 #, fuzzy
 #| msgid "Plan de auditoría"
 msgid "Guardar plan de auditoría"
-msgstr "Auditory Plan?"
+msgstr "Audit Plan"
 
 #: .\audit\templates\checkLists.html:5
 msgid "Checklist"
@@ -467,7 +467,7 @@ msgstr "Download files"
 
 #: .\audit\templates\excel.html:13 .\core\templates\home.html:28
 msgid "Plan de auditoría"
-msgstr "Auditory Plan?"
+msgstr "Audit Plan"
 
 #: .\audit\templates\excel.html:18
 msgid "Selecciona una checklist"
