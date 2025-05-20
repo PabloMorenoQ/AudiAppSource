@@ -54,14 +54,6 @@ function insertRow(tableId) {
     
     // Crear las celdas según el tipo de tabla
     if (tableId === 'tabla-planAud') {
-        // Fecha
-        const fechaCell = document.createElement('td');
-        const fechaInput = document.createElement('input');
-        fechaInput.type = 'date';
-        fechaInput.className = 'form-control';
-        fechaInput.required = true;
-        fechaCell.appendChild(fechaInput);
-        
         // Proceso
         const procesoCell = document.createElement('td');
         const procesoInput = document.createElement('input');
@@ -70,6 +62,15 @@ function insertRow(tableId) {
         procesoInput.placeholder = 'Ingrese el proceso';
         procesoInput.required = true;
         procesoCell.appendChild(procesoInput);
+        
+        // Área
+        const areaCell = document.createElement('td');
+        const areaInput = document.createElement('input');
+        areaInput.type = 'text';
+        areaInput.className = 'form-control';
+        areaInput.placeholder = 'Ingrese el área';
+        areaInput.required = true;
+        areaCell.appendChild(areaInput);
         
         // Lugar
         const lugarCell = document.createElement('td');
@@ -80,29 +81,14 @@ function insertRow(tableId) {
         lugarInput.required = true;
         lugarCell.appendChild(lugarInput);
         
-        // Auditor
-        const auditorCell = document.createElement('td');
-        const auditorInput = document.createElement('input');
-        auditorInput.type = 'text';
-        auditorInput.className = 'form-control';
-        auditorInput.placeholder = 'Nombre del auditor';
-        auditorInput.required = true;
-        auditorCell.appendChild(auditorInput);
-        
-        // Tipo
-        const tipoCell = document.createElement('td');
-        const tipoSelect = document.createElement('select');
-        tipoSelect.className = 'form-control';
-        tipoSelect.required = true;
-        
-        const tipos = ['Interna', 'Externa', 'Seguimiento'];
-        tipos.forEach(tipo => {
-            const option = document.createElement('option');
-            option.value = tipo;
-            option.textContent = tipo;
-            tipoSelect.appendChild(option);
-        });
-        tipoCell.appendChild(tipoSelect);
+        // Método
+        const metodoCell = document.createElement('td');
+        const metodoInput = document.createElement('input');
+        metodoInput.type = 'text';
+        metodoInput.className = 'form-control';
+        metodoInput.placeholder = 'Ingrese el método';
+        metodoInput.required = true;
+        metodoCell.appendChild(metodoInput);
         
         // Cláusula
         const clausulaCell = document.createElement('td');
@@ -113,13 +99,59 @@ function insertRow(tableId) {
         clausulaInput.required = true;
         clausulaCell.appendChild(clausulaInput);
         
+        // Fecha
+        const fechaCell = document.createElement('td');
+        const fechaInput = document.createElement('input');
+        fechaInput.type = 'date';
+        fechaInput.className = 'form-control';
+        fechaInput.required = true;
+        fechaCell.appendChild(fechaInput);
+        
+        // Hora
+        const horaCell = document.createElement('td');
+        const horaInput = document.createElement('input');
+        horaInput.type = 'time';
+        horaInput.className = 'form-control';
+        horaInput.required = true;
+        horaCell.appendChild(horaInput);
+        
+        // Responsable
+        const responsableCell = document.createElement('td');
+        const responsableInput = document.createElement('input');
+        responsableInput.type = 'text';
+        responsableInput.className = 'form-control';
+        responsableInput.placeholder = 'Nombre del responsable';
+        responsableInput.required = true;
+        responsableCell.appendChild(responsableInput);
+        
+        // Auditor
+        const auditorCell = document.createElement('td');
+        const auditorInput = document.createElement('input');
+        auditorInput.type = 'text';
+        auditorInput.className = 'form-control';
+        auditorInput.placeholder = 'Nombre del auditor';
+        auditorInput.required = true;
+        auditorCell.appendChild(auditorInput);
+        
+        // Observaciones
+        const observacionesCell = document.createElement('td');
+        const observacionesInput = document.createElement('input');
+        observacionesInput.type = 'text';
+        observacionesInput.className = 'form-control';
+        observacionesInput.placeholder = 'Ingrese observaciones';
+        observacionesCell.appendChild(observacionesInput);
+        
         // Agregar todas las celdas a la fila
-        newRow.appendChild(fechaCell);
         newRow.appendChild(procesoCell);
+        newRow.appendChild(areaCell);
         newRow.appendChild(lugarCell);
-        newRow.appendChild(auditorCell);
-        newRow.appendChild(tipoCell);
+        newRow.appendChild(metodoCell);
         newRow.appendChild(clausulaCell);
+        newRow.appendChild(fechaCell);
+        newRow.appendChild(horaCell);
+        newRow.appendChild(responsableCell);
+        newRow.appendChild(auditorCell);
+        newRow.appendChild(observacionesCell);
     } else {
         // Para otras tablas, mantener el comportamiento existente
         const cellCount = table.querySelector('thead tr').cells.length;

@@ -47,7 +47,10 @@
         width: 100%;
         margin-bottom: 1rem;
         background-color: transparent;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
     }
     
     .table th {
@@ -70,7 +73,7 @@
         width: 100%;
         padding: 8px;
         border: 1px solid #ced4da;
-        border-radius: 4px;
+        border-radius: 6px;
         font-size: 14px;
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
@@ -120,12 +123,196 @@
         background-color: #f8f9fa;
         border-bottom: 1px solid #dee2e6;
         margin-bottom: 0;
+        border-radius: 8px 8px 0 0;
     }
     
     .card-title h3 {
         margin: 0;
         font-size: 1.25rem;
         font-weight: 500;
+    }
+    
+    /* Estilos generales para todas las secciones */
+    .card-content.editable {
+        color: #000;
+        border: 1px solid #ddd;
+        padding: 10px;
+        min-height: 50px;
+        background: #f8f9fa;
+        cursor: text;
+        border-radius: 6px;
+    }
+    
+    .card-content.editable:focus {
+        background: white;
+        outline: 2px solid #007bff;
+        border-radius: 6px;
+    }
+    
+    /* Estilos específicos para todas las secciones */
+    #alcance .card-content.editable,
+    #incertidumbre .card-content.editable,
+    #recursos .card-content.editable,
+    #implementacion .card-content.editable,
+    #planAuditoria .card-content.editable {
+        color: #000;
+        font-weight: 500;
+    }
+    
+    #alcance .card-title,
+    #incertidumbre .card-title,
+    #recursos .card-title,
+    #implementacion .card-title,
+    #planAuditoria .card-title {
+        color: #000;
+        font-weight: 600;
+    }
+
+    /* Estilos para las tablas en todas las secciones */
+    #alcance .table input[type="text"],
+    #incertidumbre .table input[type="text"],
+    #recursos .table input[type="text"],
+    #implementacion .table input[type="text"],
+    #planAuditoria .table input[type="text"],
+    #alcance .table input[type="date"],
+    #incertidumbre .table input[type="date"],
+    #recursos .table input[type="date"],
+    #implementacion .table input[type="date"],
+    #planAuditoria .table input[type="date"],
+    #alcance .table select,
+    #incertidumbre .table select,
+    #recursos .table select,
+    #implementacion .table select,
+    #planAuditoria .table select {
+        color: #000;
+    }
+
+    /* Estilos para los placeholders */
+    #alcance .table input::placeholder,
+    #incertidumbre .table input::placeholder,
+    #recursos .table input::placeholder,
+    #implementacion .table input::placeholder,
+    #planAuditoria .table input::placeholder {
+        color: #666;
+        opacity: 0.8;
+    }
+
+    /* Estilos específicos para la sección de implementación */
+    #implementacion .card-content.editable {
+        color: #333;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    #implementacion .card-content.editable:focus {
+        background: white;
+        outline: 2px solid #007bff;
+        color: #000;
+    }
+
+    #implementacion .card-content.editable.placeholder {
+        color: #666;
+    }
+
+    /* Estilos para las tablas */
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        text-align: left;
+        padding: 12px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .table td {
+        padding: 12px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+    }
+    
+    .table input[type="text"],
+    .table input[type="date"],
+    .table select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .table input[type="text"]:focus,
+    .table input[type="date"]:focus,
+    .table select:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    /* Estilos para los contenedores de tabla */
+    .table-container {
+        margin-bottom: 2rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    /* Estilos para los campos de entrada en la sección de implementación */
+    #implementacion input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    #implementacion input[type="text"]:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    /* Estilos para los botones */
+    .btn {
+        border-radius: 6px;
+    }
+    
+    /* Estilos para los títulos de sección */
+    .card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 0;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    /* Estilos para los campos editables */
+    .card-content.editable {
+        border: 1px solid #ddd;
+        padding: 10px;
+        min-height: 50px;
+        background: #f8f9fa;
+        cursor: text;
+        border-radius: 6px;
+    }
+    
+    .card-content.editable:focus {
+        background: white;
+        outline: 2px solid #007bff;
+        border-radius: 6px;
     }
 </style>
 
@@ -369,24 +556,16 @@
                     </table>
                     
                     <div class="card-title">Nombre de la auditoría</div>
-                        <div class="card-content editable" contenteditable="true">
-                            Escribe el nombre de la auditoría aquí
-                        </div>
+                        <input type="text" class="form-control" placeholder="Escribe el nombre de la auditoría aquí">
                     
                     <div class="card-title">Fecha de preparación</div>
-                        <div class="card-content editable" contenteditable="true">
-                            Escribe la fecha de preparación aquí
-                        </div>
+                        <input type="text" class="form-control" placeholder="Escribe la fecha de preparación aquí">
 
                     <div class="card-title">Periodo</div>
-                        <div class="card-content editable" contenteditable="true">
-                            Escribe el periodo aquí
-                        </div>
+                        <input type="text" class="form-control" placeholder="Escribe el periodo aquí">
 
-                    <div class="card-title">Fecha de actualziación</div>
-                        <div class="card-content editable" contenteditable="true">
-                            Escribe la fecha de actualziación aquí
-                        </div>
+                    <div class="card-title">Fecha de actualización</div>
+                        <input type="text" class="form-control" placeholder="Escribe la fecha de actualización aquí">
 
                 </div>
             </div>
@@ -406,12 +585,16 @@
                         <table class="table table-bordered" id="tabla-planAud">
                             <thead>
                                 <tr>
-                                    <th style="width: 15%">Fecha</th>
-                                    <th style="width: 15%">Proceso</th>
-                                    <th style="width: 15%">Lugar</th>
-                                    <th style="width: 15%">Auditor</th>
-                                    <th style="width: 15%">Tipo</th>
-                                    <th style="width: 25%">Cláusula</th>
+                                    <th style="width: 10%">Proceso</th>
+                                    <th style="width: 10%">Área</th>
+                                    <th style="width: 10%">Lugar</th>
+                                    <th style="width: 10%">Método</th>
+                                    <th style="width: 10%">Cláusula</th>
+                                    <th style="width: 8%">Fecha</th>
+                                    <th style="width: 8%">Hora</th>
+                                    <th style="width: 10%">Responsable</th>
+                                    <th style="width: 10%">Auditor</th>
+                                    <th style="width: 14%">Observaciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -436,6 +619,43 @@
     <script src="{% static 'js/auditPlan/sendAuditPlan.js' %}"></script>
     <script src="{% static 'js/auditPlan/showSections.js' %}"></script>
     <script src="{% static 'js/auditPlan/eventListener.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Manejar los campos editables en la sección de implementación
+            const implementacionSection = document.getElementById('implementacion');
+            if (implementacionSection) {
+                const editables = implementacionSection.querySelectorAll('.card-content.editable');
+                
+                editables.forEach(editable => {
+                    // Guardar el texto original como placeholder
+                    const originalText = editable.textContent.trim();
+                    editable.setAttribute('data-placeholder', originalText);
+                    
+                    // Agregar clase placeholder si el contenido es el texto original
+                    if (editable.textContent.trim() === originalText) {
+                        editable.classList.add('placeholder');
+                    }
+                    
+                    // Manejar el evento focus
+                    editable.addEventListener('focus', function() {
+                        if (this.textContent.trim() === this.getAttribute('data-placeholder')) {
+                            this.textContent = '';
+                            this.classList.remove('placeholder');
+                        }
+                    });
+                    
+                    // Manejar el evento blur
+                    editable.addEventListener('blur', function() {
+                        if (this.textContent.trim() === '') {
+                            this.textContent = this.getAttribute('data-placeholder');
+                            this.classList.add('placeholder');
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 
 </body>
 {% endblock %}
