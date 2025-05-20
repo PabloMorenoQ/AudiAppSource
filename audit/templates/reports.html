@@ -229,6 +229,18 @@
 
         <div class="column right-mb-8">
             <h2 class="title">Listas cargadas</h2>
+            
+            <!-- Selector de Checklists -->
+            <div class="mb-4">
+                <label for="checklistSelector" class="form-label">Seleccionar Checklist:</label>
+                <select id="checklistSelector" class="form-select">
+                    <option value="">Selecciona una checklist</option>
+                    {% for checklist in checklists %}
+                        <option value="{{ checklist.id }}">{{ checklist.process }} - {{ checklist.place }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <!-- Botones y carga de JSON -->
             <div class="buttons">
                 <!-- Input de archivo JSON oculto -->
