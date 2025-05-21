@@ -4,8 +4,8 @@ function generateJSONFromAuditTable() {
     let data = [];
 
     // Capturar datos del formulario general
-    const process     = document.getElementById("process_html").value.trim();
-    const place       = document.getElementById("lugar_html").value.trim();
+    const process     = document.getElementById("process_id").value.trim();
+    const place       = document.getElementById("place_id").value.trim();
     const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
 
     rows.forEach(row => {

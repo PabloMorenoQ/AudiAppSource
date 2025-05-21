@@ -81,9 +81,11 @@ def logout_view(request):
 
 # Vista del Dashboard con edición y eliminación inline
 def admin_dashboard(request):
-    if not request.user.is_authenticated:
-        messages.warning(request, _("Debes iniciar sesión para ver el dashboard."))
-        return redirect('login')
+    if request.user.role not in ['auditLeaderUser', 'superUser', 'organizationUser']:
+        return JsonResponse({"error": "No autorizado"}, status=403)
+    # if not request.user.is_authenticated:
+    #     messages.warning(request, _("Debes iniciar sesión para ver el dashboard."))
+    #     return redirect('login')
 
     org = 1
 

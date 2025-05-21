@@ -3,8 +3,8 @@ function sendChecklistToServer() {
     let data = [];
 
     // Capturamos los datos generales del formulario
-    const process     = document.getElementById("process_html").value.trim();
-    const place       = document.getElementById("lugar_html").value.trim();
+    const process     = document.getElementById("process_id").value.trim();
+    const place       = document.getElementById("place_id").value.trim();
     const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
 
     rows.forEach(row => {
@@ -40,7 +40,7 @@ function sendChecklistToServer() {
         audit_data: JSON.stringify(data)  // ← audit_data incluye también los nuevos campos
     };
 
-    fetch("/audit/checkList/save/", {
+    fetch("save/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

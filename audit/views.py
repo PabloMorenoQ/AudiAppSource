@@ -111,7 +111,6 @@ def check_lists(request):
         return redirect('home')
 
 @csrf_exempt
-# @login_required
 def save_checklist(request):
     if request.method == "POST":
         data = json.loads(request.body)

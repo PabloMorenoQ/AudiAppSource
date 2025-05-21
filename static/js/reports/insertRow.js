@@ -13,7 +13,7 @@ function insertRowInTable(rowData, calificacion) {
             tableBody = document.getElementById('tabla-no-conformidades')?.querySelector('tbody');
             break;
         case 'conformidad':
-            tableBody = document.getElementById('tabla-conformidades')?.querySelector('tbody');
+            tableBody = document.getElementById('tabla-conformidad')?.querySelector('tbody');
             break;
         case 'recomendacion':
             tableBody = document.getElementById('tabla-recomendaciones')?.querySelector('tbody');

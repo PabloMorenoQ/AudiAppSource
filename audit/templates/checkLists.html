@@ -17,7 +17,7 @@
                         <label for="process_html" class="form-label">{% trans "Proceso" %}</label>
                     </div>
                     <div class="col">
-                         <select name="proceso" id="proceso" class="form-control">
+                         <select name="process_id" id="process_id" class="form-control">
                             {% for proceso in procesos %}
                                 <option value="{{ proceso }}">{{ proceso }}</option>
                             {% endfor %}
@@ -32,7 +32,7 @@
                         <label for="lugar_html" class="form-label">{% trans "Lugar" %}</label>
                     </div>
                     <div class="col">
-                        <select name="lugar" id="lugar" class="form-control">
+                        <select name="place_id" id="place_id" class="form-control">
                             {% for lugar in lugares %}
                                 <option value="{{ lugar }}">{{ lugar }}</option>
                             {% endfor %}
@@ -118,12 +118,16 @@
         </div>
 
         <div class="mb-5">
-            <button type="button" class="btn btn-primary" onclick="addSelectedQuestions()">{% trans "Agregar Preguntas Seleccionadas" %}</button>
-            <button type="button" class="btn btn-secondary" onclick="addEmptyRow()">{% trans "Agregar Fila Vacía" %}</button>
-            <button class="btn btn-success" onclick="generateJSONFromAuditTable()">{% trans "Descargar JSON" %}</button>
-            <button class="btn btn-success" onclick="sendChecklistToServer()">{% trans "Guardar Checklist" %}</button>
-            <button class="btn btn-info" onclick="downloadExcel()">{% trans "Descargar Excel" %}</button>
+        {% csrf_token %}
+            <button type="button" class="btn btn-primary" onclick="addSelectedQuestions()">Agregar Preguntas Seleccionadas</button>
+            <button type="button" class="btn btn-secondary" onclick="addEmptyRow()">Agregar Fila Vacía</button>
+
+            <!-- Aquí faltaba el type="button" -->
+            <button type="button" class="btn btn-success" onclick="generateJSONFromAuditTable()">Descargar JSON</button>
+            <button type="button" class="btn btn-success" onclick="sendChecklistToServer()">Guardar Checklist</button>
+            <button type="button" class="btn btn-info"    onclick="downloadExcel()">Descargar Excel</button>
         </div>
+
 
         <div id="textModal" class="modal" tabindex="-1">
             <div class="modal-dialog">
