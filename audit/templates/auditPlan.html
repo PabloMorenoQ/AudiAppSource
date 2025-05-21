@@ -573,6 +573,19 @@
             <!-- PLAN DE AUDITORÍA -->
             <div id="planAuditoria" class="content-section" style="display: none;">
                 <h2 class="title">Plan de Auditoría</h2>
+                <div class="container mb-3">
+                    <div class="card-title">
+                        Selecciona norma
+                        <div class="mb-3">
+                            <select name="clausula" class="form-select">
+                                <option value="">-- Selecciona una norma --</option>
+                                {% for standard in standards %}
+                                    <option value="{{ standard.file }}">{{ standard.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="container">
                     <div class="table-container">
                         <div class="card-title">

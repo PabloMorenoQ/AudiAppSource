@@ -17,8 +17,25 @@ from django.utils.dateparse import parse_date
 def audit_plan(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
         if request.method == "GET":
-            return render(request, "auditPlan.html")
+            data_path = os.path.join(settings.BASE_DIR, 'static', 'data')
+            standards = []
+            for file in os.listdir(data_path):
+                if file.endswith(".json"):
+                    filename = file
+                    base_name = os.path.splitext(file)[0]
+                    parts = base_name.split("_")
+                    
+                    if len(parts) == 4:
+                        standard = parts[1]
+                        year = parts[2]
+                        language = parts[3]
+                        name = f"Norma {standard} ({year}, {language})"
+                    else:
+                        name = filename
 
+                    standards.append({"file": filename, "name": name})
+            return render(request, "auditPlan.html", {"standards": standards})
+            
         # POST:
         creation_date = datetime.date.today()
         organization_id = 1
@@ -32,7 +49,8 @@ def audit_plan(request):
         except json.JSONDecodeError:
             return JsonResponse({"error": "plan_content no es JSON válido"}, status=400)
 
-
+        selected_clause = request.POST.get("clausula")
+        plan_content["selected_clause"] = selected_clause
         filas = plan_content.get("tabla-planAud", [])
         clauses = []
         for fila in filas:
@@ -60,6 +78,31 @@ def check_lists(request):
         content = send_content()
         clausulas = content.get("clausula", {})
         subpreguntas = content.get("subpreguntas", {})
+        plan = AuditPlan.objects.filter(organization_id=request.user.organization).last()
+        
+        procesos = []
+        lugares =[]
+        clausulass = set()
+
+        contenido = plan.plan_content.get("tabla-planAud", [])
+        standard = plan.plan_content.get("selected_clause")
+        for fila in contenido:
+            procesos.append(fila[0])   
+            lugares.append(fila[2])
+            clausulass.add(fila[4])
+
+        separadas = [item.split(', ') for item in clausulass]
+        separadas_plana = [x for sublist in separadas for x in sublist]
+
+        results = {}
+        json_path = os.path.join(settings.BASE_DIR, 'static', 'data', standard)
+        with open(json_path, 'r', encoding="utf-8") as f:
+            json_data = json.load(f)
+            
+        for item in separadas_plana:
+            item = str(item)
+            if item in json_data["clausula"]:
+                results[item] = json_data["clausula"][item]
 
         if request.method == "POST":
             selected_key = request.POST.get("selected_key")
@@ -80,7 +123,11 @@ def check_lists(request):
             )
 
         return render(
-            request, "checkLists.html", {"clausulas": clausulas, "subpreguntas": subpreguntas}
+            request, "checkLists.html", {"clausulas": clausulas, "subpreguntas": subpreguntas, 
+                                         "organizacion": request.user.organization,
+                                         "procesos": procesos,
+                                         "lugares": lugares,
+                                         'clauses': results}
         )
 
     else:

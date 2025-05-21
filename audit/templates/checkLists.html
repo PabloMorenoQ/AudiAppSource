@@ -6,9 +6,9 @@
 {% block content %}
 
     <div class="row">
-        hola
+
         <h2 class="text-center mb-4">Lista de verificación</h2>
-        
+        <h4>Organización: {{ organizacion }}</h4>
         <div class="container">
             <form id="form_procesos">
                 <!-- Campo: Proceso -->
@@ -17,7 +17,11 @@
                         <label for="process_html" class="form-label">Proceso</label>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="process_html" name="proceso" placeholder="Ingresa el proceso">
+                        <select name="proceso" id="proceso" class="form-control">
+                            {% for proceso in procesos %}
+                                <option value="{{ proceso }}">{{ proceso }}</option>
+                            {% endfor %}
+                         </select> 
                     </div>
                 </div>
         
@@ -27,7 +31,11 @@
                         <label for="lugar_html" class="form-label">Lugar</label>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="lugar_html" name="lugar" placeholder="Ingresa el lugar">
+                        <select name="lugar" id="lugar" class="form-control">
+                            {% for lugar in lugares %}
+                                <option value="{{ lugar }}">{{ lugar }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
         
@@ -57,7 +65,7 @@
                 <label for="clausula" class="form-label">Cláusula</label>
                 <select id="clausula" class="form-select">
                     <option value="">Seleccionar...</option>
-                    {% for key, value in clausulas.items %}
+                    {% for key, value in clauses.items %}
                         <option value="{{ key }}" data-value="{{ value }}">{{ key }}</option>
                     {% endfor %}
                 </select>
