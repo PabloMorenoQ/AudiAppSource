@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as _
+from pathlib import Path
 
 from AudiApp import settings
 
@@ -20,9 +21,24 @@ def audit_plan(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
         if request.method == "GET":
             data_path = os.path.join(settings.BASE_DIR, 'static', 'data')
-            clauses = [f for f in os.listdir(data_path) if f.endswith('.json')]
-            return render(request, "auditPlan.html", {"clauses": clauses})
+            standards = []
+            for file in os.listdir(data_path):
+                if file.endswith(".json"):
+                    filename = file
+                    base_name = os.path.splitext(file)[0]
+                    parts = base_name.split("_")
+                    
+                    if len(parts) == 4:
+                        standard = parts[1]
+                        year = parts[2]
+                        language = parts[3]
+                        name = f"Norma {standard} ({year}, {language})"
+                    else:
+                        name = filename
 
+                    standards.append({"file": filename, "name": name})
+            return render(request, "auditPlan.html", {"standards": standards})
+            
         # POST:
         creation_date = datetime.date.today()
         organization_id = 1
@@ -36,12 +52,13 @@ def audit_plan(request):
         except json.JSONDecodeError:
             return JsonResponse({"error": "plan_content no es JSON válido"}, status=400)
 
-
+        selected_clause = request.POST.get("clausula")
+        plan_content["selected_clause"] = selected_clause
         filas = plan_content.get("tabla-planAud", [])
         clauses = []
         for fila in filas:
             if len(fila) >= 6:
-                clauses.append(fila[5])
+                clauses.append(fila[4])
         # Unir en un solo string, separado por comas o saltos de línea
         clauses_list = "\n".join(clauses)
 
@@ -64,21 +81,40 @@ def check_lists(request):
         content = send_content()
         clausulas = content.get("clausula", {})
         subpreguntas = content.get("subpreguntas", {})
-        planes = AuditPlan.objects.filter(organization_id=request.user.organization)
+        plan = AuditPlan.objects.filter(organization_id=request.user.organization).last()
         
+        if not plan:
+            messages.error(request, "No hay un plan de auditoría asignado.")
+            return redirect("home")
+
         procesos = []
         lugares =[]
-        clausulass = []
+        clausulass = set()
 
-        for plan in planes:
-            contenido = plan.plan_content.get("tabla-planAud", [])
-            for fila in contenido:
-                procesos.append(fila[1])   # Proceso
-                lugares.append(fila[3])    # Lugar/Activo
-                clausulass.append(fila[5])
+        contenido = plan.plan_content.get("tabla-planAud", [])
+        standard = plan.plan_content.get("selected_clause")
+
+        if not standard:
+            messages.error(request, "No se especificó el estándar en el plan de auditoría.")
+            return redirect("home")
+
+        for fila in contenido:
+            procesos.append(fila[0])   
+            lugares.append(fila[2])
+            clausulass.add(fila[4])
 
         separadas = [item.split(', ') for item in clausulass]
         separadas_plana = [x for sublist in separadas for x in sublist]
+
+        results = {}
+        json_path = os.path.join(settings.BASE_DIR, 'static', 'data', standard)
+        with open(json_path, 'r', encoding="utf-8") as f:
+            json_data = json.load(f)
+            
+        for item in separadas_plana:
+            item = str(item)
+            if item in json_data["clausula"]:
+                results[item] = json_data["clausula"][item]
 
         if request.method == "POST":
             selected_key = request.POST.get("selected_key")
@@ -103,7 +139,7 @@ def check_lists(request):
                                          "organizacion": request.user.organization,
                                          "procesos": procesos,
                                          "lugares": lugares,
-                                         'clausulass': separadas_plana}
+                                         'clauses': results}
         )
 
     else:
@@ -153,7 +189,7 @@ def save_report(request):
             adecuacion_data = data.get('adecuacion'),
             eficacia_data = data.get('eficacia'),
         )
-        # report.save()
+        report.save()
 
         return JsonResponse({"status": "ok", "report_id": report.id})
 
@@ -163,6 +199,9 @@ from django.utils.translation import gettext as _  # Asegurate de importar esto 
 
 def reports(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
+        # Obtener los checklists relacionados a la organización del usuario
+        checklists = CheckList.objects.filter(organization=request.user.organization)
+
         sections = [
             ('fortalezas', _('Fortalezas')),
             ('conformidad', _('Conformidades')),
@@ -177,7 +216,8 @@ def reports(request):
         ]
         return render(request, "reports.html", {
             'sections': sections,
-            'summary_sections': summary_sections
+            'summary_sections': summary_sections,
+            'checklists': checklists  # <--- importante
         })
     else:
         messages.warning(request, _("No tienes acceso"))
@@ -193,11 +233,23 @@ def send_content():
 
     return content
 
-def excel_landing(request):
-    if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
-        if request.method == "GET":
-            checklists = CheckList.objects.filter(leader_auditor=request.user)  # o .all() si querés todas
-            return render(request, "excel.html", {"checklists": checklists})
-        else:
-            return render(request, "home.html")
+
+def get_checklist_data(request, checklist_id):
+    if not request.user.is_authenticated or request.user.role not in ['auditLeaderUser', 'superUser', 'organizationUser']:
+        return JsonResponse({'success': False, 'error': 'No autorizado'}, status=403)
+
+    try:
+        checklist = CheckList.objects.get(id=checklist_id, organization=request.user.organization)
+
+        audit_data = checklist.audit_data or []
+        if isinstance(audit_data, str):
+            try:
+                audit_data = json.loads(audit_data)
+            except json.JSONDecodeError:
+                audit_data = []
+
+        return JsonResponse({'success': True, 'data': audit_data})
+    except CheckList.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Checklist no encontrada'}, status=404)
+
 

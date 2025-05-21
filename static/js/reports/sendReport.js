@@ -1,4 +1,7 @@
-function sendReportToServer() {
+function sendReportToServer(event) {
+    // Prevenir comportamiento por defecto (submit o navegación)
+    if (event) event.preventDefault();
+
     function extractTableData(tableId) {
         const rows = document.querySelectorAll(`#${tableId} tbody tr`);
         let data = [];
@@ -15,6 +18,15 @@ function sendReportToServer() {
         return data;
     }
 
+    // Obtener la checklist seleccionada
+    const checklistSelector = document.getElementById('checklistSelector');
+    const selectedChecklistId = checklistSelector.value;
+
+    if (!selectedChecklistId) {
+        alert("Por favor, selecciona una checklist antes de enviar el reporte.");
+        return;
+    }
+
     // Extraer datos de cada sección
     const resumenData = extractTableData("tabla-resumen");
     const fortalezasData = extractTableData("tabla-fortalezas");
@@ -28,14 +40,9 @@ function sendReportToServer() {
     const adecuacion = document.querySelector("#adecuacion .card-content").textContent.trim();
     const eficacia = document.querySelector("#eficacia .card-content").textContent.trim();
 
-    // Obtener datos adicionales
-    // const organizationId = document.querySelector("#organization_id").value.trim(); // Cambia este ID según tu formulario
-    const checklistIds = Array.from(document.querySelectorAll(".checklist-checkbox:checked"))
-                              .map(checkbox => checkbox.value); // Asegúrate de tener checkboxes con esta clase
-    // const leaderAuditorId = document.querySelector("#leader_auditor_id").value.trim(); // Cambia este ID según tu formulario
-
     // Crear el objeto de datos para el reporte
     const reportData = {
+        checklist_id: selectedChecklistId,
         resumen: JSON.stringify(resumenData),
         fortalezas: JSON.stringify(fortalezasData),
         conformidades: JSON.stringify(conformidadesData),
@@ -49,11 +56,11 @@ function sendReportToServer() {
 
     console.log("Enviando reporte:", reportData);
 
-    fetch("/audit/report/save/", {
+    fetch("save/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}"
+            "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
         body: JSON.stringify(reportData)
     })
@@ -70,7 +77,6 @@ function sendReportToServer() {
     });
 }
 
-// Asociar la función al botón
 document.addEventListener("DOMContentLoaded", function () {
     const sendBtn = document.getElementById("sendBtn");
     if (sendBtn) {

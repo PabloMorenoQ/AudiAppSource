@@ -25,6 +25,11 @@ def register_view(request):
         form = Register(request.POST)
         if form.is_valid():
             user = form.save()
+            # Si el usuario es superUser, establecer los permisos de superusuario
+            if user.role == 'superUser':
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
             login(request, user)
             messages.success(request, _('Registro correcto'))
             return redirect('home')
@@ -118,20 +123,24 @@ def admin_dashboard(request):
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, f"El usuario {username} ya existe.")
-        else:
-            new_user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name,
-                role=role,
-                organization_id=org
-            )
-            messages.success(request, f"Usuario {username} creado correctamente.")
-
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f"El usuario {username} ya existe.")
+            else:
+                new_user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name,
+                    role=role,
+                    organization_id=org
+                )
+                # Si el usuario es superUser, establecer los permisos de superusuario
+                if role == 'superUser':
+                    new_user.is_staff = True
+                    new_user.is_superuser = True
+                    new_user.save()
+                messages.success(request, f"Usuario {username} creado correctamente.")
 
         return redirect('admin_dashboard')
 

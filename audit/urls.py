@@ -7,6 +7,7 @@ urlpatterns = [
     path('checkList/save/', save_checklist, name='save_checklist'),
     path('report/', reports, name='reports'),
     path('report/save/', save_report, name='save_report'),
-    path('excel/', excel_landing, name='excel_landing'),
+    path('checklist/<int:checklist_id>/data/', get_checklist_data, name='get_checklist_data'),
+    # path('excel/', excel_landing, name='excel_landing'),
     # path('excel/download/', download_excel, name='download_excel'),
 ]
