@@ -235,10 +235,14 @@
                 <label for="checklistSelector" class="form-label">Seleccionar Checklist:</label>
                 <select id="checklistSelector" class="form-select">
                     <option value="">Selecciona una checklist</option>
-                    {% for checklist in checklists %}
+                    <option value="1">Checklist 1</option>
+                    <option value="2">Checklist 2</option>
+                    <option value="3">Checklist 3</option>
+                    <!--{% for checklist in checklists %}
                         <option value="{{ checklist.id }}">{{ checklist.process }} - {{ checklist.place }}</option>
-                    {% endfor %}
+                    {% endfor %}-->
                 </select>
+                
             </div>
 
             <!-- Botones y carga de JSON -->
@@ -248,7 +252,8 @@
                 
                 <!-- Botón para disparar la carga de archivo -->
                 <button id="cargarBtn">Cargar</button>
-                <button id="sendBtn">Enviar</button>
+                <button id="sendBtn" type="submit">Enviar</button>
+
             </div>
 
             <!-- Área de texto para mostrar el contenido JSON -->

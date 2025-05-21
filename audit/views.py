@@ -178,7 +178,7 @@ def save_report(request):
             adecuacion_data = data.get('adecuacion'),
             eficacia_data = data.get('eficacia'),
         )
-        # report.save()
+        report.save()
 
         return JsonResponse({"status": "ok", "report_id": report.id})
 

@@ -57,7 +57,7 @@ function sendReportToServer() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}"
+            "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
         body: JSON.stringify(reportData)
     })
