@@ -1,25 +1,4 @@
 {
-    "titulo": "",
-    
-    "navbar":{
-        "usuario": "",
-        "lista_verificacion": ""
-    },
-    
-    "plan_auditoria":{
-        "objetivos": "Objectives",
-        "alcance": "Alcance",
-        "criterios": "Creiterios",
-        "Revision": "Revisión"
-    },
-    "informe":{
-    },
-    "lista_verificacion":{
-    },
-    "configuracion":{
-    },
-
-
     "clausula":{
         "4.1":"Understanding the organization and its context",
         "4.2":"Understanding the needs and expectations of stakeholders",
@@ -352,15 +331,5 @@
             "5":"When a potential nonconformity or opportunity is determined, how does the organization apply the requirements in 10.2 and integrate these actions in its asset management planning?",
             "6":"How does the organization report to relevant stakeholders on the long-term effect from decisions made based on predictive actions on assets and asset management performance?"
         }
-    },
-
-    "hallazgo":{
-        "fortaleza":"",
-        "conformidad":"",
-        "recomendación":"",
-        "riesgo":"",
-        "no_conformidad":""
     }
-
-
 }

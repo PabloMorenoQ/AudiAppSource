@@ -1,6 +1,10 @@
 function addSelectedQuestions() {
   const preguntasTbody = document.getElementById('preguntasTableBody');
-  const auditTbody    = document.getElementById('auditTableBody');
+  const auditTbody = document.getElementById('auditTableBody');
+
+  // 🔹 Obtener valores actuales de Proceso y Lugar desde el formulario
+  const procesoSeleccionado = document.getElementById('process_id').value;
+  const lugarSeleccionado = document.getElementById('place_id').value;
 
   preguntasTbody
     .querySelectorAll('input.select-clausula:checked')
@@ -48,18 +52,25 @@ function addSelectedQuestions() {
         <td>
           <input type="text" class="form-control" name="hallazgo" readonly placeholder="Auto/Click para editar">
         </td>
+
+        <!-- 🔸 Campos ocultos adicionales -->
+        <input type="hidden" name="proceso" value="${procesoSeleccionado}">
+        <input type="hidden" name="lugar" value="${lugarSeleccionado}">
       `;
 
       auditTbody.appendChild(newRow);
       checkbox.checked = false;
 
-      // Referencias a los campos de esta fila
-      const currentRow       = auditTbody.lastElementChild;
-      const evidenciaInput   = currentRow.querySelector('input[name="evidencia"]');
-      const califSelect      = currentRow.querySelector('select[name="calificacion"]');
-      const hallazgoInput    = currentRow.querySelector('input[name="hallazgo"]');
+      const currentRow = auditTbody.lastElementChild;
+      const evidenciaInput = currentRow.querySelector('input[name="evidencia"]');
+      const califSelect = currentRow.querySelector('select[name="calificacion"]');
+      const hallazgoInput = currentRow.querySelector('input[name="hallazgo"]');
 
-      // 2) Al hacer click en evidencia o hallazgo -> prompt() para editar
+      // 🔹 Capturar inputs ocultos desde el DOM
+      const procesoInput = currentRow.querySelector('input[name="proceso"]');
+      const lugarInput = currentRow.querySelector('input[name="lugar"]');
+
+      // Hacer campos editables por prompt
       [evidenciaInput, hallazgoInput].forEach(input => {
         input.addEventListener('click', () => {
           const texto = prompt("Editar texto:", input.value);
@@ -67,9 +78,38 @@ function addSelectedQuestions() {
         });
       });
 
-      // 3) Al cambiar la calificación -> generar texto en hallazgo
-      califSelect.addEventListener('change', function() {
-        hallazgoInput.value = "esto es un texto de prueba " + this.value;
+      // Generar hallazgo automáticamente
+      califSelect.addEventListener('change', function () {
+        const nombreProceso = procesoInput.value;
+        const nombreLugar = lugarInput.value;
+        const evidencia = evidenciaInput.value || "___";
+        const valorSeccion = indice;
+        const valorTextoSeccion = clausula;
+        const valorTextoNorma = normaDict[valorTextoSeccion] || "___";
+
+        let texto = "";
+        switch (this.value) {
+          case "Fortaleza":
+            texto = `Fortaleza: En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}.`;
+            break;
+          case "Conformidad":
+            texto = `Conformidad: En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, cumpliendo con la norma ISO 55001 en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}.`;
+            break;
+          case "Recomendación":
+            texto = `Recomendación: Evaluar la pertinencia en el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, de evidencia: ${evidencia}.`;
+            break;
+          case "Riesgo":
+            texto = `Riesgo: Es un riesgo en el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}.\nObjeto de impacto: ___.`;
+            break;
+          case "No Conformidad":
+            texto = `No conforme: En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, incumpliendo la norma ISO 55001 en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}.`;
+            break;
+          default:
+            texto = "";
+        }
+
+        hallazgoInput.value = texto;
       });
-  });
+
+    });
 }

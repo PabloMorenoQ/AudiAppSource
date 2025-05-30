@@ -92,7 +92,7 @@ def admin_dashboard(request):
     #     messages.warning(request, _("Debes iniciar sesión para ver el dashboard."))
     #     return redirect('login')
 
-    org = 1
+    org =  request.user.organization
 
     # Procesamiento de formularios POST
     if request.method == 'POST':
@@ -334,7 +334,7 @@ def download_excel_audit_plan(request):
             c = ws1.cell(row=sep, column=2, value="Alcance del Programa de Auditoría")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers2 = ["Item", "Descripción", "Responsable"]
+            headers2 = ["Tipo", "Descripción", "Observaciones"]
             for j, txt in enumerate(headers2, start=2):
                 cell = ws1.cell(row=sep+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -351,7 +351,7 @@ def download_excel_audit_plan(request):
             c = ws1.cell(row=sep2, column=2, value="Criterios del Programa de Auditoría")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers3 = ["Cláusula", "Descripción", "Fuente"]
+            headers3 = ["Tipo", "Descripción", "Observaciones"]
             for j, txt in enumerate(headers3, start=2):
                 cell = ws1.cell(row=sep2+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -372,7 +372,7 @@ def download_excel_audit_plan(request):
             c.value = "Determinación y Evaluación de Oportunidades"
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers4 = ["Código", "Descripción", "Impacto", "Probabilidad"]
+            headers4 = ["Oportunidad", "Descripción", "Acciones", "Recursos"]
             for j, txt in enumerate(headers4, start=2):
                 cell = ws2.cell(row=7, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -408,7 +408,7 @@ def download_excel_audit_plan(request):
             c.value = "Recursos para la Gestión del Programa de Auditorías"
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers5 = ["Recurso", "Descripción", "Cantidad"]
+            headers5 = ["Tipo", "Descripción"]
             for j, txt in enumerate(headers5, start=2):
                 cell = ws3.cell(row=7, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -425,7 +425,7 @@ def download_excel_audit_plan(request):
             c = ws3.cell(row=sep4, column=2, value="Equipo Auditor")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers6 = ["Nombre", "Rol", "Contacto"]
+            headers6 = ["Nombre", "Rol", "Correo"]
             for j, txt in enumerate(headers6, start=2):
                 cell = ws3.cell(row=sep4+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -445,7 +445,7 @@ def download_excel_audit_plan(request):
             c.value = "Implementación del Programa de Auditoría"
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers7 = ["Etapa", "Descripción", "Responsable"]
+            headers7 = ["Etapa", "Fase", "Descripción", "Fecha Inicio", "Fecha Final"]
             for j, txt in enumerate(headers7, start=2):
                 cell = ws4.cell(row=7, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -462,7 +462,7 @@ def download_excel_audit_plan(request):
             c = ws4.cell(row=sep5, column=2, value="Metodología de Auditoría")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers8 = ["Método", "Descripción", "Herramientas"]
+            headers8 = ["Tipo", "Descripción", "Observaciones"]
             for j, txt in enumerate(headers8, start=2):
                 cell = ws4.cell(row=sep5+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
@@ -497,7 +497,7 @@ def download_excel_audit_plan(request):
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
             # subtítulos y datos tabla-alcance
-            for j, txt in enumerate(["Ítem","Descripción","Responsable"], start=2):
+            for j, txt in enumerate(["Tipo", "Descripción", "Observaciones"], start=2):
                 cell = ws5.cell(row=sep6+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
             for k, row_data in enumerate(content.get("tabla-alcance", []), start=sep6+2):
@@ -513,13 +513,13 @@ def download_excel_audit_plan(request):
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
             headers9 = ["#", "Proceso", "Dependencia", "Lugar", "Método", "Cláusulas", "Fecha", "Hora", "Responsable", "Auditor", "Observaciones"]
-            for j, txt in enumerate(headers9, start=1):
+            for j, txt in enumerate(headers9, start=2):
                 cell = ws5.cell(row=sep7+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
             for i, row_data in enumerate(content.get("tabla-planAud", []), start=sep7+2):
                 ws5.row_dimensions[i].height = 40
-                for j, val in enumerate(row_data, start=1):
+                for j, val in enumerate(row_data, start=3):
                     cell = ws5.cell(row=i, column=j, value=val)
                     cell.alignment = wrap; cell.border = border
 
@@ -566,8 +566,8 @@ def download_excel_report(request):
         resumen_headers = ["Ciclo de vida", "Proceso", "Fortalezas", "Recomendaciones", "Riesgos", "No Conformidades", "Total"]
         resumen = [dict(zip(resumen_headers, row)) for row in resumen_raw]
 
-        detail_cols = ["No.", "TIPO", "DESCRIPCIÓN", "Requisito",
-                       "PROCESO/LUGAR", "ORIGEN", "TEMA", "Referencia", "Responsable"]
+        detail_cols = ["No", "Cláusula", "Norma", "Hallazgo", "Evidencia", "Dependencia", "Lugar", "Proceso", "Tipo Proceso"]
+        
 
         sheets_data = {}
         for name, data_str in [

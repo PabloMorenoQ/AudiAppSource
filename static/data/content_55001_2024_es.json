@@ -1,22 +1,4 @@
 {
-    "titulo": "",
-    
-    "navbar":{
-        "usuario": "",
-        "lista_verificacion": ""
-    },
-    
-    "plan_auditoria":{
-        "objetivos": "Objetivos"
-    },
-    "informe":{
-    },
-    "lista_verificacion":{
-    },
-    "configuracion":{
-    },
-
-
     "clausula":{
         "4.1":"La comprensión de la organización y su contexto",
         "4.2":"La comprensión de las necesidades y expectativas de las partes interesadas",
@@ -351,14 +333,6 @@
             "5":"¿Cuándo se determina una potencial no conformidad, la organización aplica los requisitos dados en el numeral 10.2 e integra estas acciones en su planificación de la gestión de activos?",
             "6":"¿Cómo informa la Organización a las partes interesadas pertinentes sobre el efecto a largo plazo de las decisiones tomadas sobre la base de acciones predictivas sobre los activos y el desempeño de la gestión de activos?"
         }
-    },
-
-    "hallazgo":{
-        "fortaleza":"",
-        "conformidad":"",
-        "recomendación":"",
-        "riesgo":"",
-        "no_conformidad":""
     }
 }
 

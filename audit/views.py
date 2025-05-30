@@ -41,8 +41,8 @@ def audit_plan(request):
             
         # POST:
         creation_date = datetime.date.today()
-        organization_id = 1
-        leader_auditor_id = 1
+        organization_id = request.user.organization.id
+        leader_auditor_id = request.user.id
         # organization_id = request.POST.get("organization")     # pedir desde el middleware 
         # leader_auditor_id = request.POST.get("leader_auditor") # para cargar datos de usuario
 
@@ -81,70 +81,85 @@ def check_lists(request):
         content = send_content()
         clausulas = content.get("clausula", {})
         subpreguntas = content.get("subpreguntas", {})
-        plan = AuditPlan.objects.filter(organization_id=request.user.organization).last()
-        
-        if not plan:
+
+        # Obtener todos los planes de la organización
+        planes = AuditPlan.objects.filter(organization_id=request.user.organization)
+        if not planes.exists():
             messages.error(request, "No hay un plan de auditoría asignado.")
             return redirect("home")
 
-        procesos = []
-        lugares =[]
-        clausulass = set()
-
-        contenido = plan.plan_content.get("tabla-planAud", [])
-        standard = plan.plan_content.get("selected_clause")
-
-        if not standard:
-            messages.error(request, "No se especificó el estándar en el plan de auditoría.")
-            return redirect("home")
-
-        for fila in contenido:
-            procesos.append(fila[0])   
-            lugares.append(fila[2])
-            clausulass.add(fila[4])
-
-        separadas = [item.split(', ') for item in clausulass]
-        separadas_plana = [x for sublist in separadas for x in sublist]
-
+        selected_plan_id = request.GET.get("plan_id") or request.POST.get("plan_id")
+        selected_plan = None
+        procesos, lugares, clausulass = [], [], set()
         results = {}
-        json_path = os.path.join(settings.BASE_DIR, 'static', 'data', standard)
-        with open(json_path, 'r', encoding="utf-8") as f:
-            json_data = json.load(f)
-            
-        for item in separadas_plana:
-            item = str(item)
-            if item in json_data["clausula"]:
-                results[item] = json_data["clausula"][item]
+        standard = None
 
-        if request.method == "POST":
+        # Si hay un plan seleccionado
+        if selected_plan_id:
+            try:
+                selected_plan = AuditPlan.objects.get(id=selected_plan_id, organization_id=request.user.organization)
+                contenido = selected_plan.plan_content.get("tabla-planAud", [])
+                standard = selected_plan.plan_content.get("selected_clause")
+
+                if not standard:
+                    messages.error(request, "No se especificó el estándar en el plan de auditoría.")
+                    return redirect("home")
+
+                for fila in contenido:
+                    procesos.append(fila[0])
+                    lugares.append(fila[2])
+                    clausulass.add(fila[4])
+
+                separadas = [item.split(', ') for item in clausulass]
+                separadas_plana = [x for sublist in separadas for x in sublist]
+
+                json_path = os.path.join(settings.BASE_DIR, 'static', 'data', standard)
+                with open(json_path, 'r', encoding="utf-8") as f:
+                    json_data = json.load(f)
+
+                for item in separadas_plana:
+                    item = str(item)
+                    if item in json_data["clausula"]:
+                        results[item] = json_data["clausula"][item]
+
+            except AuditPlan.DoesNotExist:
+                messages.error(request, "El plan seleccionado no existe.")
+                return redirect("check_lists")
+
+        # AJAX para cargar preguntas de una cláusula
+        if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
             selected_key = request.POST.get("selected_key")
             selected_value = clausulas.get(selected_key, "")
             preguntas = subpreguntas.get(selected_key, {})
 
-            # Formatea las preguntas en una lista de diccionarios
             preguntas_formateadas = [
                 {"indice": k, "pregunta": v} for k, v in preguntas.items()
             ]
 
-            return JsonResponse(
-                {
-                    "key": selected_key,
-                    "value": selected_value,
-                    "preguntas": preguntas_formateadas,
-                }
-            )
+            return JsonResponse({
+                "key": selected_key,
+                "value": selected_value,
+                "preguntas": preguntas_formateadas,
+            })
 
         return render(
-            request, "checkLists.html", {"clausulas": clausulas, "subpreguntas": subpreguntas, 
-                                         "organizacion": request.user.organization,
-                                         "procesos": procesos,
-                                         "lugares": lugares,
-                                         'clauses': results}
+            request,
+            "checkLists.html",
+            {
+                "clausulas": clausulas,
+                "subpreguntas": subpreguntas,
+                "organizacion": request.user.organization,
+                "procesos": procesos,
+                "lugares": lugares,
+                "clauses": results,
+                "planes": planes,
+                "plan_seleccionado": int(selected_plan_id) if selected_plan_id else None,
+            }
         )
-
     else:
         messages.warning(request, _("No tienes acceso"))
         return redirect('home')
+
 
 @csrf_exempt
 def save_checklist(request):
@@ -156,8 +171,8 @@ def save_checklist(request):
             place=data.get("place"),
             clauses_list=data.get("clauses_list"),
             audit_data=data.get("audit_data"),
-            # organization_instance = Organization.objects.get(id=request.user.organization.id)
-            organization_id = 1,
+            organization_id = request.user.organization.id,
+            # organization_id = 1,
             dependency="Temporal",  # Cambiar si viene del form
             # leader_auditor=request.user
             leader_auditor= User.objects.get(id=1),
