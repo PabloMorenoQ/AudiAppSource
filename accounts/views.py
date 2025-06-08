@@ -668,6 +668,55 @@ def download_excel_report(request):
             chart.series.append(series)
             ws.add_chart(chart, "I5")
 
+            # grafico barras - calificaion proceso 
+            from openpyxl.chart import BarChart, Reference
+
+            bar_chart = BarChart()
+            bar_chart.title = "Resumen por Proceso"
+            bar_chart.type = "col"
+            bar_chart.style = 10
+            bar_chart.grouping = "clustered"
+            bar_chart.overlap = 0
+            bar_chart.y_axis.title = "Cantidad"
+            bar_chart.x_axis.title = "Proceso"
+
+            # Rango de datos: C11 a F11 como encabezados, C12:F{end_row} como valores
+            cats = Reference(ws, min_col=2, min_row=data_start_row, max_row=data_end_row)  # Procesos (columna B)
+            data = Reference(ws, min_col=3, max_col=6, min_row=data_start_row - 1, max_row=data_end_row)  # Encabezados + datos
+
+            bar_chart.add_data(data, titles_from_data=True)
+            bar_chart.set_categories(cats)
+
+            ws.add_chart(bar_chart, "I15")
+
+            # grafico barras - resumen todas las calificaiones
+            # Sumar totales por columna C, D, E, F
+            total_row = row + 2  # Fila donde se escriben los totales
+            calificaciones = ["Fortalezas", "Recomendaciones", "Riesgos", "No Conformidades"]
+            for i, col in enumerate(range(3, 7), start=0):  # Columnas C-F (3-6)
+                letra_col = chr(64 + col)  # C, D, E, F
+                formula = f"=SUM({letra_col}{data_start_row}:{letra_col}{data_end_row})"
+                ws.cell(row=total_row, column=col, value=formula)
+                ws.cell(row=total_row - 1, column=col, value=calificaciones[i])
+
+            # Crear gráfico de barras
+            bar_chart = BarChart()
+            bar_chart.title = "Total"
+            bar_chart.type = "col"
+            bar_chart.style = 10
+            bar_chart.y_axis.title = "Cantidad"
+            bar_chart.x_axis.title = "Calificación"
+
+            cats = Reference(ws, min_col=3, max_col=6, min_row=total_row - 1)  # Etiquetas (fortalezas, etc.)
+            data = Reference(ws, min_col=3, max_col=6, min_row=total_row)      # Valores sumados
+
+            bar_chart.add_data(data, titles_from_data=False, from_rows=True)
+            bar_chart.set_categories(cats)
+
+
+            ws.add_chart(bar_chart, "I31")
+
+
             # 2) HOJAS DE DETALLE
             for name, data in sheets_data.items():
                 ws2 = wb.create_sheet(name)
