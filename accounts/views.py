@@ -31,8 +31,8 @@ def register_view(request):
                 user.is_superuser = True
                 user.save()
             login(request, user)
-            messages.success(request, _('Registro correcto'))
-            return redirect('home')
+            messages.success(request, _(f'Registro correcto. Tu código de verificación es: {user.token}'))
+            return redirect('verify')
         else:
             username = form.cleaned_data.get('username')
             if User.objects.filter(username=username).exists():
@@ -50,6 +50,19 @@ def register_view(request):
         form = Register()
     return render(request, 'register.html', {'form': form})
 
+def verify_user(request):
+    if request.method == 'POST':
+        token = request.POST.get('token')
+        try:
+            user = User.objects.get(token=token)
+            user.is_active = True
+            user.save()
+            messages.success(request, _('Usuario verificado exitosamente. Ya puedes iniciar sesión.'))
+            return redirect('login')
+        except User.DoesNotExist:
+            messages.error(request, _('Código inválido.'))
+    return render(request, 'verify.html')
+
 # Vista de login
 def login_view(request):
     if request.method == 'POST':
@@ -57,7 +70,8 @@ def login_view(request):
         if form.is_valid():
             nombre = form.cleaned_data.get('username')
             contraseña = form.cleaned_data.get('password')
-            user = authenticate(request, username=nombre, password=contraseña)
+            codigo = form.cleaned_data.get('code')
+            user = authenticate(request, username=nombre, password=contraseña, code=codigo)
             if user:
                 messages.success(request, _("Inicio de sesión correcto"))
                 login(request, user)

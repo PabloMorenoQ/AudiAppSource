@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Verificación" %}{% endblock %}
+
+{% block content %}
+<style>
+    .card.static:hover {
+        transform: none !important;
+        transition: none !important;
+        box-shadow: none !important;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="text-center card-title">{% trans "Verificación" %}</h2>
+    <div class="card static">
+        <div class="card-body">
+            <form method="post" class="text-center">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="token" class="d-block text-left">{% trans "Código" %}</label>
+                    <input type="password" name="token" id="token" class="form-control" required>
+                </div>
+                <button type="submit" class="button mt-3 w-100">{% trans "Verificar" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

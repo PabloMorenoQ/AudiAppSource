@@ -2,6 +2,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings  # para usar el AUTH_USER_MODEL
+import uuid
 
 
 class Organization(models.Model):
@@ -24,6 +25,8 @@ class User(AbstractUser):
 
     # Rol para distinguir el tipo de usuario
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='auditUser')
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    is_active = models.BooleanField(default=False)
 
     # Puedes reutilizar is_active de AbstractUser para habilitar/deshabilitar al usuario
     # o bien usar un campo adicional "status" si lo prefieres.

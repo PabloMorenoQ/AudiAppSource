@@ -10,4 +10,5 @@ urlpatterns = [
     path('dashboard/auditPlan/', download_excel_audit_plan, name='download_excel_audit_plan'),
     path('dashboard/checklist/', download_excel_checklist, name='download_excel_checklist'),
     path('dashboard/report/', download_excel_report, name='download_excel_report'),
+    path('verify/', verify_user, name='verify')
 ]
