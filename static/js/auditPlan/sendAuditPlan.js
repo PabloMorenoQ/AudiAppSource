@@ -22,7 +22,7 @@ document.getElementById('auditPlanForm').addEventListener('submit', function(e) 
 
         // 2) Recolectar contenido de divs .editable (si los hay)
         document.querySelectorAll('.editable[contenteditable]').forEach(div => {
-            planData[div.id || div.parentElement.id + '_editable'] = div.innerText.trim();
+            planData[div.id || div.parentElement.id] = div.innerText.trim();
         });
 
         // 3) Inyectar JSON en el input oculto

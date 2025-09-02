@@ -18,7 +18,7 @@
                         <option value="">Seleccione un plan...</option>
                         {% for p in planes %}
                             <option value="{{ p.id }}" {% if p.id == plan_seleccionado %}selected{% endif %}>
-                                ID {{ p.id }} - {{ p.fecha_inicio }}
+                                ID {{ p.id }} - {{ p.creation_date }} {{ p.leader_auditor }}
                             </option>
                         {% endfor %}
                     </select>
@@ -133,9 +133,9 @@
             <button type="button" class="btn btn-secondary" onclick="addEmptyRow()">Agregar Fila Vacía</button>
 
             <!-- Aquí faltaba el type="button" -->
-            <button type="button" class="btn btn-success" onclick="generateJSONFromAuditTable()">Descargar JSON</button>
+            <!-- <button type="button" class="btn btn-success" onclick="generateJSONFromAuditTable()">Descargar JSON</button> -->
             <button type="button" class="btn btn-success" onclick="sendChecklistToServer()">Guardar Checklist</button>
-            <button type="button" class="btn btn-info"    onclick="downloadExcel()">Descargar Excel</button>
+            <!-- <button type="button" class="btn btn-info"    onclick="downloadExcel()">Descargar Excel</button> -->
         </div>
 
 

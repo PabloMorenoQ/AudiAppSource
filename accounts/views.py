@@ -417,21 +417,33 @@ def download_excel_audit_plan(request):
             ws3 = wb.create_sheet("Resources")
             set_cols(ws3, [3, 35, 50, 30])
 
+            # Título
             ws3.merge_cells("B6:D6")
             c = ws3["B6"]
             c.value = "Recursos para la Gestión del Programa de Auditorías"
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers5 = ["Tipo", "Descripción"]
-            for j, txt in enumerate(headers5, start=2):
-                cell = ws3.cell(row=7, column=j, value=txt)
-                cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+            # Encabezados
+            cell = ws3.cell(row=7, column=2, value="Tipo")
+            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
+            ws3.merge_cells(start_row=7, start_column=3, end_row=7, end_column=4)
+            cell = ws3.cell(row=7, column=3, value="Descripción")
+            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+            # Contenido
             for i, row_data in enumerate(content.get("tabla-recursos", []), start=8):
                 ws3.row_dimensions[i].height = 40
-                for j, val in enumerate(row_data, start=2):
-                    cell = ws3.cell(row=i, column=j, value=val)
-                    cell.alignment = wrap; cell.border = border
+
+                # Tipo en columna B
+                cell = ws3.cell(row=i, column=2, value=row_data[0])
+                cell.alignment = wrap; cell.border = border
+
+                # Descripción en columnas C y D
+                ws3.merge_cells(start_row=i, start_column=3, end_row=i, end_column=4)
+                cell = ws3.cell(row=i, column=3, value=row_data[1])
+                cell.alignment = wrap; cell.border = border
+
 
             # espacio y Equipo Auditor
             sep4 = ws3.max_row + 2
@@ -476,16 +488,36 @@ def download_excel_audit_plan(request):
             c = ws4.cell(row=sep5, column=2, value="Metodología de Auditoría")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            headers8 = ["Tipo", "Descripción", "Observaciones"]
-            for j, txt in enumerate(headers8, start=2):
-                cell = ws4.cell(row=sep5+1, column=j, value=txt)
-                cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+            # encabezados
+            ws4.cell(row=sep5+1, column=2, value="Tipo").fill = section_fill
+            ws4.cell(row=sep5+1, column=2).font = black_bold; ws4.cell(row=sep5+1, column=2).alignment = center; ws4.cell(row=sep5+1, column=2).border = border
 
+            ws4.merge_cells(start_row=sep5+1, start_column=3, end_row=sep5+1, end_column=4)
+            cell = ws4.cell(row=sep5+1, column=3, value="Descripción")
+            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+            ws4.merge_cells(start_row=sep5+1, start_column=5, end_row=sep5+1, end_column=6)
+            cell = ws4.cell(row=sep5+1, column=5, value="Observaciones")
+            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+            # contenido
             for k, row_data in enumerate(content.get("tabla-metodologia", []), start=sep5+2):
                 ws4.row_dimensions[k].height = 40
-                for j, val in enumerate(row_data, start=2):
-                    cell = ws4.cell(row=k, column=j, value=val)
-                    cell.alignment = wrap; cell.border = border
+
+                # Tipo (columna B)
+                cell = ws4.cell(row=k, column=2, value=row_data[0])
+                cell.alignment = wrap; cell.border = border
+
+                # Descripción (columnas C y D)
+                ws4.merge_cells(start_row=k, start_column=3, end_row=k, end_column=4)
+                cell = ws4.cell(row=k, column=3, value=row_data[1])
+                cell.alignment = wrap; cell.border = border
+
+                # Observaciones (columnas E y F)
+                ws4.merge_cells(start_row=k, start_column=5, end_row=k, end_column=6)
+                cell = ws4.cell(row=k, column=5, value=row_data[2])
+                cell.alignment = wrap; cell.border = border
+
 
             # === 6) Plan de Auditoría ===
             ws5 = wb.create_sheet("Audit Plan")
@@ -511,14 +543,33 @@ def download_excel_audit_plan(request):
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
             # subtítulos y datos tabla-alcance
-            for j, txt in enumerate(["Tipo", "Descripción", "Observaciones"], start=2):
-                cell = ws5.cell(row=sep6+1, column=j, value=txt)
+            # Encabezados
+            for j, (txt, col_start, col_end) in enumerate([
+                ("Tipo", 2, 4), ("Descripción", 5, 8), ("Observaciones", 9, 12)
+            ], start=1):
+                ws5.merge_cells(start_row=sep6+1, start_column=col_start, end_row=sep6+1, end_column=col_end)
+                cell = ws5.cell(row=sep6+1, column=col_start, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+            # Contenido
             for k, row_data in enumerate(content.get("tabla-alcance", []), start=sep6+2):
                 ws5.row_dimensions[k].height = 40
-                for j, val in enumerate(row_data, start=2):
-                    cell = ws5.cell(row=k, column=j, value=val)
-                    cell.alignment = wrap; cell.border = border
+
+                # Tipo → B-D
+                ws5.merge_cells(start_row=k, start_column=2, end_row=k, end_column=4)
+                cell = ws5.cell(row=k, column=2, value=row_data[0])
+                cell.alignment = wrap; cell.border = border
+
+                # Descripción → E-H
+                ws5.merge_cells(start_row=k, start_column=5, end_row=k, end_column=8)
+                cell = ws5.cell(row=k, column=5, value=row_data[1])
+                cell.alignment = wrap; cell.border = border
+
+                # Observaciones → I-L
+                ws5.merge_cells(start_row=k, start_column=9, end_row=k, end_column=12)
+                cell = ws5.cell(row=k, column=9, value=row_data[2])
+                cell.alignment = wrap; cell.border = border
+
 
             # Observaciones (última columna) para cada fila de planAud
             sep7 = ws5.max_row + 2
@@ -531,11 +582,23 @@ def download_excel_audit_plan(request):
                 cell = ws5.cell(row=sep7+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
+            k = 0
+
             for i, row_data in enumerate(content.get("tabla-planAud", []), start=sep7+2):
                 ws5.row_dimensions[i].height = 40
+
+                # contador en la columna 2
+                k += 1
+                cell = ws5.cell(row=i, column=2, value=k)
+                cell.alignment = wrap; cell.border = border; cell.alignment = center
+
+                # resto de datos desde la columna 3
                 for j, val in enumerate(row_data, start=3):
                     cell = ws5.cell(row=i, column=j, value=val)
-                    cell.alignment = wrap; cell.border = border
+                    cell.alignment = wrap; cell.border = border; cell.alignment = center
+
+
+                    
 
             # # === Resumen ===
             # meta = {

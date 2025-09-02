@@ -30,3 +30,11 @@ urlpatterns += i18n_patterns(
     path('core/', include('core.urls')),
     path('', include('core.urls')),  # Página principal
 )
+
+from django.conf.urls import handler500
+from django.shortcuts import render
+
+def custom_server_error(request, *args, **argv):
+    return render(request, "error_generic.html", status=500)
+
+handler500 = custom_server_error

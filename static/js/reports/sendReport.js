@@ -28,6 +28,7 @@ function sendReportToServer(event) {
     }
 
     // Extraer datos de cada sección
+    // const resumenData = extractTableData("tabla-resumen");
     const resumenData = extractTableData("tabla-resumen");
     const fortalezasData = extractTableData("tabla-fortalezas");
     const conformidadesData = extractTableData("tabla-conformidades");
@@ -40,8 +41,31 @@ function sendReportToServer(event) {
     const adecuacion = document.querySelector("#adecuacion .card-content").textContent.trim();
     const eficacia = document.querySelector("#eficacia .card-content").textContent.trim();
 
+    // lsita de clausulas
+    function extractSecondColumn(tableId) {
+    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    let data = [];
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        if (cells.length > 1) {
+            data.push(cells[1].textContent.trim()); // tomar la segunda columna
+        }
+    });
+
+    return data;
+    }
+
+    const clauses_list = []
+    .concat(extractSecondColumn("tabla-fortalezas"))
+    .concat(extractSecondColumn("tabla-conformidades"))
+    .concat(extractSecondColumn("tabla-recomendaciones"))
+    .concat(extractSecondColumn("tabla-riesgos"))
+    .concat(extractSecondColumn("tabla-no-conformidades"));
+
     // Crear el objeto de datos para el reporte
     const reportData = {
+        clauses_list: JSON.stringify(clauses_list), // ingresar la forma para tomar las clausulas evaluadas de la página
         checklist_id: selectedChecklistId,
         resumen: JSON.stringify(resumenData),
         fortalezas: JSON.stringify(fortalezasData),

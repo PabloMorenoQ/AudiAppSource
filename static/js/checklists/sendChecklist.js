@@ -6,6 +6,7 @@ function sendChecklistToServer() {
     const process     = document.getElementById("process_id").value.trim();
     const place       = document.getElementById("place_id").value.trim();
     const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
+    const dependency = "{{ dependency|escapejs }}";
 
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
@@ -27,7 +28,7 @@ function sendChecklistToServer() {
                 hallazgo:     getCellValue(cells[6]),
                 proceso:      process,
                 lugar:        place,
-                tipo_proceso: processType
+                process_type: processType,
             });
         }
     });
@@ -37,7 +38,8 @@ function sendChecklistToServer() {
         place: place,
         clauses_list: data.map(d => d.clausula).join(', '),
         process_type: processType,
-        audit_data: JSON.stringify(data)  // ← audit_data incluye también los nuevos campos
+        audit_data: JSON.stringify(data),  // ← audit_data incluye también los nuevos campos
+        dependency: dependency
     };
 
     fetch("save/", {

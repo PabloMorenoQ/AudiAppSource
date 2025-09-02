@@ -100,6 +100,10 @@ def check_lists(request):
                 selected_plan = AuditPlan.objects.get(id=selected_plan_id, organization_id=request.user.organization)
                 contenido = selected_plan.plan_content.get("tabla-planAud", [])
                 standard = selected_plan.plan_content.get("selected_clause")
+                
+                dependency = None
+                if contenido and len(contenido[0]) > 1:  # primera fila y columna índice 1
+                    dependency = contenido[0][1]  # el valor del "area" desde el plan de auditoria
 
                 if not standard:
                     messages.error(request, "No se especificó el estándar en el plan de auditoría.")
@@ -166,16 +170,22 @@ def save_checklist(request):
     if request.method == "POST":
         data = json.loads(request.body)
 
+        selected_plan = AuditPlan.objects.filter(organization=request.user.organization).last()
+        plan_content = selected_plan.plan_content if selected_plan else {}
+        tabla_planAud = plan_content.get("tabla-planAud", [])
+
+        dependency = None
+        if tabla_planAud and len(tabla_planAud[0]) > 1:
+            dependency = tabla_planAud[0][1] # el valor del "area" desde el plan de auditoria
+
         checklist = CheckList.objects.create(
             process=data.get("process"),
             place=data.get("place"),
             clauses_list=data.get("clauses_list"),
             audit_data=data.get("audit_data"),
             organization_id = request.user.organization.id,
-            # organization_id = 1,
-            dependency="Temporal",  # Cambiar si viene del form
-            # leader_auditor=request.user
-            leader_auditor= User.objects.get(id=1),
+            dependency = dependency,
+            leader_auditor=request.user,
             process_type=data.get("process_type"),
         )
         return JsonResponse({"status": "ok", "id": checklist.id})
@@ -189,10 +199,10 @@ def save_report(request):
 
         report = Report.objects.create(
             creation_date= datetime.date.today(),
-            organization_id =1,
-            # leader_auditor=User.objects.get(id=data['leader_auditor_id']),
-            leader_auditor = User.objects.get(id=1),
-            # clauses_list = data.get('clauses_list'),
+            organization_id = request.user.organization.id,
+            leader_auditor= request.user,
+            # leader_auditor = User.objects.get(id=1),
+            clauses_list = data.get('clauses_list'),
             resumen_data = data.get('resumen'),
             fortalezas_data = data.get('fortalezas'),
             conformidades_data = data.get('conformidades'),

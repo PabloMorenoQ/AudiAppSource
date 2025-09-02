@@ -1,9 +1,9 @@
 # accounts/admin.py
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Organization
+from .models import User, Organization, RegistroAcceso
 from audit.models import CheckList, AuditPlan, Report
-from .models import RegistroAcceso
+
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
