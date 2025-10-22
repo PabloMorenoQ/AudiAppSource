@@ -1,4 +1,4 @@
-import os, json, datetime
+import os, json, datetime, re
 import pandas as pd
 from io import BytesIO
 from django.shortcuts import render, redirect
@@ -94,16 +94,21 @@ def check_lists(request):
         results = {}
         standard = None
 
+        # ==============================
         # Si hay un plan seleccionado
+        # ==============================
         if selected_plan_id:
             try:
-                selected_plan = AuditPlan.objects.get(id=selected_plan_id, organization_id=request.user.organization)
+                selected_plan = AuditPlan.objects.get(
+                    id=selected_plan_id,
+                    organization_id=request.user.organization
+                )
                 contenido = selected_plan.plan_content.get("tabla-planAud", [])
                 standard = selected_plan.plan_content.get("selected_clause")
-                
+
                 dependency = None
                 if contenido and len(contenido[0]) > 1:  # primera fila y columna índice 1
-                    dependency = contenido[0][1]  # el valor del "area" desde el plan de auditoria
+                    dependency = contenido[0][1]  # valor del "area" desde el plan
 
                 if not standard:
                     messages.error(request, "No se especificó el estándar en el plan de auditoría.")
@@ -114,28 +119,81 @@ def check_lists(request):
                     lugares.append(fila[2])
                     clausulass.add(fila[4])
 
-                separadas = [item.split(', ') for item in clausulass]
-                separadas_plana = [x for sublist in separadas for x in sublist]
+                # Separar cláusulas por coma
+                separadas = [re.split(r',\s*', item) for item in clausulass]
+                separadas_plana = [x.strip() for sublist in separadas for x in sublist]
 
+                # Normalizar claves del JSON
                 json_path = os.path.join(settings.BASE_DIR, 'static', 'data', standard)
                 with open(json_path, 'r', encoding="utf-8") as f:
                     json_data = json.load(f)
 
+                json_keys = {str(k).strip(): v for k, v in json_data["clausula"].items()}
+
+                # Construir resultados con coincidencias exactas
+                results = {}
                 for item in separadas_plana:
-                    item = str(item)
-                    if item in json_data["clausula"]:
-                        results[item] = json_data["clausula"][item]
+                    item = str(item).strip()
+                    if item in json_keys:
+                        results[item] = json_keys[item]
+                    else:
+                        print(f"⚠️ Clave no encontrada en JSON principal: '{item}'")
 
             except AuditPlan.DoesNotExist:
                 messages.error(request, "El plan seleccionado no existe.")
                 return redirect("check_lists")
 
-        # AJAX para cargar preguntas de una cláusula
+        # ==========================================================
+        # AJAX para cargar preguntas de una cláusula específica
+        # ==========================================================
         if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
-            selected_key = request.POST.get("selected_key")
-            selected_value = clausulas.get(selected_key, "")
-            preguntas = subpreguntas.get(selected_key, {})
+            selected_key = request.POST.get("selected_key", "").strip()
+            ajax_plan_id = request.POST.get("plan_id") or selected_plan_id  # Usar plan_id recibido en la petición
 
+            print("🔹 AJAX clave buscada:", repr(selected_key))
+            print("🔹 AJAX plan_id recibido:", ajax_plan_id)
+
+            preguntas = {}
+            selected_value = ""
+
+            # Si tenemos un plan_id, cargamos el JSON correspondiente
+            if ajax_plan_id:
+                try:
+                    plan_ajax = AuditPlan.objects.get(
+                        id=ajax_plan_id,
+                        organization_id=request.user.organization
+                    )
+                    standard_ajax = plan_ajax.plan_content.get("selected_clause")
+                    json_path_ajax = os.path.join(settings.BASE_DIR, 'static', 'data', standard_ajax)
+
+                    with open(json_path_ajax, 'r', encoding="utf-8") as f:
+                        json_ajax_data = json.load(f)
+
+                    clausulas_json = {str(k).strip(): v for k, v in json_ajax_data.get("clausula", {}).items()}
+                    subpreguntas_json = {str(k).strip(): v for k, v in json_ajax_data.get("subpreguntas", {}).items()}
+
+                    # Valor descriptivo de la cláusula
+                    selected_value = clausulas_json.get(selected_key, "")
+
+                    # Buscar coincidencia exacta
+                    if selected_key in subpreguntas_json:
+                        preguntas = subpreguntas_json[selected_key]
+                    else:
+                        # Buscar todas las subclaves que inicien con selected_key (p.ej. "6.1" → "6.1.1")
+                        coincidencias = {k: v for k, v in subpreguntas_json.items() if k.startswith(selected_key)}
+                        if coincidencias:
+                            preguntas = {}
+                            for subk, subv in coincidencias.items():
+                                preguntas[subk] = subv
+
+                except AuditPlan.DoesNotExist:
+                    print("❌ No se encontró el plan durante la petición AJAX.")
+                except FileNotFoundError:
+                    print("❌ Archivo JSON no encontrado para el plan AJAX.")
+                except Exception as exc:
+                    print("❌ Error cargando JSON en AJAX:", exc)
+
+            # Formatear preguntas para el frontend
             preguntas_formateadas = [
                 {"indice": k, "pregunta": v} for k, v in preguntas.items()
             ]
@@ -146,6 +204,9 @@ def check_lists(request):
                 "preguntas": preguntas_formateadas,
             })
 
+        # ==========================================================
+        # Render normal (no AJAX)
+        # ==========================================================
         return render(
             request,
             "checkLists.html",

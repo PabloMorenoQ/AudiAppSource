@@ -157,6 +157,10 @@
             </div>
         </div>
 
+        <!-- en tu template checkLists.html, dentro del body -->
+        <input type="hidden" id="selected_plan_id" value="{{ plan_seleccionado|default:'' }}">
+
+
         <script>
             document.getElementById("clausula").addEventListener("change", function () {
                 let selectedOption = this.options[this.selectedIndex];
@@ -164,20 +168,25 @@
                 let value = selectedOption.getAttribute("data-value") || "";
                 document.getElementById("subsecciones").value = value;
 
-                // Petición AJAX para obtener las preguntas asociadas
+                // Obtener el plan_id desde el hidden o desde la query string
+                let planId = document.getElementById('selected_plan_id')?.value || new URLSearchParams(window.location.search).get('plan_id') || '';
+
+                // Petición AJAX para obtener las preguntas asociadas (incluimos plan_id)
+                const body = "selected_key=" + encodeURIComponent(clave) + "&plan_id=" + encodeURIComponent(planId);
+
                 fetch("", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
-                        "X-CSRFToken": "{{ csrf_token }}",  // CSRF Token para Django
-                        "X-Requested-With": "XMLHttpRequest"  // Necesario para que Django reconozca AJAX
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest"
                     },
-                    body: "selected_key=" + encodeURIComponent(clave)
+                    body: body
                 })
                 .then(response => response.json())
                 .then(data => {
                     let preguntasTableBody = document.getElementById("preguntasTableBody");
-                    preguntasTableBody.innerHTML = ""; // Limpiar tabla antes de agregar nuevas preguntas
+                    preguntasTableBody.innerHTML = "";
 
                     data.preguntas.forEach(item => {
                         let row = `
@@ -189,9 +198,13 @@
                             </tr>`;
                         preguntasTableBody.innerHTML += row;
                     });
+                })
+                .catch(err => {
+                    console.error("Error al cargar preguntas:", err);
                 });
             });
-        </script>
+            </script>
+
 
         <script>
             const normaDict = {{ clauses|safe }};

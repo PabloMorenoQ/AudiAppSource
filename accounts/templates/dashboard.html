@@ -73,10 +73,8 @@
                     <td>{{ plan.leader_auditor.get_full_name }}</td>
                     <td>{{ plan.clauses_list }}</td>
                     <td>
-                        <!-- <a href="{}" class="btn btn-warning btn-sm">✏️</a>
-                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a> -->
                         {% csrf_token %}
-                        <a onclick="downloadAuditPlanExcel('{{ plan.id }}')" class="btn btn-success btn-sm">Excel</a>
+                        <button onclick="downloadAuditPlanExcel('{{ plan.id }}')" class="btn btn-success btn-sm">Excel</button>
                     </td>
                 </tr>
             {% empty %}
@@ -102,8 +100,6 @@
                     <td>{{ checklist.place }}</td>
                     <td>{{ checklist.leader_auditor.get_full_name }}</td>
                     <td>
-                        <a href="{}" class="btn btn-warning btn-sm">✏️</a>
-                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a>
                         
                         <button onclick="downloadChecklistExcel('{{ checklist.id }}')" class="btn btn-success btn-sm">Excel</button>
 
@@ -132,8 +128,7 @@
                     <td>{{ report.leader_auditor.get_full_name }}</td>
                     <td>{{ report.total_clauses }}</td>
                     <td>
-                        <!-- <a href="{}" class="btn btn-warning btn-sm">✏️</a>
-                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a> -->
+                        
                         <a onclick="downloadReportExcel('{{ report.id }}')" class="btn btn-success btn-sm">Excel</a>
                     </td>
                 </tr>
@@ -144,29 +139,6 @@
     </table>
 </section>
 
-<!-- Grupos -->
-<section class="mb-5">
-    <h3>{% trans "Grupos" %}</h3>
-    <a href="{}" class="btn btn-success btn-sm mb-2">➕ {% trans "Crear Grupo" %}</a>
-    <table class="table table-striped">
-        <thead>
-            <tr><th>{% trans "Nombre" %}</th><th>{% trans "Acciones" %}</th></tr>
-        </thead>
-        <tbody>
-            {% for group in groups %}
-                <tr>
-                    <td>{{ group.name }}</td>
-                    <td>
-                        <!-- <a href="{}" class="btn btn-warning btn-sm">✏️</a>
-                        <a href="{}" class="btn btn-danger btn-sm">🗑️</a> -->
-                    </td>
-                </tr>
-            {% empty %}
-                <tr><td colspan="2">{% trans "No hay grupos." %}</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
 
 <script src="{% static 'js/excel/excelCheckList.js' %}"></script>
 
