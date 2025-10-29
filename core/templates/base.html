@@ -50,16 +50,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">{% trans "Inicio" %}</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'checklists' %}">{% trans "Listas de Verificación" %}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'audit_plan' %}">{% trans "Plan de Auditoría" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'checklists' %}">{% trans "Listas de Verificación" %}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'reports' %}">{% trans "Informe" %}</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">{% trans "Perfil" %}</a></li>
                     {% if user.is_authenticated and user.role == 'organizationUser' %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">{% trans "Dashboard" %}</a></li>
                     {% endif %}
                     {% if user.is_authenticated and user.role == 'auditLeaderUser' %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">{% trans "Dashboard" %}</a></li>
                     {% endif %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">{% trans "Perfil" %}</a></li>
+                    
 
                     <!-- Dropdown de idioma -->
                     <li class="nav-item dropdown">

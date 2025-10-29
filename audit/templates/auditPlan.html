@@ -342,7 +342,7 @@
                     </div>
 
                     <div class="card-title">
-                        {% trans "Revisión" %}
+                        {% trans "Asistencia" %}
                         <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-revision">+</button>
                         <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-revision">-</button>
                     </div>
@@ -367,6 +367,28 @@
             <div id="incertidumbre" class="content-section" style="display: none;">
                 <h2 class="title">Incertidumbre</h2>
                 <div class="container">
+                    <div class="card-title">
+                        Oportunidades
+                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-oportunidades">+</button>
+                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-oportunidades">-</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tabla-oportunidades">
+                            <thead>
+                                <tr>
+                                    <th>Oportunidad</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                    <th>Recursos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- content -->
+                            </tbody>
+                        </table>
+                    </div>
+
+
                     <div class="card-title">
                         Riesgos
                         <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-riesgos">+</button>
@@ -408,26 +430,6 @@
                         </table>
                     </div>
 
-                    <div class="card-title">
-                        Oportunidades
-                        <button type="button" class="btn btn-success me-2 add-row-btn" data-table="tabla-oportunidades">+</button>
-                        <button type="button" class="btn btn-danger remove-row-btn" data-table="tabla-oportunidades">-</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="tabla-oportunidades">
-                            <thead>
-                                <tr>
-                                    <th>Oportunidad</th>
-                                    <th>Descripción</th>
-                                    <th>Acciones</th>
-                                    <th>Recursos</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- content -->
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
 
@@ -567,15 +569,14 @@
                         </table>
                     </div>
                 </div>
-            </div>
 
-        </div>
-        
-        <!-- envío -->
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">
-                {% trans "Guardar plan de auditoría" %}
-            </button>
+                <!-- envío -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Guardar plan de auditoría" %}
+                    </button>
+                </div>
+            </div>
         </div>
     </form>
     </div>
