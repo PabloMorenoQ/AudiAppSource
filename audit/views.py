@@ -93,6 +93,7 @@ def check_lists(request):
         procesos, lugares, clausulass = [], [], set()
         results = {}
         standard = None
+        proceso_clausulas = {}
 
         # ==============================
         # Si hay un plan seleccionado
@@ -107,21 +108,44 @@ def check_lists(request):
                 standard = selected_plan.plan_content.get("selected_clause")
 
                 dependency = None
-                if contenido and len(contenido[0]) > 1:  # primera fila y columna índice 1
-                    dependency = contenido[0][1]  # valor del "area" desde el plan
+                if contenido and len(contenido[0]) > 1:
+                    dependency = contenido[0][1]
 
                 if not standard:
                     messages.error(request, "No se especificó el estándar en el plan de auditoría.")
                     return redirect("home")
 
+                # ✅ CONSTRUIR TODO EN UN SOLO BUCLE
                 for fila in contenido:
-                    procesos.append(fila[0])
-                    lugares.append(fila[2])
-                    clausulass.add(fila[4])
+                    # fila[0] = proceso
+                    # fila[2] = lugar
+                    # fila[4] = clausulas (string separado por comas)
+                    
+                    proceso_nombre = fila[0]
+                    lugar_nombre = fila[2]
+                    clausulas_str = fila[4]
+                    
+                    # Agregar a listas para el template
+                    procesos.append(proceso_nombre)
+                    lugares.append(lugar_nombre)
+                    clausulass.add(clausulas_str)
+                    
+                    # Construir diccionario proceso → cláusulas
+                    clausulas_list = [c.strip() for c in clausulas_str.split(',') if c.strip()]
+                    
+                    if proceso_nombre not in proceso_clausulas:
+                        proceso_clausulas[proceso_nombre] = []
+                    proceso_clausulas[proceso_nombre].extend(clausulas_list)
+                
+                # Eliminar duplicados en las cláusulas de cada proceso
+                proceso_clausulas = {k: list(set(v)) for k, v in proceso_clausulas.items()}
+                
+                print("🔹 proceso_clausulas construido:", proceso_clausulas)  # DEBUG
+                # Debería mostrar: {'Mantenimiento': ['8.1', '9.1', '9.2.1', ...], 'Estrategia': ['4.1', '4.2', ...]}
 
-                # Separar cláusulas por coma
+                # Separar todas las cláusulas únicas
                 separadas = [re.split(r',\s*', item) for item in clausulass]
-                separadas_plana = [x.strip() for sublist in separadas for x in sublist]
+                separadas_plana = [x.strip() for sublist in separadas for x in sublist if x.strip()]
 
                 # Normalizar claves del JSON
                 json_path = os.path.join(settings.BASE_DIR, 'static', 'data', standard)
@@ -219,6 +243,7 @@ def check_lists(request):
                 "clauses": results,
                 "planes": planes,
                 "plan_seleccionado": int(selected_plan_id) if selected_plan_id else None,
+                "proceso_clausulas": json.dumps(proceso_clausulas),  # ← CONVERTIR A JSON STRING
             }
         )
     else:

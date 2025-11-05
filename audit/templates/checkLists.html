@@ -35,10 +35,11 @@
                     </div>
                     <div class="col">
                          <select name="process_id" id="process_id" class="form-control">
+                            <option value="">{% trans "Seleccionar..." %}</option>
                             {% for proceso in procesos %}
                                 <option value="{{ proceso }}">{{ proceso }}</option>
                             {% endfor %}
-                         </select>     
+                        </select> 
                     </div>           
                 </div>
 
@@ -81,7 +82,7 @@
                 <select id="clausula" class="form-select">
                     <option value="">{% trans "Seleccionar..." %}</option>
                     {% for key, value in clauses.items %}
-                        <option value="{{ key }}" data-value="{{ value }}">{{ key }}</option>
+                        <option value="{{ key }}" data-value="{{ value }}" data-key="{{ key }}">{{ key }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -109,7 +110,7 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="table-responsive">
             <h2 class="text-center mb-4">{% trans "Lista de verificación" %}</h2>
             <table class="table table-bordered" style="border-radius: 8px; overflow: hidden;">
                 <thead class="table-light">
@@ -161,6 +162,67 @@
         <input type="hidden" id="selected_plan_id" value="{{ plan_seleccionado|default:'' }}">
 
 
+        <!-- 1️⃣ PRIMERO: Cargar las variables globales -->
+        <script>
+            const normaDict = {{ clauses|safe }};
+        </script>
+
+        {{ proceso_clausulas|json_script:"proceso-clausulas-data" }}
+        <script>
+            const procesoClausulas = {{ proceso_clausulas|safe }};
+            console.log("procesoClausulas cargado:", procesoClausulas);
+        </script>
+
+        <!-- 2️⃣ SEGUNDO: Script para filtrar cláusulas por proceso -->
+        <script>
+            document.getElementById("process_id").addEventListener("change", function() {
+                let procesoSeleccionado = this.value;
+                let clausulaSelect = document.getElementById("clausula");
+                
+                console.log("Proceso seleccionado:", procesoSeleccionado);
+                console.log("Cláusulas del proceso:", procesoClausulas[procesoSeleccionado]);
+                
+                // Obtener cláusulas del proceso seleccionado
+                let clausulasDelProceso = procesoClausulas[procesoSeleccionado] || [];
+                
+                // ✅ ORDENAR NUMÉRICAMENTE (4.1, 4.2, 4.3, ..., 10.1, 10.2)
+                clausulasDelProceso.sort((a, b) => {
+                    // Convertir "4.1" → [4, 1], "10.2" → [10, 2]
+                    let partsA = a.split('.').map(Number);
+                    let partsB = b.split('.').map(Number);
+                    
+                    // Comparar parte por parte
+                    for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+                        let numA = partsA[i] || 0;
+                        let numB = partsB[i] || 0;
+                        if (numA !== numB) {
+                            return numA - numB;
+                        }
+                    }
+                    return 0;
+                });
+                
+                // Limpiar el select completamente
+                clausulaSelect.innerHTML = '<option value="">{% trans "Seleccionar..." %}</option>';
+                
+                // Agregar solo las opciones correspondientes al proceso (ya ordenadas)
+                clausulasDelProceso.forEach(clave => {
+                    if (normaDict[clave]) {
+                        let option = document.createElement('option');
+                        option.value = clave;
+                        option.setAttribute('data-value', normaDict[clave]);
+                        option.textContent = clave;
+                        clausulaSelect.appendChild(option);
+                    }
+                });
+                
+                // Resetear otros campos
+                document.getElementById("subsecciones").value = "";
+                document.getElementById("preguntasTableBody").innerHTML = "";
+            });
+        </script>
+
+        <!-- 3️⃣ TERCERO: Script para cargar preguntas al seleccionar cláusula -->
         <script>
             document.getElementById("clausula").addEventListener("change", function () {
                 let selectedOption = this.options[this.selectedIndex];
@@ -203,17 +265,12 @@
                     console.error("Error al cargar preguntas:", err);
                 });
             });
-            </script>
-
-
-        <script>
-            const normaDict = {{ clauses|safe }};
         </script>
 
-<!-- <script src="{% static 'js/lists.js' %}"></script> --> 
-<script src="{% static 'js/checklists/addSelectedQuestions.js' %}?v={{ now|date:"U" }}"></script>
-<script src="{% static 'js/checklists/addEmptyRow.js' %}"></script>
-<script src="{% static 'js/checklists/downloadChecklist.js' %}?v=5"></script>
-<script src="{% static 'js/checklists/sendChecklist.js' %}"></script>
+        <!-- 4️⃣ CUARTO: Cargar scripts externos -->
+        <script src="{% static 'js/checklists/addSelectedQuestions.js' %}?v={{ now|date:"U" }}"></script>
+        <script src="{% static 'js/checklists/addEmptyRow.js' %}"></script>
+        <script src="{% static 'js/checklists/downloadChecklist.js' %}?v=5"></script>
+        <script src="{% static 'js/checklists/sendChecklist.js' %}"></script>
 
 {% endblock %}
