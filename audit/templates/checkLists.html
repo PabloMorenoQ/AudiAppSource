@@ -141,136 +141,223 @@
 
 
         <div id="textModal" class="modal" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg"> <!-- modal-lg para hacerlo más grande -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{% trans "Editar Texto" %}</h5>
-                        <button type="button" class="btn-close" onclick="closeModal()"></button>
+                        <h5 class="modal-title" id="modalTitle">Editar Texto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <textarea id="modalText" class="form-control" rows="5"></textarea>
+                        <!-- Mostrar la pregunta como referencia -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Pregunta de referencia:</label>
+                            <p id="modalPregunta" class="text-muted fst-italic"></p>
+                        </div>
+                        
+                        <!-- Campo de edición -->
+                        <div class="mb-3">
+                            <label for="modalText" class="form-label fw-bold" id="modalFieldLabel">Texto:</label>
+                            <textarea id="modalText" class="form-control" rows="8"></textarea>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">{% trans "Cerrar" %}</button>
-                        <button type="button" class="btn btn-primary" onclick="saveText()">{% trans "Guardar" %}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveModalText()">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- en tu template checkLists.html, dentro del body -->
-        <input type="hidden" id="selected_plan_id" value="{{ plan_seleccionado|default:'' }}">
-
-
-        <!-- 1️⃣ PRIMERO: Cargar las variables globales -->
+        <!-- ============================================ -->
+        <!-- 1️⃣ PRIMERO: Todas las variables globales juntas -->
+        <!-- ============================================ -->
         <script>
+            // Variables globales disponibles para todos los scripts
             const normaDict = {{ clauses|safe }};
-        </script>
-
-        {{ proceso_clausulas|json_script:"proceso-clausulas-data" }}
-        <script>
+            const isoValues = {{ iso_value|safe }};
+            const procesoLugarMap = {{ proceso_lugar_json|safe }};
             const procesoClausulas = {{ proceso_clausulas|safe }};
-            console.log("procesoClausulas cargado:", procesoClausulas);
+            
+            // ✅ Obtener el estándar seleccionado del plan
+            const selectedStandard = "{{ selected_standard|escapejs }}";
+            
+            console.log("Variables globales cargadas:");
+            console.log("- normaDict:", normaDict);
+            console.log("- isoValues:", isoValues);
+            console.log("- procesoLugarMap:", procesoLugarMap);
+            console.log("- procesoClausulas:", procesoClausulas);
+            console.log("- selectedStandard:", selectedStandard);
         </script>
 
-        <!-- 2️⃣ SEGUNDO: Script para filtrar cláusulas por proceso -->
-        <script>
-            document.getElementById("process_id").addEventListener("change", function() {
-                let procesoSeleccionado = this.value;
-                let clausulaSelect = document.getElementById("clausula");
-                
-                console.log("Proceso seleccionado:", procesoSeleccionado);
-                console.log("Cláusulas del proceso:", procesoClausulas[procesoSeleccionado]);
-                
-                // Obtener cláusulas del proceso seleccionado
-                let clausulasDelProceso = procesoClausulas[procesoSeleccionado] || [];
-                
-                // ✅ ORDENAR NUMÉRICAMENTE (4.1, 4.2, 4.3, ..., 10.1, 10.2)
-                clausulasDelProceso.sort((a, b) => {
-                    // Convertir "4.1" → [4, 1], "10.2" → [10, 2]
-                    let partsA = a.split('.').map(Number);
-                    let partsB = b.split('.').map(Number);
-                    
-                    // Comparar parte por parte
-                    for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
-                        let numA = partsA[i] || 0;
-                        let numB = partsB[i] || 0;
-                        if (numA !== numB) {
-                            return numA - numB;
-                        }
-                    }
-                    return 0;
-                });
-                
-                // Limpiar el select completamente
-                clausulaSelect.innerHTML = '<option value="">{% trans "Seleccionar..." %}</option>';
-                
-                // Agregar solo las opciones correspondientes al proceso (ya ordenadas)
-                clausulasDelProceso.forEach(clave => {
-                    if (normaDict[clave]) {
-                        let option = document.createElement('option');
-                        option.value = clave;
-                        option.setAttribute('data-value', normaDict[clave]);
-                        option.textContent = clave;
-                        clausulaSelect.appendChild(option);
-                    }
-                });
-                
-                // Resetear otros campos
-                document.getElementById("subsecciones").value = "";
-                document.getElementById("preguntasTableBody").innerHTML = "";
-            });
-        </script>
-
-        <!-- 3️⃣ TERCERO: Script para cargar preguntas al seleccionar cláusula -->
-        <script>
-            document.getElementById("clausula").addEventListener("change", function () {
-                let selectedOption = this.options[this.selectedIndex];
-                let clave = selectedOption.value;
-                let value = selectedOption.getAttribute("data-value") || "";
-                document.getElementById("subsecciones").value = value;
-
-                // Obtener el plan_id desde el hidden o desde la query string
-                let planId = document.getElementById('selected_plan_id')?.value || new URLSearchParams(window.location.search).get('plan_id') || '';
-
-                // Petición AJAX para obtener las preguntas asociadas (incluimos plan_id)
-                const body = "selected_key=" + encodeURIComponent(clave) + "&plan_id=" + encodeURIComponent(planId);
-
-                fetch("", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "X-CSRFToken": "{{ csrf_token }}",
-                        "X-Requested-With": "XMLHttpRequest"
-                    },
-                    body: body
-                })
-                .then(response => response.json())
-                .then(data => {
-                    let preguntasTableBody = document.getElementById("preguntasTableBody");
-                    preguntasTableBody.innerHTML = "";
-
-                    data.preguntas.forEach(item => {
-                        let row = `
-                            <tr>
-                                <td>${data.key}</td>
-                                <td>${item.indice}</td>
-                                <td>${item.pregunta}</td>
-                                <td><input type="checkbox" class="select-clausula" value="${item.indice}"></td>
-                            </tr>`;
-                        preguntasTableBody.innerHTML += row;
-                    });
-                })
-                .catch(err => {
-                    console.error("Error al cargar preguntas:", err);
-                });
-            });
-        </script>
-
-        <!-- 4️⃣ CUARTO: Cargar scripts externos -->
+        <!-- ============================================ -->
+        <!-- 2️⃣ SEGUNDO: Scripts externos que dependen de las variables -->
+        <!-- ============================================ -->
         <script src="{% static 'js/checklists/addSelectedQuestions.js' %}?v={{ now|date:"U" }}"></script>
         <script src="{% static 'js/checklists/addEmptyRow.js' %}"></script>
         <script src="{% static 'js/checklists/downloadChecklist.js' %}?v=5"></script>
         <script src="{% static 'js/checklists/sendChecklist.js' %}"></script>
+        <script src="{% static 'js/checklists/proceso_lugar.js' %}"></script>
 
+        <!-- ============================================ -->
+        <!-- 3️⃣ TERCERO: Scripts inline que usan las variables -->
+        <!-- ============================================ -->
+        <script>
+            let currentEditingInput = null;
+            let modalInstance = null;
+
+            // Inicializar modal de Bootstrap
+            document.addEventListener('DOMContentLoaded', function() {
+                const modalElement = document.getElementById('textModal');
+                if (typeof bootstrap !== 'undefined') {
+                    modalInstance = new bootstrap.Modal(modalElement);
+                }
+            });
+
+            function openTextModal(input, fieldName, pregunta) {
+                currentEditingInput = input;
+                
+                document.getElementById('modalTitle').textContent = `Editar ${fieldName}`;
+                document.getElementById('modalFieldLabel').textContent = `${fieldName}:`;
+                document.getElementById('modalPregunta').textContent = pregunta || 'N/A';
+                document.getElementById('modalText').value = input.value;
+                
+                if (modalInstance) {
+                    modalInstance.show();
+                } else {
+                    document.getElementById('textModal').style.display = 'block';
+                }
+            }
+
+            function saveModalText() {
+                if (currentEditingInput) {
+                    currentEditingInput.value = document.getElementById('modalText').value;
+                }
+                
+                if (modalInstance) {
+                    modalInstance.hide();
+                } else {
+                    document.getElementById('textModal').style.display = 'none';
+                }
+            }
+        </script>
+
+        <!-- ============================================ -->
+        <!-- 4️⃣ CUARTO: Event listeners para proceso y cláusula -->
+        <!-- ============================================ -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // ========================================
+                // Listener para cambio de PROCESO
+                // ========================================
+                const processSelect = document.getElementById("process_id");
+                const clausulaSelect = document.getElementById("clausula");
+                
+                if (processSelect) {
+                    processSelect.addEventListener("change", function() {
+                        let procesoSeleccionado = this.value;
+                        
+                        console.log("Proceso seleccionado:", procesoSeleccionado);
+                        
+                        // Obtener cláusulas del proceso seleccionado
+                        let clausulasDelProceso = procesoClausulas[procesoSeleccionado] || [];
+                        
+                        console.log("Cláusulas del proceso:", clausulasDelProceso);
+                        
+                        // Ordenar numéricamente (4.1, 4.2, ..., 10.1, 10.2)
+                        clausulasDelProceso.sort((a, b) => {
+                            let partsA = a.split('.').map(Number);
+                            let partsB = b.split('.').map(Number);
+                            
+                            for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+                                let numA = partsA[i] || 0;
+                                let numB = partsB[i] || 0;
+                                if (numA !== numB) {
+                                    return numA - numB;
+                                }
+                            }
+                            return 0;
+                        });
+                        
+                        // Limpiar y repoblar el select de cláusulas
+                        clausulaSelect.innerHTML = '<option value="">{% trans "Seleccionar..." %}</option>';
+                        
+                        clausulasDelProceso.forEach(clave => {
+                            if (normaDict[clave]) {
+                                let option = document.createElement('option');
+                                option.value = clave;
+                                option.setAttribute('data-value', normaDict[clave]);
+                                option.textContent = clave;
+                                clausulaSelect.appendChild(option);
+                            }
+                        });
+                        
+                        // Resetear campos dependientes
+                        const subseccionesField = document.getElementById("subsecciones");
+                        const preguntasTableBody = document.getElementById("preguntasTableBody");
+                        
+                        if (subseccionesField) subseccionesField.value = "";
+                        if (preguntasTableBody) preguntasTableBody.innerHTML = "";
+                    });
+                }
+                
+                // ========================================
+                // Listener para cambio de CLÁUSULA
+                // ========================================
+                if (clausulaSelect) {
+                    clausulaSelect.addEventListener("change", function () {
+                        let selectedOption = this.options[this.selectedIndex];
+                        let clave = selectedOption.value;
+                        let value = selectedOption.getAttribute("data-value") || "";
+                        
+                        const subseccionesField = document.getElementById("subsecciones");
+                        if (subseccionesField) {
+                            subseccionesField.value = value;
+                        }
+
+                        // Obtener el plan_id
+                        let planId = document.getElementById('selected_plan_id')?.value || 
+                                    new URLSearchParams(window.location.search).get('plan_id') || '';
+
+                        // Petición AJAX para obtener las preguntas
+                        const body = "selected_key=" + encodeURIComponent(clave) + 
+                                    "&plan_id=" + encodeURIComponent(planId);
+
+                        fetch("", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                "X-CSRFToken": "{{ csrf_token }}",
+                                "X-Requested-With": "XMLHttpRequest"
+                            },
+                            body: body
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            let preguntasTableBody = document.getElementById("preguntasTableBody");
+                            if (preguntasTableBody) {
+                                preguntasTableBody.innerHTML = "";
+
+                                data.preguntas.forEach(item => {
+                                    let row = `
+                                        <tr>
+                                            <td>${data.key}</td>
+                                            <td>${item.indice}</td>
+                                            <td>${item.pregunta}</td>
+                                            <td><input type="checkbox" class="select-clausula" value="${item.indice}"></td>
+                                        </tr>`;
+                                    preguntasTableBody.innerHTML += row;
+                                });
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Error al cargar preguntas:", err);
+                        });
+                    });
+                }
+            });
+        </script>
+
+        <!-- ============================================ -->
+        <!-- Función de búsqueda de valores ISO -->
+        <!-- ============================================ -->
 {% endblock %}

@@ -597,19 +597,6 @@ def download_excel_audit_plan(request):
                     cell = ws5.cell(row=i, column=j, value=val)
                     cell.alignment = wrap; cell.border = border; cell.alignment = center
 
-
-                    
-
-            # # === Resumen ===
-            # meta = {
-            #     "ID": [plan.id],
-            #     "Fecha": [plan.creation_date.strftime('%Y-%m-%d')],
-            #     "Organización": [plan.organization.name],
-            #     "Líder Auditor": [plan.leader_auditor.get_full_name()],
-            #     "Cláusulas": [plan.clauses_list],
-            # }
-            # pd.DataFrame(meta).to_excel(writer, index=False, sheet_name="Resumen")
-
         response = HttpResponse(
             output.getvalue(),
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
