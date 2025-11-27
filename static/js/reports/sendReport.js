@@ -90,14 +90,60 @@ function sendReportToServer(event) {
     })
     .then(response => {
         if (response.ok) {
-            alert("Reporte guardado correctamente.");
+            return response.json();
         } else {
-            alert("Error al guardar el reporte.");
+            return response.json().then(err => {
+                throw new Error(err.error || `Error ${response.status}: ${response.statusText}`);
+            });
         }
     })
+    .then(result => {
+        // ✅ ÉXITO
+        console.log('Informe guardado exitosamente:', result);
+        
+        Swal.fire({
+            icon: 'success',
+            title: '¡Plan de Auditoría Guardado!',
+            html: `
+            <!-- 
+                <div class="text-start">
+                    <p><strong>El plan se ha creado correctamente.</strong></p>
+                    <hr>
+                    <p><strong>ID del Plan:</strong> ${result.id || 'N/A'}</p>
+                    <p><strong>Fecha de Creación:</strong> ${result.creation_date || 'N/A'}</p>
+                    <p><strong>Organización:</strong> ${result.organization || 'N/A'}</p>
+                    <p><strong>Auditor Líder:</strong> ${result.leader_auditor || 'N/A'}</p>
+                    ${result.clauses_list ? `<p><strong>Cláusulas:</strong> ${result.clauses_list.substring(0, 50)}...</p>` : ''}
+                </div>
+            -->
+                `,
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Continuar',
+            width: '600px'
+        })
+    })
     .catch(error => {
-        console.error("Error en la solicitud:", error);
-        alert("Error de conexión al guardar el reporte.");
+        // ❌ ERROR
+        console.error('Error al guardar informe:', error);
+        
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al guardar el informe',
+            html: `
+                <div class="text-start">
+                    <p>No se pudo guardar el Informe de Auditoría.</p>
+                    <hr>
+                    <p><strong>Error:</strong></p>
+                    <p class="text-danger">${error.message}</p>
+                    <hr>
+                    <p><small>Si el problema persiste, contacta al administrador del sistema.</small></p>
+                </div>
+            `,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Entendido',
+            width: '600px',
+            footer: '<button type="button" class="btn btn-sm btn-secondary" onclick="console.log(\'Error completo:\', arguments)">Ver detalles técnicos</button>'
+        });
     });
 }
 
