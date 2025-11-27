@@ -248,7 +248,7 @@ function addSelectedQuestions() {
             texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}.`;
             break;
           case "Conformidad":
-            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, cumpliendo con la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}.`;
+            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, cumpliendo con la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}`;
             break;
           case "Recomendación":
             texto = `Evaluar la pertinencia en el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, de evidencia: ${evidencia}.`;
@@ -257,7 +257,7 @@ function addSelectedQuestions() {
             texto = `Es un riesgo en el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}.\nObjeto de impacto: ___.`;
             break;
           case "No Conformidad":
-            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, incumpliendo la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}.`;
+            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, incumpliendo la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}`;
             break;
           default:
             texto = "";
@@ -269,121 +269,167 @@ function addSelectedQuestions() {
 }
 
 
-        /**
-         * Helper para convertir el valor ISO en string legible
-         * Maneja tanto strings como objetos con sub-índices
-         */
-        function formatIsoValue(value) {
-        if (value === null || value === undefined) {
-            return "___";
-        }
-        
-        // Si ya es string, devolverlo directamente
-        if (typeof value === 'string') {
-            return value;
-        }
-        
-        // Si es objeto (como {"1": "...", "2": "..."}), concatenar los valores
-        if (typeof value === 'object' && !Array.isArray(value)) {
-            const valores = [];
-            
-            // Ordenar las claves numéricamente
-            const claves = Object.keys(value).sort((a, b) => {
-            const numA = parseInt(a);
-            const numB = parseInt(b);
-            return numA - numB;
-            });
-            
-            // Concatenar todos los valores
-            claves.forEach(key => {
-            if (value[key] && typeof value[key] === 'string') {
-                valores.push(value[key].trim());
-            }
-            });
-            
-            return valores.length > 0 ? valores.join(' ') : "___";
-        }
-        
-        // Si es array, unir los elementos
-        if (Array.isArray(value)) {
-            return value.join(' ');
-        }
-        
-        // Fallback: convertir a string
-        return String(value);
-        }
+function formatIsoValue(value) {
+  console.log('🔧 formatIsoValue recibió:', typeof value, value);
+  
+  if (value === null || value === undefined) {
+    console.log('🔧 formatIsoValue devuelve: "___" (null/undefined)');
+    return "___";
+  }
+  
+  // Si ya es string, devolverlo directamente
+  if (typeof value === 'string') {
+    console.log('🔧 formatIsoValue devuelve: string directo');
+    return value;
+  }
+  
+  // Si es objeto (como {"1": "...", "2": "..."}), concatenar los valores
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    console.log('🔧 formatIsoValue: Es un objeto, concatenando valores...');
+    const valores = [];
+    
+    // Ordenar las claves numéricamente
+    const claves = Object.keys(value).sort((a, b) => {
+      const numA = parseInt(a);
+      const numB = parseInt(b);
+      return isNaN(numA) || isNaN(numB) ? 0 : numA - numB;
+    });
+    
+    console.log('🔧 Claves encontradas:', claves);
+    
+    // Concatenar todos los valores
+    claves.forEach(key => {
+      const val = value[key];
+      console.log(`🔧 Procesando clave "${key}":`, typeof val, val);
+      if (val && typeof val === 'string') {
+        valores.push(val.trim());
+      } else if (val) {
+        valores.push(String(val).trim());
+      }
+    });
+    
+    const resultado = valores.length > 0 ? valores.join(' ') : "___";
+    console.log('🔧 formatIsoValue devuelve:', resultado.substring(0, 50) + '...');
+    return resultado;
+  }
+  
+  // Si es array, unir los elementos
+  if (Array.isArray(value)) {
+    console.log('🔧 formatIsoValue: Es un array');
+    const resultado = value.join(' ');
+    console.log('🔧 formatIsoValue devuelve:', resultado);
+    return resultado;
+  }
+  
+  // Fallback: convertir a string
+  console.log('🔧 formatIsoValue: Fallback a String()');
+  const resultado = String(value);
+  console.log('🔧 formatIsoValue devuelve:', resultado);
+  return resultado;
+}
 
-        function safeLogValue(value) {
-        if (value === null || value === undefined) {
-            return 'null/undefined';
-        }
-        if (typeof value === 'string') {
-            return value.length > 50 ? value.substring(0, 50) + '...' : value;
-        }
-        if (typeof value === 'object') {
-            const jsonStr = JSON.stringify(value);
-            return jsonStr.length > 50 ? jsonStr.substring(0, 50) + '...' : jsonStr;
-        }
-        return String(value);
-        }
+/**
+ * Helper para logging seguro de valores que pueden no ser strings
+ */
+function safeLogValue(value) {
+  if (value === null || value === undefined) {
+    return 'null/undefined';
+  }
+  if (typeof value === 'string') {
+    return value.length > 50 ? value.substring(0, 50) + '...' : value;
+  }
+  if (typeof value === 'object') {
+    const jsonStr = JSON.stringify(value);
+    return jsonStr.length > 50 ? jsonStr.substring(0, 50) + '...' : jsonStr;
+  }
+  return String(value);
+}
 
-        /**
-         * Busca el valor textual de una norma ISO basado en la cláusula y sección
-         * @param {Object} isoValues - Objeto con los valores ISO precargados
-         * @param {string} selectedStandard - Nombre del archivo JSON del estándar
-         * @param {string} valorTextoSeccion - Cláusula textual (ej: "4.1")
-         * @param {string} valorSeccion - Índice/sección (ej: "4.1.1")
-         * @returns {string} - Texto de la norma o "___" si no se encuentra
-         */
-        function isoValueSearch(isoValues, selectedStandard, valorTextoSeccion, valorSeccion) {
-        let valorTextoNorma = "___";
-        
-        // Validar que isoValues existe y es un objeto
-        if (!isoValues || typeof isoValues !== 'object') {
-            console.warn('⚠️ isoValues no está disponible o no es un objeto');
-            return valorTextoNorma;
-        }
-        
-        // 1. Intentar búsqueda exacta con valorSeccion (más específico, ej: "4.1.1")
-        if (valorSeccion && isoValues[valorSeccion]) {
-            valorTextoNorma = isoValues[valorSeccion];
-            console.log(`✅ Encontrado en isoValues["${valorSeccion}"]:`, safeLogValue(valorTextoNorma));
-            valorTextoNormaFormated = formatIsoValue(valorTextoNorma);
-            return valorTextoNormaFormated;
-        }
-        
-        // 2. Intentar búsqueda con valorTextoSeccion (cláusula general, ej: "4.1")
-        if (valorTextoSeccion && isoValues[valorTextoSeccion]) {
-            valorTextoNorma = isoValues[valorTextoSeccion];
-            console.log(`✅ Encontrado en isoValues["${valorTextoSeccion}"]:`, safeLogValue(valorTextoNorma));
-            valorTextoNormaFormated = formatIsoValue(valorTextoNorma);
-            return valorTextoNormaFormated;
-        }
-        
-        // 3. Buscar subcláusulas que empiecen con valorTextoSeccion
-        if (valorTextoSeccion) {
-            for (const key in isoValues) {
-            if (key.startsWith(valorTextoSeccion + '.')) {
-                valorTextoNorma = isoValues[key];
-                console.log(`✅ Encontrado subcláusula "${key}":`, safeLogValue(valorTextoNorma));
-                return valorTextoNorma;
-            }
-            }
-        }
-        
-        // 4. Si no se encuentra, intentar en normaDict como fallback
-        if (typeof normaDict !== 'undefined' && normaDict) {
-            if (valorTextoSeccion && normaDict[valorTextoSeccion]) {
-            valorTextoNorma = normaDict[valorTextoSeccion];
-            console.log(`✅ Encontrado en normaDict["${valorTextoSeccion}"]:`, safeLogValue(valorTextoNorma));
-            return valorTextoNorma;
-            }
-        }
-        
-        // Si no se encuentra nada
-        console.warn(`⚠️ No se encontró valor para cláusula: "${valorTextoSeccion}" / sección: "${valorSeccion}"`);
-        
+/**
+ * Busca el valor textual de una norma ISO basado en la cláusula y sección
+ * @param {Object} isoValues - Objeto con los valores ISO precargados
+ * @param {string} selectedStandard - Nombre del archivo JSON del estándar
+ * @param {string} valorTextoSeccion - Cláusula textual (ej: "4.1")
+ * @param {string} valorSeccion - Índice/sub-índice (ej: "1", "2", "3")
+ * @returns {string} - Texto de la norma o "___" si no se encuentra
+ */
+function isoValueSearch(isoValues, selectedStandard, valorTextoSeccion, valorSeccion) {
+  let valorTextoNorma = "___";
+  
+  // Validar que isoValues existe y es un objeto
+  if (!isoValues || typeof isoValues !== 'object') {
+    console.warn('⚠️ isoValues no está disponible o no es un objeto');
+    return valorTextoNorma;
+  }
+  
+  console.log(`🔍 Buscando: valorTextoSeccion="${valorTextoSeccion}", valorSeccion="${valorSeccion}"`);
+  
+  // 1. Si valorTextoSeccion existe en isoValues
+  if (valorTextoSeccion && isoValues[valorTextoSeccion]) {
+    const rawValue = isoValues[valorTextoSeccion];
+    console.log(`📦 Encontrado isoValues["${valorTextoSeccion}"]:`, typeof rawValue);
+    
+    // 1a. Si es un string directo, retornarlo
+    if (typeof rawValue === 'string') {
+      valorTextoNorma = rawValue;
+      console.log(`✅ Es string directo:`, safeLogValue(valorTextoNorma));
+      return valorTextoNorma;
+    }
+    
+    // 1b. Si es un objeto con sub-índices (tu caso: {"1": "...", "2": "..."})
+    if (typeof rawValue === 'object' && !Array.isArray(rawValue)) {
+      console.log(`📂 Es objeto con sub-índices:`, Object.keys(rawValue));
+      
+      // Si valorSeccion es específico (ej: "1", "2"), buscar solo ese
+      if (valorSeccion && valorSeccion !== valorTextoSeccion && rawValue[valorSeccion]) {
+        valorTextoNorma = String(rawValue[valorSeccion]);
+        console.log(`✅ Encontrado sub-índice ["${valorSeccion}"]:`, safeLogValue(valorTextoNorma));
         return valorTextoNorma;
-        }
+      }
+      
+      // Si no hay sub-índice específico o no existe, concatenar todos
+      console.log(`📝 Concatenando todos los sub-índices...`);
+      valorTextoNorma = formatIsoValue(rawValue);
+      console.log(`✅ Resultado concatenado:`, safeLogValue(valorTextoNorma));
+      return valorTextoNorma;
+    }
+  }
+  
+  // 2. Buscar como clave directa con formato "X.Y" (fallback)
+  const claveCompleta = valorTextoSeccion && valorSeccion ? `${valorTextoSeccion}.${valorSeccion}` : null;
+  if (claveCompleta && isoValues[claveCompleta]) {
+    const rawValue = isoValues[claveCompleta];
+    valorTextoNorma = formatIsoValue(rawValue);
+    console.log(`✅ Encontrado como clave completa ["${claveCompleta}"]:`, safeLogValue(valorTextoNorma));
+    return valorTextoNorma;
+  }
+  
+  // 3. Buscar subcláusulas que empiecen con valorTextoSeccion
+  if (valorTextoSeccion) {
+    for (const key in isoValues) {
+      if (key.startsWith(valorTextoSeccion + '.')) {
+        const rawValue = isoValues[key];
+        valorTextoNorma = formatIsoValue(rawValue);
+        console.log(`✅ Encontrado subcláusula "${key}":`, safeLogValue(valorTextoNorma));
+        return valorTextoNorma;
+      }
+    }
+  }
+  
+  // 4. Si no se encuentra, intentar en normaDict como fallback
+  if (typeof normaDict !== 'undefined' && normaDict) {
+    if (valorTextoSeccion && normaDict[valorTextoSeccion]) {
+      const rawValue = normaDict[valorTextoSeccion];
+      valorTextoNorma = formatIsoValue(rawValue);
+      console.log(`✅ Encontrado en normaDict["${valorTextoSeccion}"]:`, safeLogValue(valorTextoNorma));
+      return valorTextoNorma;
+    }
+  }
+  
+  // Si no se encuentra nada
+  console.warn(`⚠️ No se encontró valor para cláusula: "${valorTextoSeccion}" / sección: "${valorSeccion}"`);
+  
+  return valorTextoNorma;
+}
 
-        console.log('✅ Función isoValueSearch cargada correctamente');
+console.log('✅ Función isoValueSearch cargada correctamente');
