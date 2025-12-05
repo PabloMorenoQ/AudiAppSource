@@ -99,6 +99,7 @@ def check_lists(request):
         proceso_clausulas = {}
         iso_values_normalized = {}
         proceso_lugar_map = {}
+        dependency = None
 
         # ==============================
         # Si hay un plan seleccionado
@@ -119,6 +120,7 @@ def check_lists(request):
                 # ✅ CONSTRUIR TODO EN UN SOLO BUCLE
                 for fila in contenido:
                     proceso_nombre = fila[0]
+                    dependency = fila[1]
                     lugar_nombre = fila[2]
                     clausulas_str = fila[4]
                     
@@ -245,6 +247,7 @@ def check_lists(request):
                 "organizacion": request.user.organization,
                 "procesos": procesos,
                 "lugares": lugares,
+                "dependency": dependency,
                 "clauses": results,
                 "planes": planes,
                 "plan_seleccionado": int(selected_plan_id) if selected_plan_id else None,
@@ -252,6 +255,7 @@ def check_lists(request):
                 "iso_value": json.dumps(iso_values_normalized),
                 "proceso_lugar_json": json.dumps(proceso_lugar_map),
                 "selected_standard": standard or "",
+                "selected_plan_id": selected_plan_id, #toma el id del plan para vincularlo a la LV
             }
         )
     else:
@@ -262,27 +266,41 @@ def check_lists(request):
 def save_checklist(request):
     if request.method == "POST":
         data = json.loads(request.body)
-
-        selected_plan = AuditPlan.objects.filter(organization=request.user.organization).last()
-        plan_content = selected_plan.plan_content if selected_plan else {}
-        tabla_planAud = plan_content.get("tabla-planAud", [])
-
-        dependency = None
-        if tabla_planAud and len(tabla_planAud[0]) > 1:
-            dependency = tabla_planAud[0][1] # el valor del "area" desde el plan de auditoria
-
+        
+        # ✅ Obtener el plan_id desde el request
+        plan_id = data.get("plan_id") or request.GET.get("plan_id")
+        
+        # ✅ Validar que el plan existe
+        try:
+            audit_plan = AuditPlan.objects.get(
+                id=plan_id,
+                organization=request.user.organization
+            )
+        except AuditPlan.DoesNotExist:
+            return JsonResponse({
+                "error": "Plan de auditoría no encontrado"
+            }, status=404)
+        
+        # ✅ Crear checklist con el plan vinculado
         checklist = CheckList.objects.create(
+            audit_plan=audit_plan,  # 👈 NUEVO
             process=data.get("process"),
             place=data.get("place"),
             clauses_list=data.get("clauses_list"),
             audit_data=data.get("audit_data"),
-            organization_id = request.user.organization.id,
-            dependency = dependency,
+            organization_id=request.user.organization.id,
+            dependency=data.get("dependency"),
             leader_auditor=request.user,
             process_type=data.get("process_type"),
         )
-        return JsonResponse({"status": "ok", "id": checklist.id})
-
+        
+        return JsonResponse({
+            "status": "ok",
+            "id": checklist.id,
+            "plan_id": audit_plan.id,
+            "plan_name": str(audit_plan)
+        })
+    
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 @csrf_exempt

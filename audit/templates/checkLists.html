@@ -177,6 +177,7 @@
             const isoValues = {{ iso_value|safe }};
             const procesoLugarMap = {{ proceso_lugar_json|safe }};
             const procesoClausulas = {{ proceso_clausulas|safe }};
+            const dependencia = "{{ dependency|safe }}";
             
             // ✅ Obtener el estándar seleccionado del plan
             const selectedStandard = "{{ selected_standard|escapejs }}";
@@ -187,6 +188,7 @@
             console.log("- procesoLugarMap:", procesoLugarMap);
             console.log("- procesoClausulas:", procesoClausulas);
             console.log("- selectedStandard:", selectedStandard);
+            console.log("- dependencia", dependencia);
         </script>
 
         <!-- ============================================ -->

@@ -1,38 +1,95 @@
+/**
+ * NOTA: Requiere SweetAlert2
+ * Versión actualizada que envía plan_id al servidor
+ */
+
 function sendChecklistToServer() {
     const rows = document.querySelectorAll('#auditTableBody tr');
     let data = [];
 
-    // Capturamos los datos generales del formulario
-    const process = document.getElementById("process_id").value.trim();
-    const place = document.getElementById("place_id").value.trim();
-    const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
-    const dependency = "{{ dependency|escapejs }}";
+    // ===================================
+    // 1️⃣ OBTENER PLAN_ID
+    // ===================================
+    // Primero intentar desde la URL, luego desde el select
+    const urlParams = new URLSearchParams(window.location.search);
+    const planId = urlParams.get('plan_id') || 
+                   document.getElementById('plan_id')?.value ||
+                   document.querySelector('select[name="plan_id"]')?.value;
+    
+    console.log('🔍 Plan ID detectado:', planId);
 
-    // ✅ VALIDACIÓN: Verificar que hay datos
-    if (rows.length === 0) {
-        showToast("No hay datos para guardar. Agrega al menos una pregunta.", "warning");
+    // ===================================
+    // 2️⃣ VALIDACIONES PREVIAS
+    // ===================================
+    
+    // Validar que hay un plan seleccionado
+    if (!planId) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Plan no seleccionado',
+            text: 'Por favor selecciona un plan de auditoría antes de guardar el checklist.',
+            confirmButtonColor: '#3085d6'
+        });
+        // Hacer scroll al select del plan
+        document.getElementById('plan_id')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
 
-    // ✅ VALIDACIÓN: Campos requeridos
+    // Validar que hay datos en la tabla
+    if (rows.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Sin datos',
+            text: 'No hay datos para guardar. Agrega al menos una pregunta al checklist.',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
+
+    // Capturar datos generales del formulario
+    const process = document.getElementById("process_id").value.trim();
+    const place = document.getElementById("place_id").value.trim();
+    const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
+    const dependency = dependencia;
+
+    // Validar proceso
     if (!process) {
-        showToast("Por favor selecciona un proceso antes de guardar.", "warning");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor selecciona un proceso antes de guardar.',
+            confirmButtonColor: '#3085d6'
+        });
         document.getElementById("process_id")?.focus();
         return;
     }
 
+    // Validar lugar
     if (!place) {
-        showToast("Por favor selecciona un lugar antes de guardar.", "warning");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor selecciona un lugar antes de guardar.',
+            confirmButtonColor: '#3085d6'
+        });
         document.getElementById("place_id")?.focus();
         return;
     }
 
+    // Validar tipo de proceso
     if (!processType) {
-        showToast("Por favor selecciona un tipo de proceso antes de guardar.", "warning");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor selecciona un tipo de proceso antes de guardar.',
+            confirmButtonColor: '#3085d6'
+        });
         return;
     }
 
-    // Procesar filas
+    // ===================================
+    // 3️⃣ RECOLECTAR DATOS DE LA TABLA
+    // ===================================
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
         if (cells.length >= 7) {
@@ -58,7 +115,11 @@ function sendChecklistToServer() {
         }
     });
 
+    // ===================================
+    // 4️⃣ PREPARAR DATOS PARA ENVÍO
+    // ===================================
     const checklistData = {
+        plan_id: planId,  // NUEVO: Incluir plan_id
         process: process,
         place: place,
         clauses_list: data.map(d => d.clausula).join(', '),
@@ -67,16 +128,27 @@ function sendChecklistToServer() {
         dependency: dependency
     };
 
-    // ✅ Mostrar mensaje de carga
-    showToast("Guardando checklist...", "info");
+    console.log('📦 Datos a enviar:', checklistData);
 
-    // Deshabilitar botón
-    const saveButton = document.querySelector('button[onclick*="sendChecklistToServer"]');
-    if (saveButton) {
-        saveButton.disabled = true;
-        saveButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
-    }
+    // ===================================
+    // 5️⃣ MOSTRAR LOADING
+    // ===================================
+    Swal.fire({
+        title: 'Guardando Checklist...',
+        html: `
+            <p>Por favor espera mientras se procesa la información</p>
+            <p><small>Plan ID: ${planId}</small></p>
+        `,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
+    // ===================================
+    // 6️⃣ ENVIAR AL SERVIDOR
+    // ===================================
     fetch("save/", {
         method: "POST",
         headers: {
@@ -89,82 +161,103 @@ function sendChecklistToServer() {
         if (response.ok) {
             return response.json();
         } else {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            return response.json().then(err => {
+                throw new Error(err.error || `Error ${response.status}: ${response.statusText}`);
+            });
         }
     })
     .then(result => {
         // ✅ ÉXITO
-        console.log("Checklist guardado:", result);
-        showToast(`Checklist guardado correctamente (ID: ${result.id})`, "success");
+        console.log('✅ Checklist guardado:', result);
+        
+        Swal.fire({
+            icon: 'success',
+            title: '¡Checklist Guardado!',
+            html: `
+                <div class="text-start">
+                    <p><strong>El checklist se ha guardado correctamente.</strong></p>
+                    <hr>
+                    <p><strong>ID del Checklist:</strong> ${result.id || 'N/A'}</p>
+                    <p><strong>Plan de Auditoría:</strong> ${result.plan_id ? `Plan #${result.plan_id}` : 'N/A'}</p>
+                    <p><strong>Proceso:</strong> ${process}</p>
+                    <p><strong>Lugar:</strong> ${place}</p>
+                    <p><strong>Tipo:</strong> ${processType}</p>
+                    <p><strong>Total de preguntas:</strong> ${data.length}</p>
+                </div>
+            `,
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Continuar',
+            width: '600px'
+        }).then(() => {
+            // Opciones post-guardado
+            Swal.fire({
+                icon: 'question',
+                title: '¿Qué deseas hacer ahora?',
+                html: `
+                    <p>Tu checklist ha sido guardado exitosamente.</p>
+                    <p>Puedes continuar trabajando en este plan o crear uno nuevo.</p>
+                `,
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Crear otro checklist',
+                denyButtonText: 'Ver reportes',
+                cancelButtonText: 'Quedarme aquí',
+                confirmButtonColor: '#3085d6',
+                denyButtonColor: '#6c757d'
+            }).then((action) => {
+                if (action.isConfirmed) {
+                    // Limpiar tabla para crear nuevo checklist
+                    const auditTableBody = document.getElementById('auditTableBody');
+                    if (auditTableBody) {
+                        auditTableBody.innerHTML = '';
+                    }
+                    
+                    // Limpiar campos del formulario (excepto el plan)
+                    const processSelect = document.getElementById('process_id');
+                    const placeSelect = document.getElementById('place_id');
+                    const tipoRadios = document.querySelectorAll('input[name="tipo"]');
+                    
+                    if (processSelect) processSelect.value = '';
+                    if (placeSelect) placeSelect.value = '';
+                    tipoRadios.forEach(radio => radio.checked = false);
+                    
+                    window.scrollTo(0, 0);
+                    
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tabla limpia',
+                        text: 'Puedes crear un nuevo checklist para el mismo plan',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else if (action.isDenied) {
+                    // Redirigir a reportes
+                    window.location.href = '/reports/';
+                }
+            });
+        });
     })
     .catch(error => {
         // ❌ ERROR
-        console.error("Error:", error);
-        showToast(`Error al guardar: ${error.message}`, "error");
-    })
-    .finally(() => {
-        // Rehabilitar botón
-        if (saveButton) {
-            saveButton.disabled = false;
-            saveButton.innerHTML = 'Guardar Checklist';
-        }
-    });
-}
-
-/**
- * Muestra un toast notification usando Bootstrap Toast
- * @param {string} message - Mensaje a mostrar
- * @param {string} type - 'success', 'error', 'warning', 'info'
- */
-function showToast(message, type = "info") {
-    // Crear contenedor si no existe
-    let container = document.getElementById('toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        container.className = 'toast-container position-fixed top-0 end-0 p-3';
-        container.style.zIndex = '9999';
-        document.body.appendChild(container);
-    }
-
-    // Configuración de colores
-    const colors = {
-        success: { bg: 'bg-success', icon: '✅' },
-        error: { bg: 'bg-danger', icon: '❌' },
-        warning: { bg: 'bg-warning', icon: '⚠️' },
-        info: { bg: 'bg-info', icon: 'ℹ️' }
-    };
-
-    const config = colors[type] || colors.info;
-
-    // Crear toast
-    const toastEl = document.createElement('div');
-    toastEl.className = 'toast align-items-center text-white border-0 ' + config.bg;
-    toastEl.setAttribute('role', 'alert');
-    toastEl.setAttribute('aria-live', 'assertive');
-    toastEl.setAttribute('aria-atomic', 'true');
-    
-    toastEl.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">
-                <strong>${config.icon}</strong> ${message}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    `;
-
-    container.appendChild(toastEl);
-
-    // Inicializar y mostrar el toast
-    const toast = new bootstrap.Toast(toastEl, {
-        autohide: true,
-        delay: type === 'error' ? 8000 : 4000
-    });
-    
-    toast.show();
-
-    // Eliminar del DOM después de ocultarse
-    toastEl.addEventListener('hidden.bs.toast', () => {
-        toastEl.remove();
+        console.error('❌ Error al guardar checklist:', error);
+        
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al guardar el checklist',
+            html: `
+                <div class="text-start">
+                    <p>No se pudo guardar el checklist.</p>
+                    <hr>
+                    <p><strong>Error:</strong></p>
+                    <p class="text-danger">${error.message}</p>
+                    <hr>
+                    <p><small>Verifica que el plan de auditoría existe y que tienes permisos para crear checklists.</small></p>
+                    <p><small>Si el problema persiste, contacta al administrador del sistema.</small></p>
+                </div>
+            `,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Entendido',
+            width: '600px'
+        });
     });
 }

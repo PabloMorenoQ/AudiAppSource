@@ -24,9 +24,9 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(CheckList)
 class CheckListAdmin(admin.ModelAdmin):
-    list_display = ('id', 'process', 'place', 'organization', 'dependency', 'leader_auditor')
+    list_display = ('id', 'process', 'place', 'organization', 'dependency', 'leader_auditor', 'audit_plan')
     search_fields = ('process', 'place', 'organization__name', 'dependency', 'leader_auditor__username')
-    list_filter = ('organization',)
+    list_filter = ('organization', 'audit_plan')
 
 @admin.register(AuditPlan)
 class AuditPlanAdmin(admin.ModelAdmin):
@@ -36,7 +36,7 @@ class AuditPlanAdmin(admin.ModelAdmin):
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('id', 'creation_date', 'organization', 'leader_auditor')
+    list_display = ('id', 'creation_date', 'organization', 'leader_auditor',)
     search_fields = ('organization__name', 'leader_auditor__username')
     list_filter = ('creation_date', 'organization')
 
