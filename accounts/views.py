@@ -621,7 +621,8 @@ def download_excel_report(request):
         return JsonResponse({"error": "ID de report no proporcionado"}, status=400)
 
     from openpyxl.utils import get_column_letter
-    from openpyxl.chart import ScatterChart, Reference, Series
+    from openpyxl.chart import BarChart, PieChart, LineChart, Reference
+    from openpyxl.chart.label import DataLabelList
     
     try:
         report = Report.objects.get(id=report_id)
@@ -632,7 +633,6 @@ def download_excel_report(request):
 
         detail_cols = ["No", "Cláusula", "Norma", "Hallazgo", "Evidencia", "Dependencia", "Lugar", "Proceso", "Tipo Proceso"]
         
-
         sheets_data = {}
         for name, data_str in [
             ("Fortalezas", report.fortalezas_data),
@@ -645,174 +645,332 @@ def download_excel_report(request):
             formatted = [dict(zip(detail_cols, row)) for row in data]
             sheets_data[name] = formatted
 
-        # Estilos
+        # ✅ ESTILOS MEJORADOS
         thin = Side(border_style="thin", color="000000")
-        border = Border(left=thin, right=thin, top=thin, bottom=thin)
+        medium = Side(border_style="medium", color="000000")
+        border_thin = Border(left=thin, right=thin, top=thin, bottom=thin)
+        border_medium = Border(left=medium, right=medium, top=medium, bottom=medium)
+        
         center = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        left_wrap = Alignment(horizontal="left", vertical="top", wrap_text=True)
         wrap_top = Alignment(wrap_text=True, vertical="top")
-        header_fill = PatternFill("solid", fgColor="999999")
-        section_fill = PatternFill("solid", fgColor="C0C0C0")
-        white_bold = Font(color="FFFFFF", bold=True)
-        black_bold = Font(color="000000", bold=True)
+        
+        # Colores corporativos
+        header_fill = PatternFill("solid", fgColor="1F4E78")  # Azul oscuro
+        section_fill = PatternFill("solid", fgColor="4472C4")  # Azul medio
+        alt_row_fill = PatternFill("solid", fgColor="D9E1F2")  # Azul claro
+        
+        white_bold = Font(color="FFFFFF", bold=True, size=12)
+        black_bold = Font(color="000000", bold=True, size=11)
+        normal_font = Font(color="000000", size=10)
 
         output = BytesIO()
         with pd.ExcelWriter(output, engine="openpyxl") as writer:
             wb = writer.book
 
+            # ========================================
             # 1) HOJA RESUMEN
-            ws = wb.create_sheet("Resumen")
-            for i in range(1, 8):
-                ws.column_dimensions[get_column_letter(i)].width = 25
+            # ========================================
+            ws = wb.create_sheet("Resumen", 0)
+            
+            # Anchos de columna
+            ws.column_dimensions['A'].width = 20
+            ws.column_dimensions['B'].width = 25
+            for col in ['C', 'D', 'E', 'F', 'G']:
+                ws.column_dimensions[col].width = 15
 
             row = 1
+            
+            # Sección de criterios (Pertinencia, Adecuación, Eficacia)
             criterios = [
                 ("Pertinencia", report.pertinencia_data),
                 ("Adecuación", report.adecuacion_data),
                 ("Eficacia", report.eficacia_data),
             ]
+            
             for titulo, contenido in criterios:
+                # Título
                 ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
                 c = ws.cell(row=row, column=1, value=titulo)
                 c.fill = header_fill
                 c.font = white_bold
                 c.alignment = center
-                c.border = border
-                ws.row_dimensions[row].height = 25
+                c.border = border_medium
+                ws.row_dimensions[row].height = 30
                 row += 1
 
+                # Contenido
                 ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=7)
                 c = ws.cell(row=row, column=1, value=contenido)
-                c.alignment = wrap_top
-                c.border = border
-                ws.row_dimensions[row].height = 75
+                c.alignment = left_wrap
+                c.border = border_thin
+                c.font = normal_font
+                ws.row_dimensions[row].height = 80
                 row += 2
 
-            # Tabla resumen general
-            headers = ["Ciclo de vida", "Proceso", "Fortalezas", "Recomendaciones", "Riesgos", "No Conformidades", "Total"]
+            # ✅ TABLA RESUMEN GENERAL
             row += 1
+            table_start_row = row
+            
+            headers = ["Ciclo de vida", "Proceso", "Fortalezas", "Recomendaciones", "Riesgos", "No Conformidades", "Total"]
             for j, txt in enumerate(headers, start=1):
                 c = ws.cell(row=row, column=j, value=txt)
                 c.fill = section_fill
-                c.font = black_bold
+                c.font = white_bold
                 c.alignment = center
-                c.border = border
+                c.border = border_medium
+            ws.row_dimensions[row].height = 25
 
+            # Datos de la tabla
             resumen_data = json.loads(report.resumen_data or "[]")
             data_start_row = row + 1
-            for resumen_row in resumen_data:
+            
+            for idx, resumen_row in enumerate(resumen_data):
                 row += 1
-                for j, val in enumerate(resumen_row[:6], start=1):  # columnas A-F
-                    if j >= 3:  # columnas numéricas
+                
+                # Alternar colores de fila
+                row_fill = alt_row_fill if idx % 2 == 0 else None
+                
+                for j, val in enumerate(resumen_row[:6], start=1):
+                    if j >= 3:  # Columnas numéricas
                         try:
                             val = float(val)
                         except:
                             pass
+                    
                     c = ws.cell(row=row, column=j, value=val)
-                    c.alignment = wrap_top
-                    c.border = border
+                    c.alignment = center if j >= 3 else left_wrap
+                    c.border = border_thin
+                    c.font = normal_font
+                    if row_fill:
+                        c.fill = row_fill
 
-                # Columna G (Total) con fórmula
+                # Columna Total con fórmula
                 total_formula = f"=SUM(C{row}:F{row})"
                 c = ws.cell(row=row, column=7, value=total_formula)
                 c.alignment = center
-                c.border = border
+                c.border = border_thin
+                c.font = black_bold
+                if row_fill:
+                    c.fill = row_fill
+                    
+                ws.row_dimensions[row].height = 25
 
             data_end_row = row
 
-            # Gráfico de puntos
-            chart = ScatterChart()
-            chart.title = "Resumen por Ciclo de Vida"
-            chart.x_axis.title = "Ciclo de Vida"
-            chart.y_axis.title = "Total"
-            chart.style = 13
+            # ✅ FILA DE TOTALES
+            row += 1
+            ws.cell(row=row, column=1, value="TOTAL").font = black_bold
+            ws.cell(row=row, column=1).alignment = center
+            ws.cell(row=row, column=1).fill = PatternFill("solid", fgColor="FFC000")
+            ws.cell(row=row, column=1).border = border_medium
+            
+            for col in range(3, 8):  # Columnas C-G
+                letra_col = get_column_letter(col)
+                formula = f"=SUM({letra_col}{data_start_row}:{letra_col}{data_end_row})"
+                c = ws.cell(row=row, column=col, value=formula)
+                c.font = black_bold
+                c.alignment = center
+                c.fill = PatternFill("solid", fgColor="FFC000")
+                c.border = border_medium
+            
+            totals_row = row
 
-            x_values = Reference(ws, min_col=1, min_row=data_start_row, max_row=data_end_row)
-            y_values = Reference(ws, min_col=7, min_row=data_start_row, max_row=data_end_row)
-            series = Series(y_values, x_values, title="Total por Ciclo de Vida")
-            chart.series.append(series)
-            ws.add_chart(chart, "I5")
+            # ========================================
+            # 2) GRÁFICAS
+            # ========================================
+            
+            # ✅ GRÁFICA 1: Diagrama de Líneas (estilo de tu imagen)
+            line_chart = LineChart()
+            line_chart.title = "Cantidad de Hallazgos"
+            line_chart.style = 12
+            line_chart.y_axis.title = "Cantidad"
+            line_chart.x_axis.title = "Ciclo de Vida"
+            line_chart.height = 10
+            line_chart.width = 20
+            
+            # Datos: Fortalezas, Recomendaciones, Riesgos, No Conformidades
+            cats = Reference(ws, min_col=2, min_row=data_start_row, max_row=data_end_row)
+            
+            for col, title in [(3, "FOR"), (4, "REC"), (5, "RIE"), (6, "DNC")]:
+                data = Reference(ws, min_col=col, min_row=data_start_row-1, max_row=data_end_row)
+                line_chart.add_data(data, titles_from_data=True)
+            
+            line_chart.set_categories(cats)
+            ws.add_chart(line_chart, f"I{table_start_row}")
 
-            # grafico barras - calificaion proceso 
-            from openpyxl.chart import BarChart, Reference
+            # ✅ GRÁFICA 2: Diagrama de Barras - Ciclo de Vida vs Habilitadores
+            # Separar datos por tipo
+            ciclo_vida_count = 0
+            habilitadores_count = 0
+            
+            for resumen_row in resumen_data:
+                tipo_proceso = str(resumen_row[0]).lower() if len(resumen_row) > 0 else ""
+                if "ciclo de vida" in tipo_proceso or "ciclo" in tipo_proceso:
+                    ciclo_vida_count += 1
+                elif "habilitador" in tipo_proceso:
+                    habilitadores_count += 1
+            
+            # Crear datos para la gráfica
+            pie_data_row = data_end_row + 3
+            ws.cell(row=pie_data_row, column=9, value="Tipo")
+            ws.cell(row=pie_data_row, column=10, value="Cantidad")
+            ws.cell(row=pie_data_row + 1, column=9, value="Ciclo de Vida")
+            ws.cell(row=pie_data_row + 1, column=10, value=ciclo_vida_count)
+            ws.cell(row=pie_data_row + 2, column=9, value="Habilitadores")
+            ws.cell(row=pie_data_row + 2, column=10, value=habilitadores_count)
+            
+            # Gráfica de pastel
+            pie_chart = PieChart()
+            pie_chart.title = "Distribución Ciclo de Vida vs Habilitadores"
+            pie_chart.height = 10
+            pie_chart.width = 12
+            
+            labels = Reference(ws, min_col=9, min_row=pie_data_row+1, max_row=pie_data_row+2)
+            data = Reference(ws, min_col=10, min_row=pie_data_row, max_row=pie_data_row+2)
+            pie_chart.add_data(data, titles_from_data=True)
+            pie_chart.set_categories(labels)
+            
+            # Mostrar porcentajes
+            pie_chart.dataLabels = DataLabelList()
+            pie_chart.dataLabels.showPercent = True
+            
+            ws.add_chart(pie_chart, f"I{table_start_row + 18}")
 
+            # ✅ GRÁFICA 3: Riesgos y No Conformidades
+            risk_data_row = pie_data_row + 4
+            
+            # Sumar Riesgos y No Conformidades por tipo de proceso
+            ciclo_riesgos = 0
+            ciclo_nc = 0
+            hab_riesgos = 0
+            hab_nc = 0
+            
+            for resumen_row in resumen_data:
+                if len(resumen_row) < 6:
+                    continue
+                    
+                tipo_proceso = str(resumen_row[0]).lower()
+                try:
+                    riesgos = float(resumen_row[4]) if len(resumen_row) > 4 else 0
+                    no_conf = float(resumen_row[5]) if len(resumen_row) > 5 else 0
+                except:
+                    riesgos = 0
+                    no_conf = 0
+                
+                if "ciclo de vida" in tipo_proceso or "ciclo" in tipo_proceso:
+                    ciclo_riesgos += riesgos
+                    ciclo_nc += no_conf
+                elif "habilitador" in tipo_proceso:
+                    hab_riesgos += riesgos
+                    hab_nc += no_conf
+            
+            # Crear tabla de datos
+            ws.cell(row=risk_data_row, column=9, value="Tipo")
+            ws.cell(row=risk_data_row, column=10, value="Riesgos")
+            ws.cell(row=risk_data_row, column=11, value="No Conformidades")
+            
+            ws.cell(row=risk_data_row + 1, column=9, value="Ciclo de Vida")
+            ws.cell(row=risk_data_row + 1, column=10, value=ciclo_riesgos)
+            ws.cell(row=risk_data_row + 1, column=11, value=ciclo_nc)
+            
+            ws.cell(row=risk_data_row + 2, column=9, value="Habilitadores")
+            ws.cell(row=risk_data_row + 2, column=10, value=hab_riesgos)
+            ws.cell(row=risk_data_row + 2, column=11, value=hab_nc)
+            
+            # Gráfica de barras
             bar_chart = BarChart()
-            bar_chart.title = "Resumen por Proceso"
             bar_chart.type = "col"
+            bar_chart.title = "Riesgos y No Conformidades"
             bar_chart.style = 10
-            bar_chart.grouping = "clustered"
-            bar_chart.overlap = 0
             bar_chart.y_axis.title = "Cantidad"
-            bar_chart.x_axis.title = "Proceso"
-
-            # Rango de datos: C11 a F11 como encabezados, C12:F{end_row} como valores
-            cats = Reference(ws, min_col=2, min_row=data_start_row, max_row=data_end_row)  # Procesos (columna B)
-            data = Reference(ws, min_col=3, max_col=6, min_row=data_start_row - 1, max_row=data_end_row)  # Encabezados + datos
-
+            bar_chart.x_axis.title = "Tipo de Proceso"
+            bar_chart.height = 10
+            bar_chart.width = 12
+            
+            cats = Reference(ws, min_col=9, min_row=risk_data_row+1, max_row=risk_data_row+2)
+            data = Reference(ws, min_col=10, max_col=11, min_row=risk_data_row, max_row=risk_data_row+2)
+            
             bar_chart.add_data(data, titles_from_data=True)
             bar_chart.set_categories(cats)
+            
+            ws.add_chart(bar_chart, f"I{table_start_row + 36}")
 
-            ws.add_chart(bar_chart, "I15")
+            # ✅ GRÁFICA 4: Total General (Barras)
+            total_chart = BarChart()
+            total_chart.type = "col"
+            total_chart.title = "Resumen Total de Hallazgos"
+            total_chart.style = 11
+            total_chart.y_axis.title = "Cantidad"
+            total_chart.height = 10
+            total_chart.width = 12
+            
+            # Usar la fila de totales
+            cats_total = Reference(ws, min_col=3, max_col=6, min_row=table_start_row)
+            data_total = Reference(ws, min_col=3, max_col=6, min_row=totals_row)
+            
+            total_chart.add_data(data_total, titles_from_data=False, from_rows=True)
+            total_chart.set_categories(cats_total)
+            
+            ws.add_chart(total_chart, f"I{table_start_row + 54}")
 
-            # grafico barras - resumen todas las calificaiones
-            # Sumar totales por columna C, D, E, F
-            total_row = row + 2  # Fila donde se escriben los totales
-            calificaciones = ["Fortalezas", "Recomendaciones", "Riesgos", "No Conformidades"]
-            for i, col in enumerate(range(3, 7), start=0):  # Columnas C-F (3-6)
-                letra_col = chr(64 + col)  # C, D, E, F
-                formula = f"=SUM({letra_col}{data_start_row}:{letra_col}{data_end_row})"
-                ws.cell(row=total_row, column=col, value=formula)
-                ws.cell(row=total_row - 1, column=col, value=calificaciones[i])
-
-            # Crear gráfico de barras
-            bar_chart = BarChart()
-            bar_chart.title = "Total"
-            bar_chart.type = "col"
-            bar_chart.style = 10
-            bar_chart.y_axis.title = "Cantidad"
-            bar_chart.x_axis.title = "Calificación"
-
-            cats = Reference(ws, min_col=3, max_col=6, min_row=total_row - 1)  # Etiquetas (fortalezas, etc.)
-            data = Reference(ws, min_col=3, max_col=6, min_row=total_row)      # Valores sumados
-
-            bar_chart.add_data(data, titles_from_data=False, from_rows=True)
-            bar_chart.set_categories(cats)
-
-
-            ws.add_chart(bar_chart, "I31")
-
-
-            # 2) HOJAS DE DETALLE
+            # ========================================
+            # 3) HOJAS DE DETALLE
+            # ========================================
             for name, data in sheets_data.items():
                 ws2 = wb.create_sheet(name)
-                for i in range(1, 10):
-                    ws2.column_dimensions[get_column_letter(i)].width = 20
+                
+                # Anchos de columna
+                ws2.column_dimensions['A'].width = 8
+                ws2.column_dimensions['B'].width = 12
+                ws2.column_dimensions['C'].width = 15
+                ws2.column_dimensions['D'].width = 40
+                ws2.column_dimensions['E'].width = 25
+                ws2.column_dimensions['F'].width = 15
+                ws2.column_dimensions['G'].width = 15
+                ws2.column_dimensions['H'].width = 20
+                ws2.column_dimensions['I'].width = 20
 
+                # Título de la hoja
                 ws2.merge_cells("A1:I1")
                 c = ws2["A1"]
                 c.value = name.upper()
                 c.fill = header_fill
-                c.font = white_bold
+                c.font = Font(color="FFFFFF", bold=True, size=14)
                 c.alignment = center
-                c.border = border
-                ws2.row_dimensions[1].height = 30
+                c.border = border_medium
+                ws2.row_dimensions[1].height = 35
 
+                # Fila vacía
                 ws2.row_dimensions[2].height = 5
+                
+                # Encabezados
                 for j, h in enumerate(detail_cols, start=1):
                     c = ws2.cell(row=3, column=j, value=h)
                     c.fill = section_fill
-                    c.font = black_bold
+                    c.font = white_bold
                     c.alignment = center
-                    c.border = border
+                    c.border = border_medium
+                ws2.row_dimensions[3].height = 25
 
+                # Datos
                 for i, record in enumerate(data, start=4):
-                    ws2.row_dimensions[i].height = 25
+                    # Alternar colores
+                    row_fill = alt_row_fill if (i - 4) % 2 == 0 else None
+                    
+                    ws2.row_dimensions[i].height = 30
                     for j, key in enumerate(detail_cols, start=1):
                         val = record.get(key, "")
                         c = ws2.cell(row=i, column=j, value=val)
-                        c.alignment = wrap_top
-                        c.border = border
+                        c.alignment = center if j == 1 else left_wrap
+                        c.border = border_thin
+                        c.font = normal_font
+                        if row_fill:
+                            c.fill = row_fill
 
-            # 3) HOJA DATOS GENERALES
+            # ========================================
+            # 4) HOJA DATOS GENERALES
+            # ========================================
             meta = {
                 "ID Informe":      report.id,
                 "Fecha":           report.creation_date.strftime('%Y-%m-%d'),
@@ -820,30 +978,41 @@ def download_excel_report(request):
                 "Líder Auditor":   report.leader_auditor.get_full_name(),
                 "Total Cláusulas": report.total_clauses(),
             }
-            dfm = pd.DataFrame([meta])
-            dfm.to_excel(writer, sheet_name="Datos Generales", index=False, startrow=0)
-            ws3 = writer.sheets["Datos Generales"]
+            
+            ws3 = wb.create_sheet("Datos Generales")
+            
+            # Encabezados
             for i, key in enumerate(meta.keys(), start=1):
                 ws3.column_dimensions[get_column_letter(i)].width = 25
                 cell = ws3.cell(row=1, column=i, value=key)
                 cell.fill = section_fill
-                cell.font = black_bold
+                cell.font = white_bold
                 cell.alignment = center
-                cell.border = border
+                cell.border = border_medium
+                
+                # Valores
                 cell = ws3.cell(row=2, column=i, value=meta[key])
-                cell.alignment = wrap_top
-                cell.border = border
-            ws3.row_dimensions[1].height = 25
+                cell.alignment = center
+                cell.border = border_thin
+                cell.font = normal_font
+                
+            ws3.row_dimensions[1].height = 30
             ws3.row_dimensions[2].height = 25
+
+            # Eliminar hoja por defecto si existe
+            if "Sheet" in wb.sheetnames:
+                del wb["Sheet"]
 
         resp = HttpResponse(
             output.getvalue(),
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
-        resp["Content-Disposition"] = f'attachment; filename="report_{report.id}.xlsx"'
+        resp["Content-Disposition"] = f'attachment; filename="informe_auditoria_{report.id}.xlsx"'
         return resp
 
     except Report.DoesNotExist:
         return JsonResponse({"error": "Informe no encontrado"}, status=404)
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return JsonResponse({"error": str(e)}, status=500)
