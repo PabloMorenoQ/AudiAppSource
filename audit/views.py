@@ -336,7 +336,14 @@ from django.utils.translation import gettext as _  # Asegurate de importar esto 
 def reports(request):
     if request.user.is_authenticated and request.user.role in ['auditLeaderUser', 'superUser']:
         # Obtener los checklists relacionados a la organización del usuario
-        checklists = CheckList.objects.filter(organization=request.user.organization)
+        checklists = CheckList.objects.filter(
+            organization=request.user.organization
+        ).select_related('audit_plan', 'leader_auditor')
+        
+        # ✅ NUEVO: Obtener planes de auditoría de la organización
+        planes = AuditPlan.objects.filter(
+            organization=request.user.organization
+        ).prefetch_related('checklists').order_by('-creation_date')
 
         sections = [
             ('fortalezas', _('Fortalezas')),
@@ -345,15 +352,18 @@ def reports(request):
             ('recomendaciones', _('Recomendaciones')),
             ('no-conformidades', _('No Conformidades')),
         ]
+        
         summary_sections = [
             ('pertinencia', _('Pertinencia'), _('Explicación de la pertinencia del proceso.')),
             ('adecuacion', _('Adecuación'), _('Explicación sobre la adecuación del proceso.')),
             ('eficacia', _('Eficacia'), _('Evaluación de la eficacia del proceso.')),
         ]
+        
         return render(request, "reports.html", {
             'sections': sections,
             'summary_sections': summary_sections,
-            'checklists': checklists  # <--- importante
+            'checklists': checklists,
+            'planes': planes,  # ✅ NUEVO: Pasar planes al template
         })
     else:
         messages.warning(request, _("No tienes acceso"))
@@ -389,3 +399,76 @@ def get_checklist_data(request, checklist_id):
         return JsonResponse({'success': False, 'error': 'Checklist no encontrada'}, status=404)
 
 
+@csrf_exempt
+def get_plan_checklists(request, plan_id):
+    """
+    Endpoint para obtener todos los checklists de un plan de auditoría
+    URL: /audit/plan/<plan_id>/checklists/
+    """
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'error': 'Usuario no autenticado'
+        }, status=401)
+    
+    if request.user.role not in ['auditLeaderUser', 'superUser', 'organizationUser']:
+        return JsonResponse({
+            'success': False,
+            'error': 'No tienes permisos para ver estos datos'
+        }, status=403)
+    
+    try:
+        # Obtener el plan y verificar que pertenece a la organización del usuario
+        plan = AuditPlan.objects.get(
+            id=plan_id,
+            organization=request.user.organization
+        )
+        
+        # Obtener todos los checklists del plan
+        checklists = CheckList.objects.filter(
+            audit_plan=plan
+        ).select_related('leader_auditor', 'organization')
+        
+        # Formatear los datos
+        checklists_data = []
+        for checklist in checklists:
+            # Parsear audit_data si es string
+            audit_data = checklist.audit_data
+            if isinstance(audit_data, str):
+                try:
+                    audit_data = json.loads(audit_data)
+                except json.JSONDecodeError:
+                    audit_data = []
+            
+            checklists_data.append({
+                'id': checklist.id,
+                'process': checklist.process,
+                'place': checklist.place,
+                'process_type': checklist.process_type,
+                'dependency': checklist.dependency,
+                'clauses_list': checklist.clauses_list,
+                'audit_data': audit_data,
+                'leader_auditor': f"{checklist.leader_auditor.first_name} {checklist.leader_auditor.last_name}",
+                'created_at': checklist.created_at.isoformat() if hasattr(checklist, 'created_at') and checklist.created_at else None
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'plan_id': plan.id,
+            'plan_date': str(plan.creation_date),
+            'organization': plan.organization.name,
+            'total_checklists': len(checklists_data),
+            'checklists': checklists_data
+        })
+        
+    except AuditPlan.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': f'Plan de auditoría con ID {plan_id} no encontrado o no pertenece a tu organización'
+        }, status=404)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Error al obtener checklists: {str(e)}'
+        }, status=500)

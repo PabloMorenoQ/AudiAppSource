@@ -63,16 +63,76 @@
                         <label class="form-label">{% trans "Tipo de proceso" %}</label>
                     </div>
                     <div class="col">
+                        <!-- Radio Button: Ciclo de vida -->
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo" id="ciclo_de_vida" value="ciclo de vida">
-                            <label class="form-check-label" for="ciclo_de_vida">{% trans "Ciclo de vida" %}</label>
+                            <input class="form-check-input" 
+                                type="radio" 
+                                name="tipo" 
+                                id="ciclo_de_vida" 
+                                value="ciclo de vida">
+                            <label class="form-check-label" for="ciclo_de_vida">
+                                {% trans "Ciclo de vida" %}
+                            </label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="tipo" id="habilitador" value="habilitador">
-                            <label class="form-check-label" for="habilitador">{% trans "Habilitador" %}</label>
+                        
+                        <!-- ✅ NUEVO: Campo de texto condicional para Ciclo de vida -->
+                        <div id="ciclo_vida_details" class="ms-4 mt-2" style="display: none;">
+                            <input type="text" 
+                                class="form-control form-control-sm" 
+                                id="ciclo_vida_input" 
+                                name="ciclo_vida_details"
+                                placeholder="{% trans 'Ej: Planificación, Diseño, Operación, etc.' %}"
+                                maxlength="200">
+                        </div>
+
+                        <!-- Radio Button: Habilitador -->
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" 
+                                type="radio" 
+                                name="tipo" 
+                                id="habilitador" 
+                                value="habilitador">
+                            <label class="form-check-label" for="habilitador">
+                                {% trans "Habilitador" %}
+                            </label>
                         </div>
                     </div>
                 </div>
+
+                <!-- ✅ Script para mostrar/ocultar el campo de texto -->
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const cicloVidaRadio = document.getElementById('ciclo_de_vida');
+                    const habilitadorRadio = document.getElementById('habilitador');
+                    const cicloVidaDetails = document.getElementById('ciclo_vida_details');
+                    const cicloVidaInput = document.getElementById('ciclo_vida_input');
+
+                    // Función para mostrar/ocultar el campo de texto
+                    function toggleCicloVidaDetails() {
+                        if (cicloVidaRadio.checked) {
+                            cicloVidaDetails.style.display = 'block';
+                            // Opcional: Hacer focus en el input cuando se muestra
+                            setTimeout(() => cicloVidaInput.focus(), 100);
+                        } else {
+                            cicloVidaDetails.style.display = 'none';
+                            // Limpiar el input cuando se oculta
+                            cicloVidaInput.value = '';
+                        }
+                    }
+
+                    // Listeners para los radio buttons
+                    if (cicloVidaRadio) {
+                        cicloVidaRadio.addEventListener('change', toggleCicloVidaDetails);
+                    }
+
+                    if (habilitadorRadio) {
+                        habilitadorRadio.addEventListener('change', toggleCicloVidaDetails);
+                    }
+
+                    // Estado inicial
+                    toggleCicloVidaDetails();
+                });
+                </script>
             </form>
         </div>
 

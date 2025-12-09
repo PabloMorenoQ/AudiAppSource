@@ -229,25 +229,124 @@
         </div>
 
         <div class="column right-mb-8">
-            <h2 class="title">Listas cargadas</h2>
+            <h2 class="title">Cargar Datos de Auditoría</h2>
             
-            <!-- Selector de Checklists -->
+            <!-- ===================================== -->
+            <!-- OPCIÓN 1: Cargar por Plan Completo -->
+            <!-- ===================================== -->
             <div class="mb-4">
-                <label for="checklistSelector" class="form-label">Seleccionar Checklist:</label>
-                <select id="checklistSelector" class="form-select">
-                    <option value="">Selecciona una checklist</option>
-                    {% for checklist in checklists %}
-                        <option value="{{ checklist.id }}">{{ checklist.audit_plan }} | {{ checklist.process }} - {{ checklist.place }}</option>
+                <label for="auditPlanSelector" class="form-label">
+                    <strong>Cargar planes de auditoría</strong>
+                </label>
+                
+                
+                <select id="auditPlanSelector" class="form-select">
+                    <option value="">Selecciona un plan de auditoría</option>
+                    {% for plan in planes %}
+                        <option value="{{ plan.id }}">
+                            Plan #{{ plan.id }} | {{ plan.creation_date }} | 
+                            {% if plan.checklists.count > 0 %}
+                                {{ plan.checklists.count }} checklist(s)
+                            {% else %}
+                                Sin checklists
+                            {% endif %}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
-            <!-- Botones y carga de JSON -->
+            <!-- ===================================== -->
+            <!-- OPCIÓN 2: Cargar Checklist Individual -->
+            <!-- ===================================== -->
+            <div class="mb-4">
+                <label for="checklistSelector" class="form-label">
+                    <strong>Cargar Checklists</strong>
+                </label>
+                <select id="checklistSelector" class="form-select">
+                    <option value="">Selecciona una checklist</option>
+                    {% for checklist in checklists %}
+                        <option value="{{ checklist.id }}">
+                            {% if checklist.audit_plan %}
+                                Plan #{{ checklist.audit_plan.id }} | 
+                            {% endif %}
+                            {{ checklist.process }} - {{ checklist.place }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- ===================================== -->
+            <!-- Botones de Acción -->
+            <!-- ===================================== -->
             <div class="buttons mt-3">
-                <button id="loadChecklistBtn" class="btn btn-primary">Cargar datos</button>
-                <button id="sendBtn" type="submit" class="btn btn-success">Enviar</button>
+                <button id="loadChecklistBtn" class="btn btn-primary btn-lg w-100 mb-2">
+                    <i class="bi bi-download"></i> Cargar Datos
+                </button>
+                <button id="clearTablesBtn" class="btn btn-secondary w-100 mb-2">
+                    <i class="bi bi-trash"></i> Limpiar Tablas
+                </button>
+                <button id="sendBtn" type="submit" class="btn btn-success btn-lg w-100">
+                    <i class="bi bi-send"></i> Guardar Reporte
+                </button>
+            </div>
+
+            <!-- ===================================== -->
+            <!-- Información de Estado -->
+            <!-- ===================================== -->
+            <div class="mt-4 p-3 bg-light rounded">
+                <h6>Estado:</h6>
+                <div id="loadStatus" class="small text-muted">
+                    Ningún dato cargado
+                </div>
             </div>
         </div>
+
+        <!-- ===================================== -->
+        <!-- Script adicional para limpiar tablas manualmente -->
+        <!-- ===================================== -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botón para limpiar tablas manualmente
+            const clearButton = document.getElementById('clearTablesBtn');
+            if (clearButton) {
+                clearButton.addEventListener('click', function() {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'question',
+                            title: '¿Limpiar todas las tablas?',
+                            text: 'Esto eliminará todos los datos cargados',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, limpiar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#d33'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                if (typeof clearAllTables === 'function') {
+                                    clearAllTables();
+                                    document.getElementById('loadStatus').textContent = 'Tablas limpiadas';
+                                    
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Tablas limpiadas',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        if (confirm('¿Estás seguro de limpiar todas las tablas?')) {
+                            if (typeof clearAllTables === 'function') {
+                                clearAllTables();
+                                document.getElementById('loadStatus').textContent = 'Tablas limpiadas';
+                                alert('Tablas limpiadas correctamente');
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        </script>
     </div>
 
     <script>

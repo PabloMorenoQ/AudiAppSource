@@ -49,7 +49,15 @@ function sendChecklistToServer() {
     // Capturar datos generales del formulario
     const process = document.getElementById("process_id").value.trim();
     const place = document.getElementById("place_id").value.trim();
-    const processType = document.querySelector('input[name="tipo"]:checked')?.value || "";
+    const processTypeRadio = document.querySelector('input[name="tipo"]:checked');
+    let processType = processTypeRadio?.value || "";
+
+    if (processType === "ciclo de vida") {
+        const cicloVidaDetails = document.getElementById("ciclo_vida_input")?.value.trim();
+        if (cicloVidaDetails) {
+            processType = `ciclo de vida : ${cicloVidaDetails}`;
+        }
+    }
     const dependency = dependencia;
 
     // Validar proceso
@@ -110,7 +118,7 @@ function sendChecklistToServer() {
                 hallazgo:     getCellValue(cells[6]),
                 proceso:      process,
                 lugar:        place,
-                process_type: processType,
+                process_type: processType,  // ✅ Incluye detalles si los hay
             });
         }
     });
@@ -119,7 +127,7 @@ function sendChecklistToServer() {
     // 4️⃣ PREPARAR DATOS PARA ENVÍO
     // ===================================
     const checklistData = {
-        plan_id: planId,  // NUEVO: Incluir plan_id
+        plan_id: planId,  // 👈 NUEVO: Incluir plan_id
         process: process,
         place: place,
         clauses_list: data.map(d => d.clausula).join(', '),

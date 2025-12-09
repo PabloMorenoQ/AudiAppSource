@@ -8,6 +8,7 @@ urlpatterns = [
     path('report/', reports, name='reports'),
     path('report/save/', save_report, name='save_report'),
     path('checklist/<int:checklist_id>/data/', get_checklist_data, name='get_checklist_data'),
-    # path('excel/', excel_landing, name='excel_landing'),
-    # path('excel/download/', download_excel, name='download_excel'),
+    
+    path('auditPlan/<int:plan_id>/checklists/', get_plan_checklists, name='plan_checklists'),
+    path('checklist/<int:checklist_id>/data/', get_checklist_data, name='checklist_data'),
 ]
