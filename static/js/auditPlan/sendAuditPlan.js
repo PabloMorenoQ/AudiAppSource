@@ -241,7 +241,7 @@ function collectPlanData() {
 }
 
 // Activar auto-guardado (opcional, comenta si no lo quieres)
-// enableAutoSave();
+enableAutoSave();
 
 // Limpiar intervalo al salir de la página
 window.addEventListener('beforeunload', () => {

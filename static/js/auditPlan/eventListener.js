@@ -76,7 +76,7 @@ function addRow(tableId) {
         if (tbody && tbody.rows.length > 0) {
             tbody.deleteRow(tbody.rows.length - 1);
             // Ajustar anchos después de eliminar
-            // setTimeout(() => adjustColumnWidths(tableId), 10);
+            // setTimeout(() => adjustColumnWidths(tableId), 10);// Revisar el TimeOut por que se usa 
         }
     }
 

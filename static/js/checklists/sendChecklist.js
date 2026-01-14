@@ -196,53 +196,6 @@ function sendChecklistToServer() {
             confirmButtonColor: '#28a745',
             confirmButtonText: 'Continuar',
             width: '600px'
-        }).then(() => {
-            // Opciones post-guardado
-            Swal.fire({
-                icon: 'question',
-                title: '¿Qué deseas hacer ahora?',
-                html: `
-                    <p>Tu checklist ha sido guardado exitosamente.</p>
-                    <p>Puedes continuar trabajando en este plan o crear uno nuevo.</p>
-                `,
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Crear otro checklist',
-                denyButtonText: 'Ver reportes',
-                cancelButtonText: 'Quedarme aquí',
-                confirmButtonColor: '#3085d6',
-                denyButtonColor: '#6c757d'
-            }).then((action) => {
-                if (action.isConfirmed) {
-                    // Limpiar tabla para crear nuevo checklist
-                    const auditTableBody = document.getElementById('auditTableBody');
-                    if (auditTableBody) {
-                        auditTableBody.innerHTML = '';
-                    }
-                    
-                    // Limpiar campos del formulario (excepto el plan)
-                    const processSelect = document.getElementById('process_id');
-                    const placeSelect = document.getElementById('place_id');
-                    const tipoRadios = document.querySelectorAll('input[name="tipo"]');
-                    
-                    if (processSelect) processSelect.value = '';
-                    if (placeSelect) placeSelect.value = '';
-                    tipoRadios.forEach(radio => radio.checked = false);
-                    
-                    window.scrollTo(0, 0);
-                    
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Tabla limpia',
-                        text: 'Puedes crear un nuevo checklist para el mismo plan',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                } else if (action.isDenied) {
-                    // Redirigir a reportes
-                    window.location.href = '/reports/';
-                }
-            });
         });
     })
     .catch(error => {
