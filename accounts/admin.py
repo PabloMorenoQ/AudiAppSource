@@ -20,6 +20,14 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('role',)}),
     )
 
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('organization',)}),
+    )
+    
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('organization',)}),
+    )
+
 # audit/admin.py (o el admin.py de la app donde se encuentran estos modelos)
 
 @admin.register(CheckList)

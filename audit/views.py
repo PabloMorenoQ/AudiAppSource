@@ -312,7 +312,6 @@ def save_report(request):
             creation_date= datetime.date.today(),
             organization_id = request.user.organization.id,
             leader_auditor= request.user,
-            # leader_auditor = User.objects.get(id=1),
             clauses_list = data.get('clauses_list'),
             resumen_data = data.get('resumen'),
             fortalezas_data = data.get('fortalezas'),

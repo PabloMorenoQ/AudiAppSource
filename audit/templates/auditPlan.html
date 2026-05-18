@@ -92,14 +92,14 @@
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
 
-    /* Estilos para permitir que controles dentro de tablas no queden con altura inline */
+    /* Estilos base para inputs y textareas dentro de tablas */
     table input[type="text"],
     table textarea {
-        height: auto !important;
-        min-height: 36px !important;
-        overflow: hidden !important;
-        resize: both !important;
-        box-sizing: border-box !important;
+        width: 100%;
+        min-height: 36px;
+        overflow: auto;
+        resize: vertical;
+        box-sizing: border-box;
     }
 
     /* Estilos para el contenedor de la tabla */
@@ -210,10 +210,9 @@
     #tabla-planAud input[type="text"],
     #tabla-planAud textarea {
         width: 100%;
-        height: auto !important;
-        min-height: 36px !important;
-        overflow: hidden !important;
-        resize: both;
+        min-height: 36px;
+        overflow: auto;
+        resize: vertical;
         box-sizing: border-box;
     }
 

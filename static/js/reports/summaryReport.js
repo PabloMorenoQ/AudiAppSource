@@ -2,8 +2,16 @@ function recuentoProcesos() {
     const resumenTable = document.getElementById('reportTableSummary');
     const tablas = ['tabla-fortalezas', 'tabla-conformidades', 'tabla-recomendaciones', 'tabla-riesgos', 'tabla-no-conformidades'];
 
-    // NO limpiar tabla de resumen antes de actualizar
-    // resumenTable.innerHTML = '';
+    // ✅ Limpiar solo el tbody para preservar el thead
+    const tbody = resumenTable.querySelector('tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+    } else {
+        // Si insertRow() apunta directo a la tabla sin tbody explícito, limpiar así:
+        while (resumenTable.rows.length > 0) {
+            resumenTable.deleteRow(0);
+        }
+    }
 
     // Contadores de procesos
     const procesosContador = {};
@@ -13,12 +21,14 @@ function recuentoProcesos() {
         if (table) {
             const rows = table.querySelectorAll('tbody tr');
             rows.forEach(row => {
-                const proceso = row.querySelector('td:nth-child(8)'); // Columna de "proceso"
+                const proceso = row.querySelector('td:nth-child(8)');
+                const tipoProceso = row.querySelector('td:nth-child(9)');
                 if (proceso) {
                     const procesoText = proceso.textContent.trim();
+                    const tipoProceoText = tipoProceso ? tipoProceso.textContent.trim() : 'N/A';
                     if (procesoText) {
                         if (!procesosContador[procesoText]) {
-                            procesosContador[procesoText] = { fortalezas: 0, conformidades: 0, recomendaciones: 0, riesgos: 0, noConformidades: 0 };
+                            procesosContador[procesoText] = { tipoProceso: tipoProceoText, fortalezas: 0, conformidades: 0, recomendaciones: 0, riesgos: 0, noConformidades: 0 };
                         }
                         switch (tablaId) {
                             case 'tabla-fortalezas':
@@ -43,13 +53,14 @@ function recuentoProcesos() {
         }
     });
 
-    // Crear filas en el resumen sin eliminar las previas
+    // ✅ Si no hay datos, la tabla queda vacía (comportamiento correcto)
     Object.keys(procesosContador).forEach(proceso => {
         const count = procesosContador[proceso];
         const total = count.fortalezas + count.conformidades + count.recomendaciones + count.riesgos + count.noConformidades;
 
-        const newRow = resumenTable.insertRow();
-        newRow.insertCell().textContent = 'Ciclo de Vida'; // Ajusta según tu lógica
+        const targetBody = tbody || resumenTable;
+        const newRow = targetBody.insertRow();
+        newRow.insertCell().textContent = count.tipoProceso;
         newRow.insertCell().textContent = proceso;
         newRow.insertCell().textContent = count.fortalezas;
         newRow.insertCell().textContent = count.conformidades;
@@ -60,5 +71,4 @@ function recuentoProcesos() {
     });
 }
 
-// Añadir el evento al botón
 document.getElementById('recuentoBtn').addEventListener('click', recuentoProcesos);

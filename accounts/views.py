@@ -621,7 +621,7 @@ def download_excel_report(request):
         return JsonResponse({"error": "ID de report no proporcionado"}, status=400)
 
     from openpyxl.utils import get_column_letter
-    from openpyxl.chart import BarChart, PieChart, LineChart, Reference
+    from openpyxl.chart import BarChart, PieChart, LineChart, RadarChart, Reference
     from openpyxl.chart.label import DataLabelList
     
     try:
@@ -732,6 +732,8 @@ def download_excel_report(request):
                 row_fill = alt_row_fill if idx % 2 == 0 else None
                 
                 for j, val in enumerate(resumen_row[:6], start=1):
+                    if j == 2:  # Segundo elemento — se omite
+                        continue
                     if j >= 3:  # Columnas numéricas
                         try:
                             val = float(val)
@@ -790,7 +792,7 @@ def download_excel_report(request):
             line_chart.width = 20
             
             # Datos: Fortalezas, Recomendaciones, Riesgos, No Conformidades
-            cats = Reference(ws, min_col=2, min_row=data_start_row, max_row=data_end_row)
+            cats = Reference(ws, min_col=1, min_row=data_start_row, max_row=data_end_row)
             
             for col, title in [(3, "FOR"), (4, "REC"), (5, "RIE"), (6, "DNC")]:
                 data = Reference(ws, min_col=col, min_row=data_start_row-1, max_row=data_end_row)
