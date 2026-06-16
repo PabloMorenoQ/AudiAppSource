@@ -59,7 +59,7 @@ msgstr "Usuario de auditoria"
 
 #: .\accounts\templates\dashboard.html:36
 msgid "Audit Leader User"
-msgstr "Auditor lider"
+msgstr "Auditor líder"
 
 #: .\accounts\templates\dashboard.html:48
 msgid "¿Eliminar este usuario?"
