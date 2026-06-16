@@ -69,7 +69,7 @@ msgstr "Audit Leader User"
 
 #: .\accounts\templates\dashboard.html:48
 msgid "¿Eliminar este usuario?"
-msgstr "¿Delete this user?"
+msgstr "Delete this user?"
 
 #: .\accounts\templates\dashboard.html:53
 msgid "No hay usuarios."
@@ -181,7 +181,7 @@ msgstr "Password"
 
 #: .\accounts\templates\login.html:35
 msgid "¿No tienes cuenta?"
-msgstr "¿Dont have an account?"
+msgstr "Dont have an account?"
 
 #: .\accounts\templates\login.html:36
 msgid "Regístrate aquí"
@@ -233,7 +233,7 @@ msgstr "Register"
 
 #: .\accounts\templates\register.html:56
 msgid "¿Ya tienes cuenta?"
-msgstr "¿Dont have an account?"
+msgstr "Dont have an account?"
 
 #: .\accounts\templates\register.html:57
 msgid "Inicia sesión aquí"
@@ -592,7 +592,7 @@ msgstr "AudiApp - Dashboard"
 
 #: .\core\templates\home.html:9
 msgid "¿Cómo podemos ayudarte?"
-msgstr "¿How can we help you?"
+msgstr "How can we help you?"
 
 #: .\core\templates\home.html:12
 msgid "Buscar..."

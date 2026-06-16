@@ -623,6 +623,7 @@ def download_excel_report(request):
     from openpyxl.utils import get_column_letter
     from openpyxl.chart import BarChart, PieChart, LineChart, RadarChart, Reference
     from openpyxl.chart.label import DataLabelList
+    from openpyxl.chart.series import SeriesLabel
     
     try:
         report = Report.objects.get(id=report_id)
@@ -806,13 +807,23 @@ def download_excel_report(request):
             ciclo_vida_count = 0
             habilitadores_count = 0
             
+            ciclo_de_vida = []
+            habilitadores = []
+
             for resumen_row in resumen_data:
                 tipo_proceso = str(resumen_row[0]).lower() if len(resumen_row) > 0 else ""
                 if "ciclo de vida" in tipo_proceso or "ciclo" in tipo_proceso:
                     ciclo_vida_count += 1
+                    ciclo_de_vida.append(tipo_proceso)
                 elif "habilitador" in tipo_proceso:
                     habilitadores_count += 1
-            
+                    habilitadores.append(tipo_proceso)  
+                
+            rows = [
+                ['Fortalezas', 'Conformidades', 'Recomendaciones', 'Riesgos', 'No Conformidades'],
+                    
+            ]
+
             # Crear datos para la gráfica
             pie_data_row = data_end_row + 3
             ws.cell(row=pie_data_row, column=9, value="Tipo")
@@ -901,19 +912,26 @@ def download_excel_report(request):
             # ✅ GRÁFICA 4: Total General (Barras)
             total_chart = BarChart()
             total_chart.type = "col"
-            total_chart.title = "Resumen Total de Hallazgos"
+            total_chart.title = "Hallazgos por Ciclo de Vida"
             total_chart.style = 11
             total_chart.y_axis.title = "Cantidad"
+            total_chart.x_axis.title = "Ciclo de Vida"
             total_chart.height = 10
             total_chart.width = 12
-            
-            # Usar la fila de totales
-            cats_total = Reference(ws, min_col=3, max_col=6, min_row=table_start_row)
-            data_total = Reference(ws, min_col=3, max_col=6, min_row=totals_row)
-            
-            total_chart.add_data(data_total, titles_from_data=False, from_rows=True)
+
+            # Categorías: col A, solo filas de datos (sin header)
+            cats_total = Reference(ws, min_col=1, min_row=data_start_row, max_row=data_end_row)
+
+            # Datos: cols C-F, mismo rango de filas que las categorías (sin header)
+            data_total = Reference(ws, min_col=3, max_col=6, min_row=data_start_row, max_row=data_end_row)
+
+            total_chart.add_data(data_total, titles_from_data=False)
             total_chart.set_categories(cats_total)
-            
+
+            # Títulos de series asignados manualmente para evitar referencias cruzadas
+            for i, title in enumerate(["Fortalezas", "Recomendaciones", "Riesgos", "No Conformidades"]):
+                total_chart.series[i].title = SeriesLabel(v=title)
+
             ws.add_chart(total_chart, f"I{table_start_row + 54}")
 
             # ========================================

@@ -462,8 +462,8 @@ msgid "Plan de auditoría"
 msgstr "Plan de auditoría"
 
 #: .\audit\templates\excel.html:18
-msgid "Selecciona una checklist"
-msgstr "Selecciona una checklist"
+msgid "Selecciona un checklist"
+msgstr "Selecciona un checklist"
 
 #: .\audit\templates\excel.html:23
 msgid "LVs"
