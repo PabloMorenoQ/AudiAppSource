@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export WORKON_HOME=~/virtualenv
+    - source /home/training/virtualenv/audiApp_git/3.10/bin/activate
+    - pip install -r requirements-prod.txt
+    - python manage.py migrate --noinput
+    - python manage.py collectstatic --noinput
