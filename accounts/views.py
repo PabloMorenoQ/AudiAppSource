@@ -288,41 +288,58 @@ def download_excel_audit_plan(request):
 
             # === 2) Alcance – Criterios – Objetivos ===
             ws1 = wb.create_sheet("Alcance - Criterios - Objetivos")
-            set_cols(ws1, [3, 34, 58, 26])
+            set_cols(ws1, [3, 34, 58, 35])
 
             # 2.1 Participantes
-            ws1.merge_cells("B2:B4")
-            c = ws1["B2"]
-            c.border = border
-            c.value = plan.organization.name.upper()
-            c.font = Font(size=20, bold=True)
-            c.alignment = center
-            c = ws1["B3"]
-            c.border = border
-            c = ws1["B4"]
-            c.border = border
+            # Datos dinámicos
+            audit_name = content.get("nombre-auditoria", "")
+            fecha_prep = content.get("fecha-preparacion", "")
+            periodo = content.get("periodo", "")
+            fecha_act = content.get("fecha-actualizacion", "")
+            fechas_value = f"Fecha de preparación: {fecha_prep}\nPeríodo: {periodo}\nFecha de actualización: {fecha_act}"
 
-            ws1.merge_cells("C2:C4")
-            c = ws1["C2"]
-            c.value = "Name".upper()
-            c.font = Font(size=20, bold=True)
-            c.alignment = center
-            c.border = border
-            c = ws1["C3"]
-            c.border = border
-            c = ws1["C4"]
-            c.border = border
+            # Configuración por hoja: (worksheet, col_inicio, col_fin)
+            sheets_config = [
+                (ws1, "B", "D"),  # hoja 1 - asumiendo mismo rango original
+                
+            ]
 
-            ws1.merge_cells("D2:D4")
-            c = ws1["D2"]
-            c.value = "Fechas".upper()
-            c.font = Font(size=20, bold=True)
-            c.alignment = center
-            c.border = border
-            c = ws1["D3"]
-            c.border = border
-            c = ws1["D4"]
-            c.border = border
+            for ws, col_start, col_end in sheets_config:
+                # Columna organización
+                ws.merge_cells(f"{col_start}2:{col_start}4")
+                c = ws[f"{col_start}2"]
+                c.border = border
+                c.value = plan.organization.name.upper()
+                c.font = Font(size=20, bold=True)
+                c.alignment = center
+                for row in [3, 4]:
+                    ws[f"{col_start}{row}"].border = border
+
+                # Calcular columnas intermedias para Name y Fechas
+                col_start_idx = ord(col_start)
+                col_end_idx = ord(col_end)
+                col_mid = chr(col_start_idx + 1)   # columna Name
+                col_last = chr(col_end_idx)         # columna Fechas (última)
+
+                # Columna Name
+                ws.merge_cells(f"{col_mid}2:{col_mid}4")
+                c = ws[f"{col_mid}2"]
+                c.value = audit_name if audit_name else "NAME"
+                c.font = Font(size=20, bold=True)
+                c.alignment = center
+                c.border = border
+                for row in [3, 4]:
+                    ws[f"{col_mid}{row}"].border = border
+
+                # Columna Fechas
+                ws.merge_cells(f"{col_last}2:{col_last}4")
+                c = ws[f"{col_last}2"]
+                c.value = fechas_value
+                c.font = Font(size=12, bold=True)
+                c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                c.border = border
+                for row in [3, 4]:
+                    ws[f"{col_last}{row}"].border = border
 
             ws1.merge_cells("B6:D6")
             c = ws1["B6"]
@@ -376,9 +393,70 @@ def download_excel_audit_plan(request):
                     cell = ws1.cell(row=k, column=j, value=val)
                     cell.alignment = wrap; cell.border = border
 
+            # 2.4 Objetivos
+            sep2 = ws1.max_row + 2
+            ws1.merge_cells(start_row=sep2, start_column=2, end_row=sep2, end_column=4)
+            c = ws1.cell(row=sep2, column=2, value="Objetivos del Programa de Auditoría")
+            c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
+
+            headers3 = ["Item", "Descripción"]
+            for j, txt in enumerate(headers3, start=2):
+                if j == 1:
+                    cell = ws1.cell(row=sep2+1, column=j+1, value=txt)    
+                else:
+                    cell = ws1.cell(row=sep2+1, column=j, value=txt)
+                cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+            for k, row_data in enumerate(content.get("tabla-objetivos", []), start=sep2+2):
+                ws1.row_dimensions[k].height = 40
+                for j, val in enumerate(row_data, start=2):
+                    cell = ws1.cell(row=k, column=j, value=val)
+                    cell.alignment = wrap; cell.border = border
+
             # === 3) Incertidumbre ===
             ws2 = wb.create_sheet("Uncertainty")
-            set_cols(ws2, [3, 20, 50, 50, 27])
+            set_cols(ws2, [3, 20, 50, 50, 35])
+
+            sheets_config = [
+                (ws2, "B", "E"),  # hoja 2
+            ]
+
+            for ws, col_start, col_end in sheets_config:
+                # Columna organización
+                ws.merge_cells(f"{col_start}2:{col_start}4")
+                c = ws[f"{col_start}2"]
+                c.border = border
+                c.value = plan.organization.name.upper()
+                c.font = Font(size=20, bold=True)
+                c.alignment = center
+                for row in [3, 4]:
+                    ws[f"{col_start}{row}"].border = border
+
+                # Calcular columnas intermedias para Name y Fechas
+                col_start_idx = ord(col_start)
+                col_end_idx = ord(col_end)
+                col_mid = chr(col_start_idx + 1)   # columna Name
+                col_last = chr(col_end_idx)         # columna Fechas (última)
+
+                # Columna Name
+                ws.merge_cells(f"C2:D4")
+                c = ws[f"{col_mid}2"]
+                c.value = audit_name if audit_name else "NAME"
+                c.font = Font(size=20, bold=True)
+                c.alignment = center
+                c.border = border
+                for row in [3, 4]:
+                    ws[f"{col_mid}{row}"].border = border
+
+                # Columna Fechas
+                ws.merge_cells(f"{col_last}2:{col_last}4")
+                c = ws[f"{col_last}2"]
+                c.value = fechas_value
+                c.font = Font(size=12, bold=True)
+                c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                c.border = border
+                for row in [3, 4]:
+                    ws[f"{col_last}{row}"].border = border
 
             # 3.1 Oportunidades
             ws2.merge_cells("B6:E6")
@@ -403,7 +481,9 @@ def download_excel_audit_plan(request):
             c = ws2.cell(row=sep3, column=2, value="Determinación y Evaluación de Riesgos")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            for j, txt in enumerate(headers4, start=2):
+            headerRiesgos = ["Riesgo", "Descripción", "Acciones", "Recursos"]
+
+            for j, txt in enumerate(headerRiesgos, start=2):
                 cell = ws2.cell(row=sep3+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
@@ -413,64 +493,160 @@ def download_excel_audit_plan(request):
                     cell = ws2.cell(row=k, column=j, value=val)
                     cell.alignment = wrap; cell.border = border
 
-            # === 4) Recursos ===
-            ws3 = wb.create_sheet("Resources")
-            set_cols(ws3, [3, 35, 50, 30])
-
-            # Título
-            ws3.merge_cells("B6:D6")
-            c = ws3["B6"]
-            c.value = "Recursos para la Gestión del Programa de Auditorías"
+            # Metodología
+            sep3 = ws2.max_row + 2
+            ws2.merge_cells(start_row=sep3, start_column=2, end_row=sep3, end_column=5)
+            c = ws2.cell(row=sep3, column=2, value="Metodología")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            # Encabezados
-            cell = ws3.cell(row=7, column=2, value="Tipo")
-            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+            headerMetodologia = ["Tipo", "Descripción", "Observaciones"]
 
-            ws3.merge_cells(start_row=7, start_column=3, end_row=7, end_column=4)
-            cell = ws3.cell(row=7, column=3, value="Descripción")
-            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
-
-            # Contenido
-            for i, row_data in enumerate(content.get("tabla-recursos", []), start=8):
-                ws3.row_dimensions[i].height = 40
-
-                # Tipo en columna B
-                cell = ws3.cell(row=i, column=2, value=row_data[0])
-                cell.alignment = wrap; cell.border = border
-
-                # Descripción en columnas C y D
-                ws3.merge_cells(start_row=i, start_column=3, end_row=i, end_column=4)
-                cell = ws3.cell(row=i, column=3, value=row_data[1])
-                cell.alignment = wrap; cell.border = border
-
-
-            # espacio y Equipo Auditor
-            sep4 = ws3.max_row + 2
-            ws3.merge_cells(start_row=sep4, start_column=2, end_row=sep4, end_column=4)
-            c = ws3.cell(row=sep4, column=2, value="Equipo Auditor")
-            c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
-
-            headers6 = ["Nombre", "Rol", "Correo"]
-            for j, txt in enumerate(headers6, start=2):
-                cell = ws3.cell(row=sep4+1, column=j, value=txt)
+            for j, txt in enumerate(headerMetodologia, start=2):
+                cell = ws2.cell(row=sep3+1, column=j, value=txt)
                 cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
-            for k, row_data in enumerate(content.get("tabla-equipoAuditor", []), start=sep4+2):
-                ws3.row_dimensions[k].height = 40
+            for k, row_data in enumerate(content.get("tabla-metodologia", []), start=sep3+2):
+                ws2.row_dimensions[k].height = 40
                 for j, val in enumerate(row_data, start=2):
-                    cell = ws3.cell(row=k, column=j, value=val)
+                    cell = ws2.cell(row=k, column=j, value=val)
                     cell.alignment = wrap; cell.border = border
 
+            # === 4) Recursos ===
+            import traceback
+            try:
+                ws3 = wb.create_sheet("Resources")
+                set_cols(ws3, [3, 35, 50, 35])
+
+                sheets_config = [(ws3, "B", "D")]
+
+                for ws, col_start, col_end in sheets_config:
+                    ws.merge_cells("B2:B4")
+                    c = ws["B2"]
+                    c.border = border
+                    c.value = plan.organization.name.upper()
+                    c.font = Font(size=20, bold=True)
+                    c.alignment = center
+                    for row in [3, 4]:
+                        ws[f"B{row}"].border = border
+
+                    ws.merge_cells("C2:C4")
+                    c = ws["C2"]
+                    c.value = audit_name if audit_name else "NAME"
+                    c.font = Font(size=20, bold=True)
+                    c.alignment = center
+                    c.border = border
+                    for row in [3, 4]:
+                        ws[f"C{row}"].border = border
+
+                    ws.merge_cells("D2:D4")
+                    c = ws["D2"]
+                    c.value = fechas_value
+                    c.font = Font(size=12, bold=True)
+                    c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                    c.border = border
+                    for row in [3, 4]:
+                        ws[f"D{row}"].border = border
+
+                # Título
+                ws3.merge_cells("B6:D6")
+                c = ws3["B6"]
+                c.value = "Recursos para la Gestión del Programa de Auditorías"
+                c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
+
+                # Encabezados
+                cell = ws3.cell(row=7, column=2, value="Tipo")
+                cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+                cell = ws3.cell(row=7, column=3, value="Descripción")
+                cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+                # Contenido tabla-recursos
+                for i, row_data in enumerate(content.get("tabla-recursos", []), start=8):
+                    ws3.row_dimensions[i].height = 40
+                    cell = ws3.cell(row=i, column=2, value=row_data[0])
+                    cell.alignment = wrap; cell.border = border
+                    ws3.merge_cells(start_row=i, start_column=3, end_row=i, end_column=4)
+                    cell = ws3.cell(row=i, column=3, value=row_data[1])
+                    cell.alignment = wrap; cell.border = border
+
+                # Equipo Auditor
+                sep_equipo = ws3.max_row + 2
+                ws3.merge_cells(start_row=sep_equipo, start_column=2, end_row=sep_equipo, end_column=4)
+                c = ws3.cell(row=sep_equipo, column=2, value="Equipo Auditor")
+                c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
+
+                headers6 = ["Nombre", "Rol", "Correo"]
+                for j, txt in enumerate(headers6, start=2):
+                    cell = ws3.cell(row=sep_equipo+1, column=j, value=txt)
+                    cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+                for k, row_data in enumerate(content.get("tabla-equipoAuditor", []), start=sep_equipo+2):
+                    ws3.row_dimensions[k].height = 40
+                    for j, val in enumerate(row_data, start=2):
+                        cell = ws3.cell(row=k, column=j, value=val)
+                        cell.alignment = wrap; cell.border = border
+
+                # Observaciones Generales
+                sep_obs = ws3.max_row + 2
+                ws3.merge_cells(start_row=sep_obs, start_column=2, end_row=sep_obs, end_column=4)
+                c = ws3.cell(row=sep_obs, column=2, value="Observaciones Generales")
+                c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
+
+                ws3.merge_cells(start_row=sep_obs+1, start_column=2, end_row=sep_obs+1, end_column=4)
+                cell = ws3.cell(row=sep_obs+1, column=2, value="Observaciones")
+                cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
+
+                obs = content.get("observaciones-generales", "")
+                if obs:
+                    ws3.merge_cells(start_row=sep_obs+2, start_column=2, end_row=sep_obs+2, end_column=4)
+                    cell = ws3.cell(row=sep_obs+2, column=2, value=obs)
+                    cell.alignment = wrap
+                    cell.border = border
+                    ws3.row_dimensions[sep_obs+2].height = 40
+            except Exception as e:        
+                return JsonResponse({"error": traceback.format_exc()})
+        
             # === 5) Implementación ===
             ws4 = wb.create_sheet("Implementation")
             set_cols(ws4, [3, 20, 20, 50, 20, 20])
 
+            # Encabezado
+            ws4.merge_cells("B2:B4")
+            c = ws4["B2"]
+            c.border = border
+            c.value = plan.organization.name.upper()
+            c.font = Font(size=20, bold=True)
+            c.alignment = center
+            for row in [3, 4]:
+                ws4[f"B{row}"].border = border
+
+            ws4.merge_cells("C2:D4")
+            c = ws4["C2"]
+            c.value = audit_name if audit_name else "NAME"
+            c.font = Font(size=20, bold=True)
+            c.alignment = center
+            c.border = border
+            for row in [3, 4]:
+                ws4[f"C{row}"].border = border
+                ws4[f"D{row}"].border = border
+
+            ws4.merge_cells("E2:F4")
+            c = ws4["E2"]
+            c.value = fechas_value
+            c.font = Font(size=12, bold=True)
+            c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            c.border = border
+            for row in [3, 4]:
+                ws4[f"E{row}"].border = border
+                ws4[f"F{row}"].border = border
+
+            # Título
             ws4.merge_cells("B6:F6")
             c = ws4["B6"]
             c.value = "Implementación del Programa de Auditoría"
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
+            # Encabezados tabla
             headers7 = ["Etapa", "Fase", "Descripción", "Fecha Inicio", "Fecha Final"]
             for j, txt in enumerate(headers7, start=2):
                 cell = ws4.cell(row=7, column=j, value=txt)
@@ -482,15 +658,14 @@ def download_excel_audit_plan(request):
                     cell = ws4.cell(row=i, column=j, value=val)
                     cell.alignment = wrap; cell.border = border
 
-            # espacio y Metodología
+            # Metodología
             sep5 = ws4.max_row + 2
             ws4.merge_cells(start_row=sep5, start_column=2, end_row=sep5, end_column=6)
             c = ws4.cell(row=sep5, column=2, value="Metodología de Auditoría")
             c.fill = header_fill; c.font = white_bold; c.alignment = center; c.border = border
 
-            # encabezados
-            ws4.cell(row=sep5+1, column=2, value="Tipo").fill = section_fill
-            ws4.cell(row=sep5+1, column=2).font = black_bold; ws4.cell(row=sep5+1, column=2).alignment = center; ws4.cell(row=sep5+1, column=2).border = border
+            cell = ws4.cell(row=sep5+1, column=2, value="Tipo")
+            cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
             ws4.merge_cells(start_row=sep5+1, start_column=3, end_row=sep5+1, end_column=4)
             cell = ws4.cell(row=sep5+1, column=3, value="Descripción")
@@ -500,28 +675,65 @@ def download_excel_audit_plan(request):
             cell = ws4.cell(row=sep5+1, column=5, value="Observaciones")
             cell.fill = section_fill; cell.font = black_bold; cell.alignment = center; cell.border = border
 
-            # contenido
             for k, row_data in enumerate(content.get("tabla-metodologia", []), start=sep5+2):
                 ws4.row_dimensions[k].height = 40
-
-                # Tipo (columna B)
                 cell = ws4.cell(row=k, column=2, value=row_data[0])
                 cell.alignment = wrap; cell.border = border
-
-                # Descripción (columnas C y D)
                 ws4.merge_cells(start_row=k, start_column=3, end_row=k, end_column=4)
                 cell = ws4.cell(row=k, column=3, value=row_data[1])
                 cell.alignment = wrap; cell.border = border
-
-                # Observaciones (columnas E y F)
                 ws4.merge_cells(start_row=k, start_column=5, end_row=k, end_column=6)
                 cell = ws4.cell(row=k, column=5, value=row_data[2])
                 cell.alignment = wrap; cell.border = border
 
-
             # === 6) Plan de Auditoría ===
             ws5 = wb.create_sheet("Audit Plan")
             set_cols(ws5, [3,20,20,20,20,20,40,15,15,30,50])
+
+            sheets_config = [
+                (ws5, "B", "L"),  # hoja 6
+            ]
+
+            for ws, col_start, col_end in sheets_config:
+                # Columna organización
+                # ws.merge_cells(f"{col_start}2:{col_start}4")
+                # ws.unmerge_cells(f"B2:E4")
+                ws.merge_cells(f"B2:E4")
+                c = ws[f"B2"]
+                c.border = border
+                c.value = plan.organization.name.upper()
+                c.font = Font(size=20, bold=True)
+                c.alignment = center
+                for row in [3, 4]:
+                    ws[f"{col_start}{row}"].border = border
+
+                # Calcular columnas intermedias para Name y Fechas
+                col_start_idx = ord(col_start)
+                col_end_idx = ord(col_end)
+                col_mid = chr(col_start_idx + 1)   # columna Name
+                col_last = chr(col_end_idx)         # columna Fechas (última)
+
+                # Columna Name
+                # ws.unmerge_cells(f"F2:J4")
+                ws.merge_cells(f"F2:J4")
+                c = ws[f"F2"]
+                c.value = audit_name if audit_name else "NAME"
+                c.font = Font(size=20, bold=True)
+                c.alignment = center
+                c.border = border
+                for row in [3, 4]:
+                    ws[f"{col_mid}{row}"].border = border
+
+                # Columna Fechas
+                # ws.unmerge_cells(f"K2:L4")
+                ws.merge_cells(f"K2:L4")
+                c = ws[f"K2"]
+                c.value = fechas_value
+                c.font = Font(size=12, bold=True)
+                c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                c.border = border
+                for row in [3, 4]:
+                    ws[f"{col_last}{row}"].border = border
 
             # Objetivos
             ws5.merge_cells("B6:L6")

@@ -30,7 +30,8 @@ document.getElementById('auditPlanForm').addEventListener('submit', function(e) 
     const tables = [
         'tabla-objetivos', 'tabla-alcance', 'tabla-criterios', 'tabla-revision',
         'tabla-riesgos', 'tabla-metodologia', 'tabla-oportunidades',
-        'tabla-recursos', 'tabla-equipoAuditor', 'tabla-estapasAud', 'tabla-planAud'
+        'tabla-recursos', 'tabla-equipoAuditor', 'tabla-estapasAud', 'tabla-planAud', 'observaciones-generales',
+        'nombre-auditoria', 'fecha-preparacion', 'periodo', 'fecha-actualizacion'
     ];
 
     let planData = {};

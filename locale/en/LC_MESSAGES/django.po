@@ -347,11 +347,11 @@ msgstr "Asistance"
 
 #: .\audit\templates\auditPlan.html:141
 msgid "Observaciones generales"
-msgstr "General obserbations"
+msgstr "General observations"
 
 #: .\audit\templates\auditPlan.html:143
 msgid "Escribe observaciones aquí"
-msgstr "Write your obserbations here"
+msgstr "Write your observations here"
 
 #: .\audit\templates\auditPlan.html:149
 #, fuzzy
