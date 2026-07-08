@@ -276,6 +276,13 @@ def download_excel_audit_plan(request):
                 for i, w in enumerate(widths, start=1):
                     ws.column_dimensions[get_column_letter(i)].width = w
 
+            # Datos dinámicos
+            audit_name = content.get("nombre-auditoria", "")
+            fecha_prep = content.get("fecha-preparacion", "")
+            periodo = content.get("periodo", "")
+            fecha_act = content.get("fecha-actualizacion", "")
+            fechas_value = f"Fecha de preparación: {fecha_prep}\nPeríodo: {periodo}\nFecha de actualización: {fecha_act}"
+
             # === 1) Portada ===
             ws0 = wb.create_sheet("Portada")
             set_cols(ws0, [3, 40, 40])
@@ -286,17 +293,26 @@ def download_excel_audit_plan(request):
             c.font = Font(size=20, bold=True)
             c.alignment = center
 
+            ws0.merge_cells("B5:D7")
+            c = ws0["B5"]
+            c.border = border
+            c.value = audit_name if audit_name else "NAME"
+            c.font = Font(size=20, bold=True)
+            c.alignment = center
+
+            ws0.merge_cells("B8:D14")
+            c = ws0["B8"]
+            c.value = fechas_value
+            c.font = Font(size=20, bold=True)
+            c.alignment = center
+            c.border = border
+
             # === 2) Alcance – Criterios – Objetivos ===
             ws1 = wb.create_sheet("Alcance - Criterios - Objetivos")
             set_cols(ws1, [3, 34, 58, 35])
 
             # 2.1 Participantes
-            # Datos dinámicos
-            audit_name = content.get("nombre-auditoria", "")
-            fecha_prep = content.get("fecha-preparacion", "")
-            periodo = content.get("periodo", "")
-            fecha_act = content.get("fecha-actualizacion", "")
-            fechas_value = f"Fecha de preparación: {fecha_prep}\nPeríodo: {periodo}\nFecha de actualización: {fecha_act}"
+            
 
             # Configuración por hoja: (worksheet, col_inicio, col_fin)
             sheets_config = [
