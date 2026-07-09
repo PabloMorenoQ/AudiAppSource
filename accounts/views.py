@@ -956,27 +956,35 @@ def download_excel_report(request):
             
             for idx, resumen_row in enumerate(resumen_data):
                 row += 1
-                
-                # Alternar colores de fila
                 row_fill = alt_row_fill if idx % 2 == 0 else None
-                
-                for j, val in enumerate(resumen_row[:6], start=1):
-                    if j == 2:  # Segundo elemento — se omite
+
+                # Mapeo explícito: columna Excel → índice en resumen_row
+                col_map = {
+                    1: (0, False),  # col A → habilitador (texto)
+                    2: (1, False),  # col B → proceso (texto)
+                    3: (3, True),   # col C → valor numérico (índice 3, omitiendo índice 2)
+                    4: (4, True),   # col D → valor numérico
+                    5: (5, True),   # col E → valor numérico
+                    6: (6, True),   # col F → valor numérico
+                }
+
+                for col_excel, (idx_data, es_numerico) in col_map.items():
+                    if idx_data >= len(resumen_row):
                         continue
-                    if j >= 3:  # Columnas numéricas
+                    val = resumen_row[idx_data]
+                    if es_numerico:
                         try:
                             val = float(val)
                         except:
                             pass
-                    
-                    c = ws.cell(row=row, column=j, value=val)
-                    c.alignment = center if j >= 3 else left_wrap
+                    c = ws.cell(row=row, column=col_excel, value=val)
+                    c.alignment = center if es_numerico else left_wrap
                     c.border = border_thin
                     c.font = normal_font
                     if row_fill:
                         c.fill = row_fill
 
-                # Columna Total con fórmula
+                # Columna Total
                 total_formula = f"=SUM(C{row}:F{row})"
                 c = ws.cell(row=row, column=7, value=total_formula)
                 c.alignment = center
@@ -984,7 +992,7 @@ def download_excel_report(request):
                 c.font = black_bold
                 if row_fill:
                     c.fill = row_fill
-                    
+
                 ws.row_dimensions[row].height = 25
 
             data_end_row = row
@@ -996,7 +1004,11 @@ def download_excel_report(request):
             ws.cell(row=row, column=1).fill = PatternFill("solid", fgColor="FFC000")
             ws.cell(row=row, column=1).border = border_medium
             
-            for col in range(3, 8):  # Columnas C-G
+            for col in range(2, 8):  # Columnas C-G
+                if col == 2:
+                    ws.cell(row=row, column=col, value="").border = border_medium
+                    ws.cell(row=row, column=col).fill = PatternFill("solid", fgColor="FFC000")
+                    continue
                 letra_col = get_column_letter(col)
                 formula = f"=SUM({letra_col}{data_start_row}:{letra_col}{data_end_row})"
                 c = ws.cell(row=row, column=col, value=formula)
