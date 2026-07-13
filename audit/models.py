@@ -40,6 +40,12 @@ class AuditPlan(models.Model):
     def checklist_count(self):
         """Retorna el número de checklists asociados"""
         return self.checklists.count()
+    
+    def get_audit_name(self):
+        """Retorna el nombre de auditoría guardado dentro de plan_content"""
+        if not self.plan_content:
+            return ""
+        return self.plan_content.get("nombre-auditoria", "")
 
 
 # ========================================

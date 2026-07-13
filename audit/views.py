@@ -90,6 +90,7 @@ def check_lists(request):
 
         # ✅ INICIALIZAR TODAS LAS VARIABLES ANTES DE CUALQUIER CONDICIONAL
         selected_plan_id = request.GET.get("plan_id") or request.POST.get("plan_id")
+
         selected_plan = None
         procesos = []
         lugares = []

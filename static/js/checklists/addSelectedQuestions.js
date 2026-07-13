@@ -116,19 +116,19 @@ function addSelectedQuestions() {
         let texto = "";
         switch (this.value) {
           case "Fortaleza":
-            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}.`;
+            texto = `En el proceso: ${nombreProceso}, se evidenció: ${evidencia}.`;
             break;
           case "Conformidad":
-            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, cumpliendo con la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}`;
+            texto = `En el proceso: ${nombreProceso}, se evidenció: ${evidencia}, cumpliendo con la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}`;
             break;
           case "Recomendación":
-            texto = `Evaluar la pertinencia en el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, de evidencia: ${evidencia}.`;
+            texto = `Evaluar la pertinencia en el proceso: ${nombreProceso}, se evidencia: ${evidencia}.`;
             break;
           case "Riesgo":
-            texto = `Es un riesgo en el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}.\nObjeto de impacto: ___.`;
+            texto = `Es un riesgo en el proceso: ${nombreProceso}, se evidenció: ${evidencia}. \nObjeto de impacto: `;
             break;
           case "No Conformidad":
-            texto = `En el proceso: ${nombreProceso}, y lugar: ${nombreLugar}, se evidenció: ${evidencia}, incumpliendo la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}`;
+            texto = `En el proceso: ${nombreProceso}, se evidenció: ${evidencia}, incumpliendo la norma ${nombreNorma} en el requisito: ${valorTextoSeccion} - ${valorSeccion}, que establece: ${valorTextoNorma}`;
             break;
           default:
             texto = "";

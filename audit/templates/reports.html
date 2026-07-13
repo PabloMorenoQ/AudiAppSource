@@ -244,7 +244,7 @@
                     <option value="">Selecciona un plan de auditoría</option>
                     {% for plan in planes %}
                         <option value="{{ plan.id }}">
-                            Plan #{{ plan.id }} | {{ plan.creation_date }} | 
+                            Plan #{{ plan.id }} | {{ plan.get_audit_name|default:"Sin nombre" }} | {{ plan.creation_date }} | 
                             {% if plan.checklists.count > 0 %}
                                 {{ plan.checklists.count }} checklist(s)
                             {% else %}
@@ -267,7 +267,7 @@
                     {% for checklist in checklists %}
                         <option value="{{ checklist.id }}">
                             {% if checklist.audit_plan %}
-                                Plan #{{ checklist.audit_plan.id }} | 
+                                Plan #{{ checklist.audit_plan.id }} | {{ checklist.audit_plan.get_audit_name|default:"Sin nombre" }} | 
                             {% endif %}
                             {{ checklist.process }} - {{ checklist.place }}
                         </option>

@@ -18,7 +18,7 @@
                         <option value="">Seleccione un plan...</option>
                         {% for p in planes %}
                             <option value="{{ p.id }}" {% if p.id == plan_seleccionado %}selected{% endif %}>
-                                ID {{ p.id }} - {{ p.creation_date }} {{ p.leader_auditor }}
+                                ID {{ p.id }} - {{ p.get_audit_name|default:"Sin nombre" }} - {{ p.creation_date }} - ({{ p.leader_auditor }})
                             </option>
                         {% endfor %}
                     </select>
